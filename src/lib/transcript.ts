@@ -19,6 +19,8 @@ export function splitUtterances(
 ): TranscriptSegment[] {
   const segments: TranscriptSegment[] = [];
 
+  if (!utterances || utterances.length === 0) return segments;
+
   for (let uIdx = 0; uIdx < utterances.length; uIdx++) {
     const utterance = utterances[uIdx];
     const sentences = utterance.text.split(/(?<=[.!?])\s+/).filter(Boolean);
