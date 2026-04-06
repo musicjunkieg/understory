@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Understory Coverage Map</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Work+Sans:wght@300;400;500;600&amp;family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error-container": "#93000a",
+                    "surface-dim": "#101411",
+                    "on-error": "#690005",
+                    "surface": "#101411",
+                    "surface-variant": "#323632",
+                    "on-background": "#e0e3de",
+                    "surface-container": "#1d211d",
+                    "on-surface": "#e0e3de",
+                    "secondary-fixed": "#d3e8d5",
+                    "error": "#ffb4ab",
+                    "surface-container-high": "#272b28",
+                    "primary-container": "#6cfcb2",
+                    "primary-fixed": "#6cfcb2",
+                    "surface-container-highest": "#323632",
+                    "outline": "#869489",
+                    "background": "#101411",
+                    "surface-bright": "#363a37",
+                    "on-primary-container": "#007347",
+                    "on-primary-fixed-variant": "#005231",
+                    "on-error-container": "#ffdad6",
+                    "on-secondary-container": "#a9beab",
+                    "primary-fixed-dim": "#4bdf97",
+                    "tertiary": "#ffffff",
+                    "tertiary-fixed": "#ffdf90",
+                    "secondary-container": "#3b4d3f",
+                    "surface-container-low": "#191d1a",
+                    "surface-container-lowest": "#0b0f0c",
+                    "tertiary-fixed-dim": "#e9c254",
+                    "primary": "#ffffff",
+                    "inverse-on-surface": "#2d312e",
+                    "on-tertiary-fixed-variant": "#584400",
+                    "on-primary-fixed": "#002111",
+                    "on-tertiary": "#3d2e00",
+                    "on-secondary-fixed": "#0e1f13",
+                    "on-surface-variant": "#bbcabe",
+                    "on-tertiary-fixed": "#241a00",
+                    "secondary": "#b7ccb9",
+                    "inverse-primary": "#006d43",
+                    "on-secondary-fixed-variant": "#394b3d",
+                    "secondary-fixed-dim": "#b7ccb9",
+                    "on-secondary": "#233427",
+                    "on-primary": "#003920",
+                    "outline-variant": "#3c4a40",
+                    "inverse-surface": "#e0e3de",
+                    "tertiary-container": "#ffdf90",
+                    "on-tertiary-container": "#7c6100",
+                    "surface-tint": "#4bdf97"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Newsreader"],
+                    "body": ["Work Sans"],
+                    "label": ["Space Grotesk"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #101411;
+            color: #e0e3de;
+            font-family: 'Work Sans', sans-serif;
+            overflow-x: hidden;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .biolume-glow {
+            box-shadow: 0 0 15px 2px rgba(108, 252, 178, 0.3);
+        }
+        .misty-overlay {
+            background: radial-gradient(circle at 50% 50%, rgba(75, 223, 151, 0.05) 0%, transparent 70%);
+        }
+        .custom-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: #6cfcb2;
+            cursor: pointer;
+            border-radius: 50%;
+            box-shadow: 0 0 12px #6cfcb2;
+        }
+        .custom-slider {
+            -webkit-appearance: none;
+            height: 4px;
+            background: #323632;
+            border-radius: 2px;
+            outline: none;
+        }
+        .mesh-bg {
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(108, 252, 178, 0.03) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(255, 223, 144, 0.02) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(108, 252, 178, 0.03) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, rgba(108, 252, 178, 0.02) 0px, transparent 50%);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface selection:bg-primary-container selection:text-on-primary-container">
+<!-- Top Navigation Shell -->
+<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-8 py-4 bg-[#101411]/60 backdrop-blur-xl transition-all duration-500">
+<div class="text-2xl font-serif italic tracking-tight text-[#6cfcb2] drop-shadow-[0_0_8px_rgba(108,252,178,0.4)]">
+            Understory
+        </div>
+<div class="hidden md:flex items-center gap-8 font-label">
+<a class="text-[#bbcabe] font-medium hover:text-[#6cfcb2] transition-colors duration-700" href="#">Archive</a>
+<a class="text-[#bbcabe] font-medium hover:text-[#6cfcb2] transition-colors duration-700" href="#">Species</a>
+<a class="text-[#6cfcb2] font-semibold border-b-2 border-[#6cfcb2] pb-1" href="#">Map</a>
+<a class="text-[#bbcabe] font-medium hover:text-[#6cfcb2] transition-colors duration-700" href="#">Observations</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-[#1c241f]/40 transition-all duration-500">
+<span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+</button>
+<div class="w-10 h-10 rounded-full bg-surface-container-highest border border-outline-variant/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-fixed-dim">person</span>
+</div>
+</div>
+</nav>
+<!-- Side Navigation Shell (Desktop) -->
+<aside class="hidden lg:flex fixed left-0 top-0 h-full w-72 flex-col py-8 pt-24 space-y-4 bg-[#101411] shadow-[20px_0px_40px_rgba(0,0,0,0.4)] z-40">
+<div class="px-8 mb-8">
+<h2 class="font-serif italic text-xl text-[#6cfcb2]">Understory Archive</h2>
+<p class="font-label text-xs text-on-surface-variant opacity-60 uppercase tracking-widest mt-1">Sector 7G-Mist</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-4 text-[#bbcabe] py-3 px-6 hover:bg-[#1c241f] hover:pl-8 transition-all duration-500 ease-out" href="#">
+<span class="material-symbols-outlined">edit_note</span>
+<span class="font-label">Field Notes</span>
+</a>
+<a class="flex items-center gap-4 text-[#bbcabe] py-3 px-6 hover:bg-[#1c241f] hover:pl-8 transition-all duration-500 ease-out" href="#">
+<span class="material-symbols-outlined">biotech</span>
+<span class="font-label">Specimens</span>
+</a>
+<a class="flex items-center gap-4 text-[#bbcabe] py-3 px-6 hover:bg-[#1c241f] hover:pl-8 transition-all duration-500 ease-out" href="#">
+<span class="material-symbols-outlined">filter_drama</span>
+<span class="font-label">Atmosphere</span>
+</a>
+<a class="flex items-center gap-4 bg-[#6cfcb2]/10 text-[#6cfcb2] rounded-r-full py-3 px-6 border-l-4 border-[#6cfcb2] transition-all duration-500" href="#">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-label font-bold">Map</span>
+</a>
+<a class="flex items-center gap-4 text-[#bbcabe] py-3 px-6 hover:bg-[#1c241f] hover:pl-8 transition-all duration-500 ease-out" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label">Settings</span>
+</a>
+</nav>
+<div class="px-6 mt-auto">
+<button class="w-full bg-primary-container text-on-primary-container py-3 px-4 rounded-lg font-label font-bold text-sm tracking-wide shadow-lg shadow-primary-container/10 hover:scale-[1.02] active:scale-95 transition-all">
+                Log Observation
+            </button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="lg:ml-72 min-h-screen pt-24 pb-12 px-6 md:px-12 relative overflow-hidden mesh-bg">
+<!-- Header Section -->
+<header class="mb-12 relative z-10">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<span class="font-label text-xs text-primary-fixed-dim uppercase tracking-[0.3em] mb-3 block">@bryan.wtf // system_node</span>
+<h1 class="font-headline italic text-5xl md:text-7xl text-on-surface tracking-tight leading-none">
+                        Coverage Map
+                    </h1>
+</div>
+<!-- Controls Module -->
+<div class="bg-surface-container-low/40 backdrop-blur-xl p-6 rounded-xl border border-outline-variant/10 flex flex-col gap-6 w-full md:w-80">
+<div class="space-y-3">
+<div class="flex justify-between font-label text-[10px] text-on-surface-variant uppercase tracking-widest">
+<span>Surprise Me</span>
+<span>For Me</span>
+</div>
+<input class="w-full custom-slider" max="100" min="0" type="range" value="35"/>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between font-label text-[10px] text-on-surface-variant uppercase tracking-widest">
+<span>Algorithm</span>
+<span>Friends</span>
+</div>
+<input class="w-full custom-slider" max="100" min="0" type="range" value="70"/>
+</div>
+</div>
+</div>
+</header>
+<!-- The Coverage Grid -->
+<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4 relative z-10">
+<!-- Grid Generation (30-40 tiles) -->
+<!-- Tile 1: Cold (Glow) -->
+<div class="aspect-square bg-surface-container-high/60 backdrop-blur-md rounded-lg border border-primary-fixed-dim/20 p-4 flex flex-col justify-between group cursor-pointer transition-all duration-500 biolume-glow ring-1 ring-primary-fixed-dim/30">
+<div class="font-label text-[10px] text-primary-fixed-dim tracking-tighter opacity-80 flex justify-between items-center">
+<span>S7-A01</span>
+<span class="material-symbols-outlined text-[14px]">bolt</span>
+</div>
+<div class="space-y-1">
+<p class="font-headline italic text-lg leading-tight text-on-surface group-hover:text-primary-fixed transition-colors">Fungal Synthetics</p>
+<p class="font-label text-[10px] text-on-surface-variant/60">New Discovery</p>
+</div>
+</div>
+<!-- Tile 2: Hot (Dim) -->
+<div class="aspect-square bg-surface-container-lowest/40 rounded-lg border border-white/5 p-4 flex flex-col justify-between opacity-40 hover:opacity-100 transition-all duration-700 cursor-pointer">
+<div class="font-label text-[10px] text-on-surface-variant/40 tracking-tighter">S7-A02</div>
+<div class="space-y-1">
+<p class="font-headline italic text-lg leading-tight text-on-surface-variant">Mist Harvesting</p>
+<p class="font-label text-[10px] text-on-surface-variant/40">Covered 2d ago</p>
+</div>
+</div>
+<!-- Tile 3: Cold (Glow) -->
+<div class="aspect-square bg-surface-container-high/60 backdrop-blur-md rounded-lg border border-primary-fixed-dim/20 p-4 flex flex-col justify-between group cursor-pointer transition-all duration-500 biolume-glow ring-1 ring-primary-fixed-dim/30">
+<div class="font-label text-[10px] text-primary-fixed-dim tracking-tighter opacity-80 flex justify-between">
+<span>S7-A03</span>
+<span class="material-symbols-outlined text-[14px]">sensors</span>
+</div>
+<div class="space-y-1">
+<p class="font-headline italic text-lg leading-tight text-on-surface group-hover:text-primary-fixed transition-colors">Root Signals</p>
+<p class="font-label text-[10px] text-on-surface-variant/60">Unexplored</p>
+</div>
+</div>
+<!-- Repeating patterns for the grid (Mocking 30+ items) -->
+<!-- Items 4-10 (Varied) -->
+<div class="aspect-square bg-surface-container-lowest/40 rounded-lg border border-white/5 p-4 flex flex-col justify-between opacity-30 hover:opacity-100 transition-all cursor-pointer">
+<div class="font-label text-[10px] text-on-surface-variant/40 tracking-tighter">S7-B01</div>
+<p class="font-headline italic text-lg leading-tight text-on-surface-variant">Moss Logic</p>
+</div>
+<div class="aspect-square bg-surface-container-lowest/40 rounded-lg border border-white/5 p-4 flex flex-col justify-between opacity-20 hover:opacity-100 transition-all cursor-pointer">
+<div class="font-label text-[10px] text-on-surface-variant/40 tracking-tighter">S7-B02</div>
+<p class="font-headline italic text-lg leading-tight text-on-surface-variant">Canopy Echo</p>
+</div>
+<div class="aspect-square bg-surface-container-high/60 backdrop-blur-md rounded-lg border border-primary-fixed-dim/10 p-4 flex flex-col justify-between group cursor-pointer transition-all duration-500 biolume-glow">
+<div class="font-label text-[10px] text-primary-fixed-dim tracking-tighter opacity-80">S7-B03</div>
+<p class="font-headline italic text-lg leading-tight text-on-surface">Spore Drift</p>
+</div>
+<!-- Tile 7: Hot (Dim) -->
+<div class="aspect-square bg-surface-container-lowest/40 rounded-lg border border-white/5 p-4 flex flex-col justify-between opacity-30 hover:opacity-100 transition-all cursor-pointer">
+<div class="font-label text-[10px] text-on-surface-variant/40 tracking-tighter">S7-C01</div>
+<p class="font-headline italic text-lg leading-tight text-on-surface-variant">Wetware Lab</p>
+</div>
+<!-- Tile 8: Cold (Glow) -->
+<div class="aspect-square bg-surface-container-high/60 backdrop-blur-md rounded-lg border border-primary-fixed-dim/20 p-4 flex flex-col justify-between group cursor-pointer transition-all duration-500 biolume-glow ring-1 ring-primary-fixed-dim/30">
+<div class="font-label text-[10px] text-primary-fixed-dim tracking-tighter opacity-80">S7-C02</div>
+<p class="font-headline italic text-lg leading-tight text-on-surface">Neural Flora</p>
+</div>
+<!-- Grid filler items... imagine 20+ more here -->
+<!-- Placeholder grid density -->
+<div class="aspect-square bg-surface-container-lowest/40 rounded-lg opacity-20 hover:opacity-80 transition-opacity flex items-center justify-center border border-white/5 cursor-pointer">
+<span class="material-symbols-outlined text-on-surface-variant/40">visibility_off</span>
+</div>
+<div class="aspect-square bg-surface-container-lowest/40 rounded-lg opacity-15 hover:opacity-80 transition-opacity flex items-center justify-center border border-white/5"></div>
+<div class="aspect-square bg-surface-container-lowest/40 rounded-lg opacity-25 hover:opacity-80 transition-opacity flex items-center justify-center border border-white/5"></div>
+<div class="aspect-square bg-surface-container-high/40 rounded-lg border border-primary-fixed-dim/20 p-4 flex flex-col justify-between group cursor-pointer transition-all duration-500 biolume-glow">
+<div class="font-label text-[10px] text-primary-fixed-dim tracking-tighter opacity-80">S7-D04</div>
+<p class="font-headline italic text-lg leading-tight text-on-surface">Pollen Trace</p>
+</div>
+<div class="aspect-square bg-surface-container-lowest/40 rounded-lg opacity-20 border border-white/5"></div>
+<div class="aspect-square bg-surface-container-lowest/40 rounded-lg opacity-10 border border-white/5"></div>
+<div class="aspect-square bg-surface-container-lowest/40 rounded-lg opacity-30 border border-white/5"></div>
+<div class="aspect-square bg-surface-container-lowest/40 rounded-lg opacity-20 border border-white/5"></div>
+<div class="aspect-square bg-surface-container-high/60 backdrop-blur-md rounded-lg border border-primary-fixed-dim/20 p-4 flex flex-col justify-between group cursor-pointer transition-all duration-500 biolume-glow">
+<div class="font-label text-[10px] text-primary-fixed-dim tracking-tighter opacity-80">S7-E01</div>
+<p class="font-headline italic text-lg leading-tight text-on-surface">Cyan Shade</p>
+</div>
+<div class="aspect-square bg-surface-container-lowest/40 rounded-lg opacity-15 border border-white/5"></div>
+<div class="aspect-square bg-surface-container-lowest/40 rounded-lg opacity-25 border border-white/5"></div>
+<div class="aspect-square bg-surface-container-lowest/40 rounded-lg opacity-20 border border-white/5"></div>
+<div class="aspect-square bg-surface-container-lowest/40 rounded-lg opacity-35 border border-white/5"></div>
+<div class="aspect-square bg-surface-container-lowest/40 rounded-lg opacity-10 border border-white/5"></div>
+<div class="aspect-square bg-surface-container-lowest/40 rounded-lg opacity-20 border border-white/5"></div>
+<div class="aspect-square bg-surface-container-lowest/40 rounded-lg opacity-15 border border-white/5"></div>
+<div class="aspect-square bg-surface-container-high/60 backdrop-blur-md rounded-lg border border-primary-fixed-dim/20 p-4 flex flex-col justify-between group cursor-pointer transition-all duration-500 biolume-glow ring-1 ring-primary-fixed-dim/30">
+<div class="font-label text-[10px] text-primary-fixed-dim tracking-tighter opacity-80">S7-F09</div>
+<p class="font-headline italic text-lg leading-tight text-on-surface">Vesper Light</p>
+</div>
+<div class="aspect-square bg-surface-container-lowest/40 rounded-lg opacity-30 border border-white/5"></div>
+<div class="aspect-square bg-surface-container-lowest/40 rounded-lg opacity-20 border border-white/5"></div>
+<div class="aspect-square bg-surface-container-lowest/40 rounded-lg opacity-15 border border-white/5"></div>
+<div class="aspect-square bg-surface-container-lowest/40 rounded-lg opacity-10 border border-white/5"></div>
+<div class="aspect-square bg-surface-container-lowest/40 rounded-lg opacity-25 border border-white/5"></div>
+<div class="aspect-square bg-surface-container-lowest/40 rounded-lg opacity-20 border border-white/5"></div>
+<div class="aspect-square bg-surface-container-lowest/40 rounded-lg opacity-15 border border-white/5"></div>
+<div class="aspect-square bg-surface-container-lowest/40 rounded-lg opacity-30 border border-white/5"></div>
+</div>
+<!-- Ambient Decoration -->
+<div class="fixed bottom-0 right-0 w-1/2 h-1/2 bg-primary-container/5 blur-[120px] rounded-full -mr-24 -mb-24 z-0 pointer-events-none"></div>
+<div class="fixed top-1/4 left-0 w-1/3 h-1/3 bg-tertiary-fixed/5 blur-[100px] rounded-full -ml-24 z-0 pointer-events-none"></div>
+</main>
+<!-- Bottom Navigation (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-[#101411]/80 backdrop-blur-xl px-4 py-3 flex justify-around items-center border-t border-outline-variant/10 z-50">
+<button class="flex flex-col items-center gap-1 text-[#bbcabe]">
+<span class="material-symbols-outlined">edit_note</span>
+<span class="font-label text-[10px]">Notes</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-[#bbcabe]">
+<span class="material-symbols-outlined">biotech</span>
+<span class="font-label text-[10px]">Specimens</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-[#6cfcb2]">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">explore</span>
+<span class="font-label text-[10px] font-bold">Map</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-[#bbcabe]">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label text-[10px]">Settings</span>
+</button>
+</nav>
+</body></html>

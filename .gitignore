@@ -137,3 +137,17 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+data/
+
+# Deciduous database (local)
+.deciduous/
+
+# Chainlink local database
+.chainlink/
+
+# Superpowers brainstorm sessions
+.superpowers/
+
+# Agent config (local)
+.agents/

@@ -1,0 +1,82 @@
+{
+  "enableAllProjectMcpServers": true,
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "WebFetch|WebSearch",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -c \"import os,runpy;d=os.getcwd()\nwhile not os.path.isdir(os.path.join(d,'.claude')):\n p=os.path.dirname(d)\n if p==d:break\n d=p\nrunpy.run_path(os.path.join(d,'.claude','hooks','pre-web-check.py'),run_name='__main__')\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -c \"import os,runpy;d=os.getcwd()\nwhile not os.path.isdir(os.path.join(d,'.claude')):\n p=os.path.dirname(d)\n if p==d:break\n d=p\nrunpy.run_path(os.path.join(d,'.claude','hooks','work-check.py'),run_name='__main__')\"",
+            "timeout": 3
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR/.claude/hooks/require-action-node.sh\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -c \"import os,runpy;d=os.getcwd()\nwhile not os.path.isdir(os.path.join(d,'.claude')):\n p=os.path.dirname(d)\n if p==d:break\n d=p\nrunpy.run_path(os.path.join(d,'.claude','hooks','prompt-guard.py'),run_name='__main__')\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -c \"import os,runpy;d=os.getcwd()\nwhile not os.path.isdir(os.path.join(d,'.claude')):\n p=os.path.dirname(d)\n if p==d:break\n d=p\nrunpy.run_path(os.path.join(d,'.claude','hooks','post-edit-check.py'),run_name='__main__')\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR/.claude/hooks/post-commit-reminder.sh\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "startup|resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -c \"import os,runpy;d=os.getcwd()\nwhile not os.path.isdir(os.path.join(d,'.claude')):\n p=os.path.dirname(d)\n if p==d:break\n d=p\nrunpy.run_path(os.path.join(d,'.claude','hooks','session-start.py'),run_name='__main__')\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
