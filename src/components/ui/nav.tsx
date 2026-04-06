@@ -28,7 +28,7 @@ function Nav() {
         {/* Right side — placeholder for auth */}
         <div className="flex items-center gap-4">
           <span className="text-label-md text-on-surface-variant">
-            Sign in with Bluesky
+            Sign in with your Atmosphere Account
           </span>
         </div>
       </div>
