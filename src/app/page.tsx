@@ -1,11 +1,14 @@
 import Link from "next/link";
 import { Nav } from "@/components/ui/nav";
 import { Button } from "@/components/ui/button";
+import { getAuthUser } from "@/lib/auth/user";
 
-export default function Home() {
+export default async function Home() {
+  const user = await getAuthUser();
+
   return (
     <>
-      <Nav minimal />
+      <Nav minimal user={user} />
       <main>
         {/* Hero */}
         <section className="flex min-h-screen flex-col items-center justify-center px-6 text-center">

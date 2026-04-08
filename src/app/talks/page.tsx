@@ -5,6 +5,7 @@ import { Nav } from "@/components/ui/nav";
 import { Chip } from "@/components/ui/chip";
 import { LumeCard } from "@/components/ui/lume-card";
 import { formatDuration } from "@/lib/format";
+import { getAuthUser } from "@/lib/auth/user";
 import type { TalkEntry } from "@/lib/types";
 
 const DATA_DIR = path.resolve(process.cwd(), "data");
@@ -19,7 +20,8 @@ export const metadata = {
   description: "Browse all ATmosphereConf 2026 talks with transcripts.",
 };
 
-export default function TalksPage() {
+export default async function TalksPage() {
+  const user = await getAuthUser();
   const talks = loadTalks()
     .filter((t) => t.transcriptFile)
     .sort((a, b) => {
@@ -32,7 +34,7 @@ export default function TalksPage() {
 
   return (
     <>
-      <Nav minimal />
+      <Nav minimal user={user} />
       <main className="mx-auto max-w-7xl px-6 pt-24 pb-16">
         <header className="mb-8">
           <h1 className="text-headline-md text-on-surface mb-2">All Talks</h1>
