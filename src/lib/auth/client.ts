@@ -58,7 +58,6 @@ function createClient(): NodeOAuthClient {
 
 // Cache on globalThis to survive Next.js hot reload
 declare global {
-  // eslint-disable-next-line no-var
   var __oauthClient: NodeOAuthClient | undefined;
 }
 

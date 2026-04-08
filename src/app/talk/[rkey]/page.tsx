@@ -6,6 +6,7 @@ import { Chip } from "@/components/ui/chip";
 import { TalkPageClient } from "@/components/talk-page-client";
 import { splitUtterances } from "@/lib/transcript";
 import { formatDuration, formatDate } from "@/lib/format";
+import { getAuthUser } from "@/lib/auth/user";
 import type { TalkEntry, TranscriptData } from "@/lib/types";
 
 const DATA_DIR = path.resolve(process.cwd(), "data");
@@ -55,6 +56,8 @@ export default async function TalkPage({
 
   if (!talk) notFound();
 
+  const user = await getAuthUser();
+
   // Load and split transcript
   let segments: ReturnType<typeof splitUtterances> = [];
   if (talk.transcriptFile) {
@@ -64,7 +67,7 @@ export default async function TalkPage({
 
   return (
     <>
-      <Nav />
+      <Nav user={user} />
       <main className="mx-auto max-w-7xl px-6 pt-24 pb-16">
         {/* Header */}
         <header className="mb-8">
