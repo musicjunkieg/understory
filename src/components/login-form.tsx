@@ -38,43 +38,50 @@ export function LoginForm() {
     }
   }
 
-  if (!open) {
-    return (
+  return (
+    <div className="relative">
       <button
-        onClick={() => setOpen(true)}
+        onClick={() => setOpen(!open)}
         className="text-label-md text-on-surface-variant hover:text-on-surface transition-colors cursor-pointer"
       >
         Sign in with your Atmosphere Account
       </button>
-    );
-  }
 
-  return (
-    <form onSubmit={handleSubmit} className="flex items-center gap-2">
-      <input
-        type="text"
-        value={handle}
-        onChange={(e) => setHandle(e.target.value)}
-        placeholder="handle.bsky.social"
-        aria-label="Your Atmosphere handle"
-        className="rounded-lg bg-surface-container-highest px-3 py-1.5 text-body-md text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary-fixed w-48"
-        autoFocus
-        disabled={loading}
-      />
-      <Button variant="primary" type="submit" loading={loading}>
-        Sign in
-      </Button>
-      <button
-        type="button"
-        onClick={() => {
-          setOpen(false);
-          setError(null);
-        }}
-        className="text-label-sm text-on-surface-variant hover:text-on-surface cursor-pointer"
-      >
-        Cancel
-      </button>
-      {error && <span className="text-label-sm text-error">{error}</span>}
-    </form>
+      {open && (
+        <form
+          onSubmit={handleSubmit}
+          className="absolute right-0 top-full mt-2 flex flex-col gap-3 rounded-lg bg-surface-container-high p-4 shadow-lg min-w-72 z-50"
+        >
+          <input
+            type="text"
+            value={handle}
+            onChange={(e) => setHandle(e.target.value)}
+            placeholder="handle.bsky.social"
+            aria-label="Your Atmosphere handle"
+            className="rounded-lg bg-surface-container-highest px-3 py-2 text-body-md text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary-fixed"
+            autoFocus
+            disabled={loading}
+          />
+          {error && (
+            <span className="text-label-sm text-error">{error}</span>
+          )}
+          <div className="flex items-center gap-2">
+            <Button variant="primary" type="submit" loading={loading}>
+              Sign in
+            </Button>
+            <button
+              type="button"
+              onClick={() => {
+                setOpen(false);
+                setError(null);
+              }}
+              className="text-label-sm text-on-surface-variant hover:text-on-surface cursor-pointer"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      )}
+    </div>
   );
 }

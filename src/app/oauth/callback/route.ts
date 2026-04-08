@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Agent } from "@atproto/api";
 import { getOAuthClient } from "@/lib/auth/client";
 import { setSessionCookie } from "@/lib/auth/session";
 
@@ -22,17 +21,8 @@ export async function GET(request: NextRequest) {
     // Set auth cookie
     await setSessionCookie(did);
 
-    // Try to get handle for redirect
-    let redirectPath = "/";
-    try {
-      const agent = new Agent(session);
-      const profile = await agent.getProfile({ actor: did });
-      if (profile.data.handle) {
-        redirectPath = `/for/${profile.data.handle}`;
-      }
-    } catch {
-      // Profile fetch failed — redirect to home
-    }
+    // Redirect to talks for now — /for/:handle doesn't exist yet
+    const redirectPath = "/talks";
 
     return NextResponse.redirect(`${appUrl}${redirectPath}`);
   } catch (error) {
