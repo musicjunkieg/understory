@@ -31,37 +31,48 @@ function getPostText(post: PostView): string {
   return record?.text ?? "";
 }
 
+function collectRecordUris(
+  container: Record<string, unknown> | undefined,
+  uris: string[],
+): void {
+  if (!container) return;
+
+  // Plain record embed: { record: { uri } }
+  // (app.bsky.embed.record / #view)
+  if (container.record && typeof container.record === "object") {
+    const rec = container.record as { uri?: string; record?: unknown };
+    if (typeof rec.uri === "string") {
+      uris.push(rec.uri);
+    }
+    // recordWithMedia nests one level deeper:
+    // { record: { record: { uri } } }  (app.bsky.embed.recordWithMedia / #view)
+    if (rec.record && typeof rec.record === "object") {
+      const inner = rec.record as { uri?: string };
+      if (typeof inner.uri === "string") {
+        uris.push(inner.uri);
+      }
+    }
+  }
+
+  // External embed: { external: { uri } }
+  if (container.external && typeof container.external === "object") {
+    const ext = container.external as { uri?: string };
+    if (typeof ext.uri === "string") {
+      uris.push(ext.uri);
+    }
+  }
+}
+
 function getEmbedUris(post: PostView): string[] {
   const uris: string[] = [];
   const record = post.record as { embed?: Record<string, unknown> };
   const embed = post.embed as Record<string, unknown> | undefined;
 
-  // Check view-level embed
-  if (embed) {
-    // record embed
-    if (embed.record && typeof embed.record === "object") {
-      const rec = embed.record as { uri?: string };
-      if (rec.uri) uris.push(rec.uri);
-    }
-    // external embed
-    if (embed.external && typeof embed.external === "object") {
-      const ext = embed.external as { uri?: string };
-      if (ext.uri) uris.push(ext.uri);
-    }
-  }
+  // View-level embed (hydrated shape returned by feed/search endpoints)
+  collectRecordUris(embed, uris);
 
-  // Check record-level embed
-  if (record?.embed) {
-    const recEmbed = record.embed as Record<string, unknown>;
-    if (recEmbed.record && typeof recEmbed.record === "object") {
-      const rec = recEmbed.record as { uri?: string };
-      if (rec.uri) uris.push(rec.uri);
-    }
-    if (recEmbed.external && typeof recEmbed.external === "object") {
-      const ext = recEmbed.external as { uri?: string };
-      if (ext.uri) uris.push(ext.uri);
-    }
-  }
+  // Record-level embed (raw embed inside the post record itself)
+  collectRecordUris(record?.embed, uris);
 
   return uris;
 }

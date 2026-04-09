@@ -18,6 +18,7 @@ const SEARCH_UNTIL = "2026-04-06T00:00:00.000Z";
  */
 export async function searchConferencePosts(
   agent: Agent,
+  signal?: AbortSignal,
 ): Promise<PostView[]> {
   const seenUris = new Set<string>();
   const posts: PostView[] = [];
@@ -26,15 +27,19 @@ export async function searchConferencePosts(
     let cursor: string | undefined;
 
     do {
+      if (signal?.aborted) throw signal.reason ?? new Error("Aborted");
       try {
-        const res = await agent.app.bsky.feed.searchPosts({
-          q: query,
-          sort: "latest",
-          since: SEARCH_SINCE,
-          until: SEARCH_UNTIL,
-          limit: 100,
-          cursor,
-        });
+        const res = await agent.app.bsky.feed.searchPosts(
+          {
+            q: query,
+            sort: "latest",
+            since: SEARCH_SINCE,
+            until: SEARCH_UNTIL,
+            limit: 100,
+            cursor,
+          },
+          { signal },
+        );
 
         for (const post of res.data.posts) {
           if (!seenUris.has(post.uri)) {
@@ -45,6 +50,8 @@ export async function searchConferencePosts(
 
         cursor = res.data.cursor;
       } catch (error) {
+        // Propagate abort errors so the whole crawl cancels cleanly.
+        if (signal?.aborted) throw error;
         console.error(`Search query "${query}" failed:`, error);
         break;
       }

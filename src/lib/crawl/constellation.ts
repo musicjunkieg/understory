@@ -25,6 +25,7 @@ interface ConstellationBacklinksResponse {
  */
 export async function fetchRsvps(
   talks: TalkEntry[],
+  signal?: AbortSignal,
 ): Promise<Map<string, Set<string>>> {
   const rsvpMap = new Map<string, Set<string>>();
   const talksWithEvents = talks.filter((t) => t.eventUri);
@@ -33,7 +34,7 @@ export async function fetchRsvps(
   const linksResults = await Promise.allSettled(
     talksWithEvents.map(async (talk) => {
       const url = `${CONSTELLATION_BASE}/links/all?target=${encodeURIComponent(talk.eventUri!)}`;
-      const res = await fetch(url);
+      const res = await fetch(url, { signal });
       if (!res.ok) return { talk, hasRsvps: false };
       const data: ConstellationLinksAll = await res.json();
       const rsvpEntry = data.links?.["community.lexicon.calendar.rsvp"];
@@ -41,6 +42,8 @@ export async function fetchRsvps(
       return { talk, hasRsvps: !!hasRsvps };
     }),
   );
+
+  if (signal?.aborted) throw signal.reason ?? new Error("Aborted");
 
   // Second pass: fetch actual RSVP DIDs for talks that have them
   const talksWithRsvps = linksResults
@@ -55,6 +58,7 @@ export async function fetchRsvps(
       let cursor: string | null = null;
 
       do {
+        if (signal?.aborted) throw signal.reason ?? new Error("Aborted");
         const params = new URLSearchParams({
           subject: talk.eventUri!,
           source: "community.lexicon.calendar.rsvp:.subject.uri",
@@ -63,7 +67,7 @@ export async function fetchRsvps(
         if (cursor) params.set("cursor", cursor);
 
         const url = `${CONSTELLATION_BASE}/xrpc/blue.microcosm.links.getBacklinks?${params}`;
-        const res = await fetch(url);
+        const res = await fetch(url, { signal });
         if (!res.ok) break;
 
         const data: ConstellationBacklinksResponse = await res.json();
@@ -78,6 +82,8 @@ export async function fetchRsvps(
       }
     }),
   );
+
+  if (signal?.aborted) throw signal.reason ?? new Error("Aborted");
 
   return rsvpMap;
 }

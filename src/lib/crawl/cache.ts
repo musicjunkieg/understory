@@ -36,15 +36,30 @@ export function setCached(did: string, data: CrawlResult): void {
   getCache().set(did, { data, timestamp: Date.now() });
 }
 
-export function getInFlightCrawl(did: string): Promise<CrawlResult> | null {
-  return getInFlight().get(did) ?? null;
-}
-
-export function setInFlightCrawl(
+/**
+ * Atomically register a crawl for a DID. If one is already in-flight, returns
+ * the existing promise with `isNew: false`. Otherwise invokes the factory to
+ * start a new crawl, stores it, and returns it with `isNew: true`.
+ *
+ * The cleanup only removes the entry if it still references this exact
+ * promise (identity check), so a newer promise that replaced this one isn't
+ * erased by a stale finally callback.
+ */
+export function registerCrawl(
   did: string,
-  promise: Promise<CrawlResult>,
-): void {
+  factory: () => Promise<CrawlResult>,
+): { promise: Promise<CrawlResult>; isNew: boolean } {
   const inFlight = getInFlight();
+  const existing = inFlight.get(did);
+  if (existing) {
+    return { promise: existing, isNew: false };
+  }
+  const promise = factory();
   inFlight.set(did, promise);
-  promise.finally(() => inFlight.delete(did));
+  promise.finally(() => {
+    if (inFlight.get(did) === promise) {
+      inFlight.delete(did);
+    }
+  });
+  return { promise, isNew: true };
 }

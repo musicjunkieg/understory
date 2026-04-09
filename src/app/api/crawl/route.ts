@@ -1,14 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "@/lib/auth/session";
 import { crawl } from "@/lib/crawl/crawler";
-import {
-  getCached,
-  setCached,
-  getInFlightCrawl,
-  setInFlightCrawl,
-} from "@/lib/crawl/cache";
+import { getCached, setCached, registerCrawl } from "@/lib/crawl/cache";
+import type { CrawlResult } from "@/lib/crawl/types";
 
 const TIMEOUT_MS = 30_000;
+
+/**
+ * Race a promise against a timeout. Clears the timer when the primary promise
+ * settles so we don't leak a pending setTimeout.
+ */
+function withTimeout<T>(p: Promise<T>, ms: number): Promise<T> {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const timeout = new Promise<never>((_, reject) => {
+    timer = setTimeout(() => reject(new Error("Crawl timeout")), ms);
+  });
+  return Promise.race([p, timeout]).finally(() => {
+    if (timer) clearTimeout(timer);
+  });
+}
 
 export async function GET(request: NextRequest) {
   const session = await getSession();
@@ -26,31 +36,21 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  // Check for in-flight crawl
-  const inFlight = getInFlightCrawl(session.did);
-  if (inFlight) {
-    try {
-      const result = await inFlight;
-      return NextResponse.json({ ...result, cached: true });
-    } catch {
-      // In-flight failed, start a new one below
-    }
-  }
-
-  // Start crawl with timeout
-  const crawlPromise = crawl(session.agent, session.did);
-  setInFlightCrawl(session.did, crawlPromise);
+  // Atomically register or join a crawl. If `isNew`, this request owns the
+  // signal and a timeout abort will actually cancel outbound fetches. If we
+  // joined an existing crawl, we can't abort someone else's work — so we wrap
+  // our wait in a separate timeout that only bounds THIS request's latency.
+  const { promise: crawlPromise, isNew } = registerCrawl(session.did, () =>
+    crawl(session.agent, session.did, AbortSignal.timeout(TIMEOUT_MS)),
+  );
 
   try {
-    const result = await Promise.race([
-      crawlPromise,
-      new Promise<never>((_, reject) =>
-        setTimeout(() => reject(new Error("Crawl timeout")), TIMEOUT_MS),
-      ),
-    ]);
+    const result: CrawlResult = isNew
+      ? await crawlPromise
+      : await withTimeout(crawlPromise, TIMEOUT_MS);
 
     setCached(session.did, result);
-    return NextResponse.json({ ...result, cached: false });
+    return NextResponse.json({ ...result, cached: !isNew });
   } catch (error) {
     console.error("Crawl failed:", error);
     return NextResponse.json(

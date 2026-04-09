@@ -23,19 +23,33 @@ function getTalks(): TalkEntry[] {
   return cachedTalks;
 }
 
+function throwIfAborted(signal?: AbortSignal): void {
+  if (signal?.aborted) {
+    throw signal.reason ?? new Error("Aborted");
+  }
+}
+
 /**
  * Fetch all follows for a user. Returns a Set of DIDs.
  */
-async function fetchFollows(agent: Agent, did: string): Promise<Set<string>> {
+async function fetchFollows(
+  agent: Agent,
+  did: string,
+  signal?: AbortSignal,
+): Promise<Set<string>> {
   const follows = new Set<string>();
   let cursor: string | undefined;
 
   do {
-    const res = await agent.getFollows({
-      actor: did,
-      limit: 100,
-      cursor,
-    });
+    throwIfAborted(signal);
+    const res = await agent.getFollows(
+      {
+        actor: did,
+        limit: 100,
+        cursor,
+      },
+      { signal },
+    );
     for (const follow of res.data.follows) {
       follows.add(follow.did);
     }
@@ -51,6 +65,7 @@ async function fetchFollows(agent: Agent, did: string): Promise<Set<string>> {
 export async function crawl(
   agent: Agent,
   did: string,
+  signal?: AbortSignal,
 ): Promise<CrawlResult> {
   const talks = getTalks();
   const talkMentions: TalkMentions = {};
@@ -66,7 +81,7 @@ export async function crawl(
   }
 
   // Fetch follows
-  const followDids = await fetchFollows(agent, did);
+  const followDids = await fetchFollows(agent, did, signal);
   if (followDids.size === 0) {
     return {
       talkMentions,
@@ -76,14 +91,19 @@ export async function crawl(
     };
   }
 
+  throwIfAborted(signal);
+
   // Run both strategies in parallel
   const [rsvpMap, allPosts] = await Promise.all([
-    fetchRsvps(talks).catch((err) => {
+    fetchRsvps(talks, signal).catch((err) => {
+      if (signal?.aborted) throw err;
       console.error("Constellation fetch failed, skipping RSVPs:", err);
       return new Map<string, Set<string>>();
     }),
-    searchConferencePosts(agent),
+    searchConferencePosts(agent, signal),
   ]);
+
+  throwIfAborted(signal);
 
   // Strategy A: Apply RSVP data
   for (const [rkey, rsvpDids] of rsvpMap) {
