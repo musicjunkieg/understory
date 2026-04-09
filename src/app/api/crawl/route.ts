@@ -53,12 +53,16 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ ...result, cached: !isNew });
   } catch (error) {
     console.error("Crawl failed:", error);
+    const isTimeout =
+      error instanceof Error &&
+      (error.name === "TimeoutError" || // AbortSignal.timeout fires a DOMException named TimeoutError
+        /timeout/i.test(error.message)); // withTimeout() helper rejects with "Crawl timeout"
     return NextResponse.json(
       {
         error: error instanceof Error ? error.message : "Crawl failed",
         partial: true,
       },
-      { status: 500 },
+      { status: isTimeout ? 504 : 500 },
     );
   }
 }

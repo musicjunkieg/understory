@@ -54,12 +54,16 @@ export function registerCrawl(
   if (existing) {
     return { promise: existing, isNew: false };
   }
-  const promise = factory();
-  inFlight.set(did, promise);
-  promise.finally(() => {
-    if (inFlight.get(did) === promise) {
+  // Build a "settled" promise via .finally() for cleanup. We must store and
+  // return THIS derived promise (not the original) so that the rejection is
+  // observed by the caller that awaits it — otherwise the derived promise
+  // becomes an orphan on rejection and surfaces as an unhandled rejection.
+  const raw = factory();
+  const settled = raw.finally(() => {
+    if (inFlight.get(did) === settled) {
       inFlight.delete(did);
     }
   });
-  return { promise, isNew: true };
+  inFlight.set(did, settled);
+  return { promise: settled, isNew: true };
 }

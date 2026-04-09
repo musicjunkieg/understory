@@ -68,27 +68,42 @@ export async function crawl(
   signal?: AbortSignal,
 ): Promise<CrawlResult> {
   const talks = getTalks();
-  const talkMentions: TalkMentions = {};
 
-  // Initialize empty mentions for all talks
+  // Build aggregation with Set-backed per-talk tracking to avoid O(n²)
+  // includes() scans on hot loops. These are projected to arrays at the end.
+  const followSets = new Map<string, Set<string>>();
+  const rsvpSets = new Map<string, Set<string>>();
+  const postLists = new Map<string, string[]>();
   for (const talk of talks) {
-    talkMentions[talk.rkey] = {
-      count: 0,
-      follows: [],
-      posts: [],
-      rsvps: [],
-    };
+    followSets.set(talk.rkey, new Set());
+    rsvpSets.set(talk.rkey, new Set());
+    postLists.set(talk.rkey, []);
   }
 
   // Fetch follows
   const followDids = await fetchFollows(agent, did, signal);
-  if (followDids.size === 0) {
+
+  const buildResult = (postsScanned: number): CrawlResult => {
+    const talkMentions: TalkMentions = {};
+    for (const talk of talks) {
+      const follows = followSets.get(talk.rkey)!;
+      talkMentions[talk.rkey] = {
+        count: follows.size,
+        follows: [...follows],
+        posts: postLists.get(talk.rkey)!,
+        rsvps: [...rsvpSets.get(talk.rkey)!],
+      };
+    }
     return {
       talkMentions,
-      followCount: 0,
-      postsScanned: 0,
+      followCount: followDids.size,
+      postsScanned,
       crawledAt: Date.now(),
     };
+  };
+
+  if (followDids.size === 0) {
+    return buildResult(0);
   }
 
   throwIfAborted(signal);
@@ -107,15 +122,13 @@ export async function crawl(
 
   // Strategy A: Apply RSVP data
   for (const [rkey, rsvpDids] of rsvpMap) {
-    const mention = talkMentions[rkey];
-    if (!mention) continue;
+    const rsvpSet = rsvpSets.get(rkey);
+    const followSet = followSets.get(rkey);
+    if (!rsvpSet || !followSet) continue;
     for (const rsvpDid of rsvpDids) {
-      if (followDids.has(rsvpDid) && !mention.rsvps.includes(rsvpDid)) {
-        mention.rsvps.push(rsvpDid);
-        if (!mention.follows.includes(rsvpDid)) {
-          mention.follows.push(rsvpDid);
-          mention.count++;
-        }
+      if (followDids.has(rsvpDid)) {
+        rsvpSet.add(rsvpDid);
+        followSet.add(rsvpDid);
       }
     }
   }
@@ -126,20 +139,13 @@ export async function crawl(
   for (const post of networkPosts) {
     const matchedRkeys = matchPost(post, talks);
     for (const rkey of matchedRkeys) {
-      const mention = talkMentions[rkey];
-      if (!mention) continue;
-      mention.posts.push(post.uri);
-      if (!mention.follows.includes(post.author.did)) {
-        mention.follows.push(post.author.did);
-        mention.count++;
-      }
+      const posts = postLists.get(rkey);
+      const followSet = followSets.get(rkey);
+      if (!posts || !followSet) continue;
+      posts.push(post.uri);
+      followSet.add(post.author.did);
     }
   }
 
-  return {
-    talkMentions,
-    followCount: followDids.size,
-    postsScanned: allPosts.length,
-    crawledAt: Date.now(),
-  };
+  return buildResult(allPosts.length);
 }
