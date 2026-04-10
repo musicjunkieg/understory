@@ -1,5 +1,29 @@
 [
   {
+    "hash": "556ae429259f1bc8b3308e2330d2e0bf1069f067",
+    "short_hash": "556ae42",
+    "author": "chaos gremlin",
+    "date": "2026-04-09T22:02:32-07:00",
+    "message": "Merge pull request #9 from musicjunkieg/feat/scoring-algorithm\n\nfeat: Layer 1 scoring algorithm + Vitest setup (#19)",
+    "files_changed": 0
+  },
+  {
+    "hash": "6af031eab10bd55d84c39217b076485d531f28b7",
+    "short_hash": "6af031e",
+    "author": "Bryan Guffey",
+    "date": "2026-04-09T21:18:12-07:00",
+    "message": "feat(scoring): add Layer 1, layer 2/3 stubs, combine logic with ActiveLayers\n\nIncludes the regression test for the per-talk discontinuity bug — see\ndocs/superpowers/specs/2026-04-09-scoring-algorithm.md §8.1.",
+    "files_changed": 7
+  },
+  {
+    "hash": "1cc518e42357e6df953e9cefce3c285ebbc70215",
+    "short_hash": "1cc518e",
+    "author": "Bryan Guffey",
+    "date": "2026-04-09T20:07:44-07:00",
+    "message": "chore: sync decision graph (crawler nodes 19-22)\n\nAdds nodes for the social graph crawler implementation, review fixes, and\nspec/plan archive. Triggers gh-pages deploy via .github/workflows/deploy-pages.yml.",
+    "files_changed": 2
+  },
+  {
     "hash": "549dff02906291887b63f2aa79e6a637e89b44c7",
     "short_hash": "549dff0",
     "author": "Bryan Guffey",
