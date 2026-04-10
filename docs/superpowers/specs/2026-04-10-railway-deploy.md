@@ -127,7 +127,7 @@ export function buildClientMetadata(appUrl: string) {
     application_type: "web",
     dpop_bound_access_tokens: true,
     token_endpoint_auth_method: "none",
-  } as const;
+  };
 }
 ```
 
