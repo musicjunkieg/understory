@@ -1,0 +1,16 @@
+{
+  "uri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5dvnqcf72u",
+  "cid": "bafyreiflwvqjoq4u5ckcsgz3qrssbslpi4smhivfzsiu66qhx3nrnlk6gm",
+  "title": "lunch",
+  "creator": "did:plc:jcahd7fl7h23c24ftxuhkhiw",
+  "duration": 4333614316666,
+  "createdAt": "2026-03-28T19:17:16Z",
+  "transcription": {
+    "id": "dfd76b1e-1376-425e-b95b-8d4e07bcd2da",
+    "status": "completed",
+    "text": "",
+    "utterances": null,
+    "words": [],
+    "audio_duration": 4330
+  }
+}

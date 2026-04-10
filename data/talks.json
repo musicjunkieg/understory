@@ -1,0 +1,2886 @@
+[
+  {
+    "rkey": "3mi2jdevvu626",
+    "title": "Keynote: Towards Modular Open Science with @row1.ca and @matsulab.com",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi2jdevvu626",
+    "vodCid": "bafyreidwk424vljufd7t2ysic36434hu46vbuyhukucaw4coc6k62b4uvi",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi2jdevvu626",
+    "durationMs": 3525000,
+    "createdAt": "2026-03-27T16:16:26Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/ats26-keynote",
+    "description": "The traditional scientific record ? anchored in static, monolithic PDFs and siloed journals ? is increasingly ill-equipped to handle the speed and complexity of modern discovery. This keynote explores a transition toward Modular Open Science: a future where research is a continuous, federated, and computable graph of knowledge.",
+    "speakers": [
+      {
+        "id": "row1.ca",
+        "name": "Rowan Cockett"
+      },
+      {
+        "id": "matsulab.com",
+        "name": "Matt Akamatsu"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "presentation",
+    "category": null,
+    "startsAt": "2026-03-27T16:15:00.000Z",
+    "endsAt": "2026-03-27T17:00:00.000Z",
+    "transcriptFile": "transcripts/3mi2jdevvu626.json"
+  },
+  {
+    "rkey": "3mipbp6eycf2m",
+    "title": "Semble: A social knowledge network for research on ATProto",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mipbp6eycf2m",
+    "vodCid": "bafyreihqhboedezd4qgsl6arlhjrwngxvidhqz3vj4mcdvlr7fgygv5drq",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mipbp6eycf2m",
+    "durationMs": 1166000,
+    "createdAt": "2026-03-27T17:00:00.000Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/ats26-semble",
+    "description": "We'll present Semble, a kind of \"Spotify for research\" enabling researchers to curate shareable collections, create knowledge trails that others can explore and extend, and discover relevant work shared with the network. Built on ATProto, Semble offers researchers data portability and an open API designed for extension. We'll discuss how Semble enables new kinds of research tooling, from living semantic citation graphs to collaborative review and annotation. We'll also share how Semble connects to Cosmik's broader work on collective intelligence, and opportunities for collaboration across the ATProto science ecosystem.",
+    "speakers": [
+      {
+        "id": "ronentk.me",
+        "name": "Ronen Tamari"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "presentation",
+    "category": null,
+    "startsAt": "2026-03-27T17:00:00.000Z",
+    "endsAt": "2026-03-27T17:15:00.000Z",
+    "transcriptFile": "transcripts/3mipbp6eycf2m.json"
+  },
+  {
+    "rkey": "3mipbrr6lfv2m",
+    "title": "Lea: A Social App for Researchers",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mipbrr6lfv2m",
+    "vodCid": "bafyreihfnp53umjtg553hw74krafmfo6shcxkvwy7qjxs4stpjmu6jcfea",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mipbrr6lfv2m",
+    "durationMs": 1155000,
+    "createdAt": "2026-03-27T17:15:00.000Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/ats26-lea",
+    "description": "We will present Lea, a social app for researchers built on ATProto. Lea has many custom features for researchers, including\n\n1. paper tracking, discovery, and discussion pages,\n2. customized and verifiable profiles for researchers,\n3. extensive safety and moderation features to keep discussions calm and productive.\n\nWe'll discuss our goals, challenges, and open questions for Lea.",
+    "speakers": [
+      {
+        "id": "mariaa.bsky.social",
+        "name": "Maria Antoniak"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "presentation",
+    "category": null,
+    "startsAt": "2026-03-27T17:15:00.000Z",
+    "endsAt": "2026-03-27T17:30:00.000Z",
+    "transcriptFile": "transcripts/3mipbrr6lfv2m.json"
+  },
+  {
+    "rkey": "3mipbt7pzjf2m",
+    "title": "Chive: Decentralized preprints with ATProto",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mipbt7pzjf2m",
+    "vodCid": "bafyreidulgpnczaytxdf7oyvqnb7wvvui4rfp6lesskm7bqwh7cf3xr7eq",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mipbt7pzjf2m",
+    "durationMs": 791000,
+    "createdAt": "2026-03-27T17:30:00.000Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/ats26-chive",
+    "description": "Chive is a decentralized preprint service featuring threaded review, formal endorsements, and a community-curated field taxonomy ? all as portable ATProto records users own. Chive provides a rich plugin interface, making it imminently extensible as the ATmosphere grows. It currently provides builtin plugins for integration with existing ATProto services, such as Semble, Leaflet, and WhiteWind.",
+    "speakers": [
+      {
+        "id": "aaronstevenwhite.io",
+        "name": "Aaron Steven White"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "presentation",
+    "category": null,
+    "startsAt": "2026-03-27T17:30:00.000Z",
+    "endsAt": "2026-03-27T17:45:00.000Z",
+    "transcriptFile": "transcripts/3mipbt7pzjf2m.json"
+  },
+  {
+    "rkey": "3mi2ryxrnin2a",
+    "title": "Reproducible, citation-aware automated paper reviews @seanjungblluth.bsky.social",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi2ryxrnin2a",
+    "vodCid": "bafyreigfvjyat6kxg3rkztbgx62ii7axhb5suuah6nfyb3vvuffqevjt2u",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi2ryxrnin2a",
+    "durationMs": 580000,
+    "createdAt": "2026-03-27T18:51:41Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/ats26-biokea",
+    "description": "BioKEA will demo a proof-of-concept automated reviewer for scientific papers.\n\nProvided with an arXiv ID or PDF, it extracts structured text, pulls context from Semantic Scholar and PubMed, and outputs a critical review flagging errors, missing context, and citation gaps.\n\nWe'll run it live, preview some features, and discuss publishing review artifacts on ATProto.",
+    "speakers": [
+      {
+        "id": "seanjungblluth.bsky.social",
+        "name": "Dr. Sean Jungbluth"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "presentation",
+    "category": null,
+    "startsAt": "2026-03-27T18:45:00.000Z",
+    "endsAt": "2026-03-27T18:55:00.000Z",
+    "transcriptFile": "transcripts/3mi2ryxrnin2a.json"
+  },
+  {
+    "rkey": "3mi2u6pl6ah2z",
+    "title": "Skysquare is context as a service - Travis Simpson - @skysquare.app",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi2u6pl6ah2z",
+    "vodCid": "bafyreiadelegoblyohjz5ddbc6tkkqtjtjdhgviltpjsnnkp3qcgjbix54",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi2u6pl6ah2z",
+    "durationMs": 96183,
+    "createdAt": "2026-03-27T19:30:41Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/ats26-skysquare",
+    "description": "Skysquare exists to make sense of the digital public square via Bluesky. Launching this summer as a Chrome extension, Skysquare overlays social media conversation onto the webpages people are discussing, allowing readers to experience our online conversation in richer context.\n\nWhen a page has been shared or talked about on Bluesky, Skysquare associates that discourse with the page itself and reveals the surrounding conversation directly in the browser.\n\nInstead of chasing links through feeds, readers and writers can immediately see who is talking about what in relation to the material they are reading, turning the web into a socially annotated layer of context.\n\nThis talk will demonstrate the extension in action and explore how tools like Skysquare can help researchers, scientists, and educators connect conversations directly to the sources being discussed.",
+    "speakers": [
+      {
+        "id": "skysquare.app",
+        "name": "Travis Simpson"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "lightning-talk",
+    "category": null,
+    "startsAt": "2026-03-27T18:55:00.000Z",
+    "endsAt": "2026-03-27T19:05:00.000Z",
+    "transcriptFile": "transcripts/3mi2u6pl6ah2z.json"
+  },
+  {
+    "rkey": "3mi2son7re62m",
+    "title": "Building collective intelligence to reduce division at ViewSift @viewsift.com",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi2son7re62m",
+    "vodCid": "bafyreihzmaw6q3vuggdn6ildrrplkg2j5w43s3etfr6t7t7fgev4va3o7y",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi2son7re62m",
+    "durationMs": 744000,
+    "createdAt": "2026-03-27T19:03:48Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/ats26-viewsift",
+    "description": "One of the biggest problems in society today is division driven by social / societal ills, information overload, and platforms that amplify echo chambers.\n\nIn this talk we'll discuss how we're addressing all these problems at ViewSift through our new atproto social-research platform and teaching practical techniques to have healthy discussions around controversial topics that heal division.",
+    "speakers": [
+      {
+        "id": "viewsift.com",
+        "name": "Aex Garcia-Joyner"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "lightning-talk",
+    "category": null,
+    "startsAt": "2026-03-27T19:05:00.000Z",
+    "endsAt": "2026-03-27T19:15:00.000Z",
+    "transcriptFile": "transcripts/3mi2son7re62m.json"
+  },
+  {
+    "rkey": "3mi2tfsbq4p25",
+    "title": "Making wisdom together - seams.so - @hyl.st",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi2tfsbq4p25",
+    "vodCid": "bafyreibks7kbsd3bg6tfg75d32ofk5c7okrrfu6fg23esnmweyiu37uys4",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi2tfsbq4p25",
+    "durationMs": 655000,
+    "createdAt": "2026-03-27T19:16:45Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/ats26-seams",
+    "description": "Seams.so demo and live workshop",
+    "speakers": [
+      {
+        "id": "hyl.st",
+        "name": "Anish Lakhwara"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "lightning-talk",
+    "category": null,
+    "startsAt": "2026-03-27T19:15:00.000Z",
+    "endsAt": "2026-03-27T19:25:00.000Z",
+    "transcriptFile": "transcripts/3mi2tfsbq4p25.json"
+  },
+  {
+    "rkey": "3mi2wu5u5rs2i",
+    "title": "The Astrosky Ecosystem: An independent online home for astronomy",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi2wu5u5rs2i",
+    "vodCid": "bafyreiaq4ysbkpsnyuiubyxgmlj6esjrapqp2rjgqgznp3g4uyzuvvkqw4",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi2wu5u5rs2i",
+    "durationMs": 1220000,
+    "createdAt": "2026-03-27T20:18:28Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/ats26-astrosky",
+    "description": "What's the point of doing science if you can't tell anyone about it? I'll present The Astrosky Ecosystem, a community project by astronomers to democratize social media access for the space science & space fan communities. I'll talk about our 30 months of running custom feeds, as well as our future plans to start PDS hosting and even venture towards an astrophotography appview.",
+    "speakers": [
+      {
+        "id": "emily.space",
+        "name": "Dr. Emily Hunt"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "presentation",
+    "category": null,
+    "startsAt": "2026-03-27T20:30:00.000Z",
+    "endsAt": "2026-03-27T20:45:00.000Z",
+    "transcriptFile": "transcripts/3mi2wu5u5rs2i.json"
+  },
+  {
+    "rkey": "3mipbufh6gf2m",
+    "title": "Computational Education Commons on the Atmosphere",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mipbufh6gf2m",
+    "vodCid": "bafyreih5upih3lnmpncfusvdpddkmuyc7jhxkdoqpawj7wlu7wjnvlucli",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mipbufh6gf2m",
+    "durationMs": 593000,
+    "createdAt": "2026-03-27T20:45:00.000Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/ats26-compedu-commons",
+    "description": "We will discuss new advances in computing education. We will highlight projects that teach computing and data science at scale using Pyodide. We propose a new infrastructure model that builds on these advances and incorporates the ATmosphere as an identity model and content storage. Using ATmosphere services like Tangled and Blacksky, we can truly democratize computing education.",
+    "speakers": [
+      {
+        "id": "teonbrooks.com",
+        "name": "Dr. Teon Brooks"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "lightning-talk",
+    "category": null,
+    "startsAt": "2026-03-27T20:45:00.000Z",
+    "endsAt": "2026-03-27T20:55:00.000Z",
+    "transcriptFile": "transcripts/3mipbufh6gf2m.json"
+  },
+  {
+    "rkey": "3mipbvfgsbv2m",
+    "title": "Reigniting the Party: Lessons from a Stalled Migration to Bluesky",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mipbvfgsbv2m",
+    "vodCid": "bafyreih5sfgeuthzutjysjxdmbm6nroggtj2r4y24fh4aburc7tyxsjfne",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mipbvfgsbv2m",
+    "durationMs": 882000,
+    "createdAt": "2026-03-27T20:55:00.000Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/ats26-stalled-migration",
+    "description": "AMIA's vibrant Twitter backchannel fragmented post-X. This talk details our stalled effort to migrate the community to Bluesky. Despite a guide and conference launch, the \"cold start\" problem hindered adoption. I�ll share lessons learned, discuss migration barriers, and outline revised strategies to rebuild our clinical research network.",
+    "speakers": [
+      {
+        "id": "smcgrath.phd",
+        "name": "Dr. Scott McGrath"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "lightning-talk",
+    "category": null,
+    "startsAt": "2026-03-27T20:55:00.000Z",
+    "endsAt": "2026-03-27T21:05:00.000Z",
+    "transcriptFile": "transcripts/3mipbvfgsbv2m.json"
+  },
+  {
+    "rkey": "3mi33ycoo5d2a",
+    "title": "Future of Science Social Media",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi33ycoo5d2a",
+    "vodCid": "bafyreicr6k6l4g2wpytjrvf3iypeq7js4khh5lb676wfterwshpkvknxpy",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi33ycoo5d2a",
+    "durationMs": 2505000,
+    "createdAt": "2026-03-27T21:50:16Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/ats26-our-socialmedia-future",
+    "description": "In this panel we will explore why, despite early momentum, the migration of researchers to Bluesky has waned. We will discuss better ways to onboard, retain, and attract researchers by highlighting the flexibility and extensibility of the AT Protocol. Panelists will share what's worked, what hasn't, and what a coordinated push to build a science ecosystem on Bluesky might look like.",
+    "speakers": [
+      {
+        "id": "ronentk.me",
+        "name": "Ronen Tamari"
+      },
+      {
+        "id": "mariaa.bsky.social",
+        "name": "Maria Antoniak"
+      },
+      {
+        "id": "smcgrath.phd",
+        "name": "Dr. Scott McGrath"
+      },
+      {
+        "id": "byarielm.fyi",
+        "name": "Ariel M. Lighty"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "panel",
+    "category": null,
+    "startsAt": "2026-03-27T21:05:00.000Z",
+    "endsAt": "2026-03-27T21:45:00.000Z",
+    "transcriptFile": "transcripts/3mi33ycoo5d2a.json"
+  },
+  {
+    "rkey": "3mi34ps3oym2i",
+    "title": "Crowdsourced Research Synthesis on ATProto: Envisioning an Inclusive Future - Jay Patel - @infotainment.bsky.social",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi34ps3oym2i",
+    "vodCid": "bafyreic3dnmpuck4jspuvejeleghmh3rgis4hyoihighw7qs4ilcxzqnze",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi34ps3oym2i",
+    "durationMs": 601000,
+    "createdAt": "2026-03-27T22:03:24Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/ats26-research-synthesis",
+    "description": "Research synthesis, a desirable culmination of primary research, is notoriously slow, error-prone, and disconnected from the network of potential contributors.\n\nNow, ATProto offers a digital foundation upon which to recruit collaborators (Bluesky feeds), assign micro-tasks (discourse graphs), author reports (Leaflet) , and acknowledge contributions.",
+    "speakers": [
+      {
+        "id": "infotainment.bsky.social",
+        "name": "Jay Patel"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "lightning-talk",
+    "category": null,
+    "startsAt": "2026-03-27T22:00:00.000Z",
+    "endsAt": "2026-03-27T22:10:00.000Z",
+    "transcriptFile": "transcripts/3mi34ps3oym2i.json"
+  },
+  {
+    "rkey": "3mi35eplsua23",
+    "title": "Studying social media through the Atmosphere - ",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi35eplsua23",
+    "vodCid": "bafyreiah7oqs66zcl4homqzc3qdqiml6dmoykgqoiekx5mlhpefst7p2ii",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi35eplsua23",
+    "durationMs": 1129000,
+    "createdAt": "2026-03-27T22:15:06Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/ats26-paperskygest",
+    "description": "The ATProto ecosystem empowers novel social media research. Our research showcases three promising directions in this space:\n\n1. Experiments on self-hosted feeds (Paper Skygest, findings and customization interface)\n2. Experiments on existing feeds via collaboration with feed designers (collaboration with Graze Social and Aendra),\n3. Observational analyses of social media (SAEs on AT Proto posts)",
+    "speakers": [
+      {
+        "id": "sjgreenwood.bsky.social",
+        "name": "Sophie Greenwood"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "presentation",
+    "category": null,
+    "startsAt": "2026-03-27T22:10:00.000Z",
+    "endsAt": "2026-03-27T22:25:00.000Z",
+    "transcriptFile": "transcripts/3mi35eplsua23.json"
+  },
+  {
+    "rkey": "3mi36lcxgce2b",
+    "title": "Narrative strands & memetic lineages in community social data using Community Archive - ",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi36lcxgce2b",
+    "vodCid": "bafyreigegxtjh3vap36m4fpclf2omx3hwufnftydt53hyd4e64fd7e5qh4",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi36lcxgce2b",
+    "durationMs": 940000,
+    "createdAt": "2026-03-27T22:36:41Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/ats26-comm-archive",
+    "description": "The Community Archive is a community-owned dataset of contributed Twitter data used to study how ideas spread in online communities.\n\nWe developed methods to extract \"narrative strands\" ? coherent lines of discourse where ideas evolve and build on each other over time. These techniques generalize directly to atproto datasets and could help Bluesky communities understand their own emerging canons.",
+    "speakers": [
+      {
+        "id": "exgenesis.ingroup.social",
+        "name": "Francisco Carvalho"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "presentation",
+    "category": null,
+    "startsAt": "2026-03-27T22:25:00.000Z",
+    "endsAt": "2026-03-27T22:40:00.000Z",
+    "transcriptFile": "transcripts/3mi36lcxgce2b.json"
+  },
+  {
+    "rkey": "3mi37ha3edb23",
+    "title": "How (de)centralized is Bluesky, really? - ",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi37ha3edb23",
+    "vodCid": "bafyreida3qntbczjydhzukbf6axqzfz6ptajxggft6rtercaxmsjxggegi",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi37ha3edb23",
+    "durationMs": 950000,
+    "createdAt": "2026-03-27T22:52:18Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/ats26-decentralize",
+    "description": "Presenting a working paper on the functional (de)centralization of Bluesky.\n\nThis includes the extent to which AT Protocol infrastructure is owned by entities other than Bluesky Social (through mapping ownership of PDS endpoints) and the implications of this (de)centralization on Bluesky Social's goals. Following the presentation, there will be a Q&A and discussion!",
+    "speakers": [
+      {
+        "id": "billwpierce.co",
+        "name": "Billy Pierce"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "presentation",
+    "category": null,
+    "startsAt": "2026-03-27T22:40:00.000Z",
+    "endsAt": "2026-03-27T22:55:00.000Z",
+    "transcriptFile": "transcripts/3mi37ha3edb23.json"
+  },
+  {
+    "rkey": "3mi7jorroaa2h",
+    "title": "Day 2 Opening Remarks!",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi7jorroaa2h",
+    "vodCid": "bafyreidueh5vvdskfxreq24uya2uy65lqgcs3i6dctn7e7at755bejvgzq",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi7jorroaa2h",
+    "durationMs": 1649888,
+    "createdAt": "2026-03-29T16:06:07Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/opening-remarks-day-3",
+    "description": "Opening Remarks Day 3",
+    "speakers": [],
+    "room": "Great Hall South",
+    "talkType": "info",
+    "category": null,
+    "startsAt": "2026-03-28T16:00:00.000Z",
+    "endsAt": "2026-03-28T16:15:00.000Z",
+    "transcriptFile": null
+  },
+  {
+    "rkey": "3mi54jqrm372z",
+    "title": "Landslide/Holdfast",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi54jqrm372z",
+    "vodCid": "bafyreiaqszvlmz3u5hc2ltk7jmemivcmpkopithgms6c6uuxdxv3wubjna",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi54jqrm372z",
+    "durationMs": 3008000,
+    "createdAt": "2026-03-28T17:05:21Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/gDELD0M",
+    "description": "Notes on what’s happening to our ability to collectively know things, and a look ahead to what this community is especially well positioned to do to support and revitalize our info ecosystems and the humans inside them.",
+    "speakers": [
+      {
+        "id": "kissane.myatproto.social",
+        "name": "Erin Kissane"
+      }
+    ],
+    "room": "Great Hall South",
+    "talkType": "presentation",
+    "category": "Media and Civics",
+    "startsAt": "2026-03-28T16:15:00.000Z",
+    "endsAt": "2026-03-28T17:00:00.000Z",
+    "transcriptFile": "transcripts/3mi54jqrm372z.json"
+  },
+  {
+    "rkey": "3mi54oonum62b",
+    "title": "Groundings with my Siblings: Lessons Learned Building for Community",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi54oonum62b",
+    "vodCid": "bafyreiedwf5pqgd5p4wb7ndnpor656vapfpwkscgcuudfenshjwzkgs5oq",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi54oonum62b",
+    "durationMs": 2019118,
+    "createdAt": "2026-03-28T17:08:06Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/QK9Ae6Y",
+    "description": "I had the privilege of discussing Blacksky and AT Protocol at several different college campuses, conference venues and other settings along with webinars and doing user research. I plan to share those learnings to help others build better products and how we particularly plan to incorporate those learnings from both a product and operations standpoint.",
+    "speakers": [
+      {
+        "id": "rude1.blacksky.team",
+        "name": "Rudy Fraser"
+      }
+    ],
+    "room": "Great Hall South",
+    "talkType": "presentation",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-28T17:00:00.000Z",
+    "endsAt": "2026-03-28T17:30:00.000Z",
+    "transcriptFile": "transcripts/3mi54oonum62b.json"
+  },
+  {
+    "rkey": "3mi54nec66s2w",
+    "title": "Feature / Product / Business: A Framework for Sustainable ATProto Projects",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi54nec66s2w",
+    "vodCid": "bafyreig4rgzhioyx256v2t2kwmargpgxuqaan2wrvi3w45ddm4j3xszqiq",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi54nec66s2w",
+    "durationMs": 2199845,
+    "createdAt": "2026-03-28T17:07:22Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/BzrpDQK",
+    "description": "The ATProto community built a ton of great features and products over the past year! For our next trick, let's mature them into products and businesses. In this talk, you'll get a practical framework for understanding whether what you're building should be a feature, product, or business, plus concrete funding models at each layer to keep your work going and growing. (More in this thread: https://bsky.app/profile/mosh.bsky.social/post/3mckiat2ne22q)",
+    "speakers": [
+      {
+        "id": "mosh.bsky.social",
+        "name": "Mosh Lee"
+      }
+    ],
+    "room": "Room 2301",
+    "talkType": "presentation",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-28T17:00:00.000Z",
+    "endsAt": "2026-03-28T17:30:00.000Z",
+    "transcriptFile": "transcripts/3mi54nec66s2w.json"
+  },
+  {
+    "rkey": "3mi54lyc5ts25",
+    "title": "The Aggregation Era burned journalism institutions to the ground. The federated era is emerging from those embers",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi54lyc5ts25",
+    "vodCid": "bafyreihxp3ygnnn7d62xs72frrtxobmydlymza4domwzz4ywinrjvaq5ky",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi54lyc5ts25",
+    "durationMs": 2144921,
+    "createdAt": "2026-03-28T17:06:36Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/J9yOpYz",
+    "description": "Journalists are the sleeper agents to catalyze the protocol-based publishing revolution.  They're already operating in federated ways -- they just don't use those words. Whether it’s a creator spackling together a media company from web pages and discords -- like so many Twitch streamers. Or journalists using newsletter products to build direct relationships with (and monetize) the massive massive scale audiences they reach through vertical video platforms and don't monetize ....They are federating in DIY ways just as more and more media companies get smaller and more and more journalists go independent. How do we harness this natural momentum towards an organized movement? How can technologists and content creators work together to work as a federated army of Pied Pipers to port audiences into the ATmosphere.",
+    "speakers": [
+      {
+        "id": "bankonjustin.com",
+        "name": "Justin Bank"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "presentation",
+    "category": "Media and Civics",
+    "startsAt": "2026-03-28T17:00:00.000Z",
+    "endsAt": "2026-03-28T17:30:00.000Z",
+    "transcriptFile": "transcripts/3mi54lyc5ts25.json"
+  },
+  {
+    "rkey": "3mi56pnvulh2o",
+    "title": "Did Lexicon just accidentally solve the enterprise data problem?",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi56pnvulh2o",
+    "vodCid": "bafyreifub2hrf2khwzhy5sf5oo2eokr7cofybhpdwcgnbgtc444br3ngjm",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi56pnvulh2o",
+    "durationMs": 1830207,
+    "createdAt": "2026-03-28T17:44:26Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/gDPLaGd",
+    "description": "One of the core ideas behind the Data Mesh architecture is that data products should be decentralized and domain-oriented. The main barrier to successfully implementing Data Mesh is that decades of data tooling have assumed that data governance and engineering teams are centralized. ATProto’s Lexicon data definition language, however, deftly balances both the “nouns” and “verbs” of data modeling, making it a promising candidate for implementing a decentrally-managed data architecture.",
+    "speakers": [
+      {
+        "id": "emily.gorcen.ski",
+        "name": "Emily Gorcenski"
+      }
+    ],
+    "room": "Room 2301",
+    "talkType": "presentation",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-28T17:30:00.000Z",
+    "endsAt": "2026-03-28T18:00:00.000Z",
+    "transcriptFile": "transcripts/3mi56pnvulh2o.json"
+  },
+  {
+    "rkey": "3mi56n6j2g22d",
+    "title": "Who owns the group chat? Building collaborative spaces on ATProto",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi56n6j2g22d",
+    "vodCid": "bafyreifpkap4duv5qwp6ay37y26t3htgxza7tejyvqddlzti2cmzfuab5u",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi56n6j2g22d",
+    "durationMs": 1521555,
+    "createdAt": "2026-03-28T17:43:03Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/obaP26x",
+    "description": "Traditional social platforms centralize control of community spaces—the platform owns your group, your members, and your data. On ATProto, ownership, governance, and moderation become explicit design decisions. This talk explores building shared resources on a decentralized protocol—from data synchronization to governance models—drawing from real experience building community features and examples from other ATProto apps.",
+    "speakers": [
+      {
+        "id": "brittanyellich.com",
+        "name": "Brittany Ellich"
+      }
+    ],
+    "room": "Great Hall South",
+    "talkType": "presentation",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-28T17:30:00.000Z",
+    "endsAt": "2026-03-28T18:00:00.000Z",
+    "transcriptFile": "transcripts/3mi56n6j2g22d.json"
+  },
+  {
+    "rkey": "3mi56m3hnrq2z",
+    "title": "The Economics of Sovereign Media: A Roadmap for AT Protocol",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi56m3hnrq2z",
+    "vodCid": "bafyreigcrt7m744ns7zdrrbzbbgrziuxugzuvyvygmbklghupvsrxdp2jy",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi56m3hnrq2z",
+    "durationMs": 1761589,
+    "createdAt": "2026-03-28T17:42:26Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/obLbvQV",
+    "description": "The talk will focus on (1) the structural shifts reshaping the media landscape & creator economy and provide a roadmap / suggestions for how the AT Protocol ecosystem & community can be best positioning to serve the needs of creators of all kinds (emphasis / focus here on independent creators) through this evolutio, while preserving their rights to sovereignty & ownership. The talk ideally touches on both cultural, economic and technical / infrastructural topics. Will be speaking in my capacity both as an artist and as an investor / student of media markets.",
+    "speakers": [
+      {
+        "id": "eclecticcapital.bsky.social",
+        "name": "Natalie Mullins"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "presentation",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-28T17:30:00.000Z",
+    "endsAt": "2026-03-28T18:00:00.000Z",
+    "transcriptFile": "transcripts/3mi56m3hnrq2z.json"
+  },
+  {
+    "rkey": "3mi5ag3scgk2k",
+    "title": "Building Future of Artificial Intelligence on AT Protocol",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5ag3scgk2k",
+    "vodCid": "bafyreifmwhoagtuie7mjyf3ky672uejoslts2ipz3jaeo3yiausbzpqeay",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5ag3scgk2k",
+    "durationMs": 1851243,
+    "createdAt": "2026-03-28T18:14:53Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/9qkWqPG",
+    "description": "AI agents are no longer just private tools or chat interfaces. On AT Protocol, they can develop persistent public identities, accumulate reputation, receive feedback, and participate in open social life.  My talk uses Void as a concrete example of that shift and argues that public social protocols are becoming an important part of how we govern, align, and coexist with intelligent systems.",
+    "speakers": [
+      {
+        "id": "cameron.stream",
+        "name": "Cameron Pfiffer"
+      }
+    ],
+    "room": "Room 2301",
+    "talkType": "presentation",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-28T18:00:00.000Z",
+    "endsAt": "2026-03-28T18:30:00.000Z",
+    "transcriptFile": "transcripts/3mi5ag3scgk2k.json"
+  },
+  {
+    "rkey": "3mi5aarspma27",
+    "title": "Creators First: Video & Media as the Foundation of a Thriving Creator Economy on ATProto",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5aarspma27",
+    "vodCid": "bafyreiddi7zixgepzbg3vasoj7lm7xmae5fl7f3cfpstjezf63hebcoy7m",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5aarspma27",
+    "durationMs": 1857789,
+    "createdAt": "2026-03-28T18:11:55Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/81VNEBO",
+    "description": "This panel spotlights creators on AT Protocol and the infrastructure that lets them own their audience and income. We will explore how video, music, reviews, and other media can interoperate across apps, helping artists reach fans anywhere without being tied to a single platform. Panelists will share emerging ways creators can earn, from direct fan support to premium content. Attendees will leave with a clear view of how ATProto can become the home for the next generation of creators.",
+    "speakers": [
+      {
+        "id": "joebasser.com",
+        "name": "Joe Basser"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "panel",
+    "category": "Media and Civics",
+    "startsAt": "2026-03-28T18:00:00.000Z",
+    "endsAt": "2026-03-28T18:30:00.000Z",
+    "transcriptFile": "transcripts/3mi5aarspma27.json"
+  },
+  {
+    "rkey": "3mi5a2y3tej2z",
+    "title": "This isn't over until we all listen to kpop",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5a2y3tej2z",
+    "vodCid": "bafyreifx2l6kzexwh32y6luq7nvohtcmifb3bvkzemneebtjrgwwiyc5ta",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5a2y3tej2z",
+    "durationMs": 1318712,
+    "createdAt": "2026-03-28T18:08:40Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/ODxNLMM",
+    "description": "Protocol architectures are governance structures. Their design choices allocate power, and what they leave unsaid gets filled by economics. This talk traces what happens when an open protocol's reach layer goes ungoverned, from SMTP to algorithmic convergence to why kpop fandoms are structurally destined to dominate engagement-driven systems.",
+    "speakers": [
+      {
+        "id": "laurenshof.online",
+        "name": "Laurens Hof"
+      }
+    ],
+    "room": "Great Hall South",
+    "talkType": "presentation",
+    "category": "Media and Civics",
+    "startsAt": "2026-03-28T18:00:00.000Z",
+    "endsAt": "2026-03-28T18:30:00.000Z",
+    "transcriptFile": "transcripts/3mi5a2y3tej2z.json"
+  },
+  {
+    "rkey": "3mi5c65iee42h",
+    "title": "Understanding the Landscape of Custom Feeds on Bluesky",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5c65iee42h",
+    "vodCid": "bafyreibelb3jvtlmhursbgndcdpn22j75k5bpkhkxrmrb4xcecwau7lm4u",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5c65iee42h",
+    "durationMs": 1854245,
+    "createdAt": "2026-03-28T18:46:14Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/VLerG2y",
+    "description": "Bluesky’s custom feeds allow users to create, govern, and share their own algorithmic feeds, shifting curation away from platform control. To understand how this ecosystem works in practice, we interviewed 26 Bluesky feed creators and third-party tool developers and analyzed 97,719 existing custom feeds. We find that hobbyist labor is central to sustaining the ecosystem, but creators face recurring challenges around maintenance, visibility, and long-term viability. Based on these findings, we lay out design implications for designing usable decentralized social media.",
+    "speakers": [
+      {
+        "id": "leijiew.bsky.social",
+        "name": "Leijie Wang"
+      }
+    ],
+    "room": "Room 2301",
+    "talkType": "presentation",
+    "category": "Community",
+    "startsAt": "2026-03-28T18:30:00.000Z",
+    "endsAt": "2026-03-28T19:00:00.000Z",
+    "transcriptFile": "transcripts/3mi5c65iee42h.json"
+  },
+  {
+    "rkey": "3mi5bya72ub2d",
+    "title": "A discussion with news creators",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5bya72ub2d",
+    "vodCid": "bafyreidql5knzmxubwkrpicwdh4o4esckkuxhdmm5jh5lx4h4ulylxruam",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5bya72ub2d",
+    "durationMs": 2029131,
+    "createdAt": "2026-03-28T18:42:55Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/VLa69bl",
+    "description": "Publishing changes as the internet has changed.  We'll discuss the work of being news creators in this moment.",
+    "speakers": [
+      {
+        "id": "knowtheory.net",
+        "name": "Ted Han"
+      },
+      {
+        "id": "bankonjustin.com",
+        "name": "Justin Bank"
+      },
+      {
+        "id": "laurensaks.bsky.social",
+        "name": "Lauren Saks"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "panel",
+    "category": "Media and Civics",
+    "startsAt": "2026-03-28T18:30:00.000Z",
+    "endsAt": "2026-03-28T19:00:00.000Z",
+    "transcriptFile": "transcripts/3mi5bya72ub2d.json"
+  },
+  {
+    "rkey": "3mi5bcpyqg32a",
+    "title": "Beyond Bluesky: Community infrastructure",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5bcpyqg32a",
+    "vodCid": "bafyreia66msuluij4vkdchwt4xth6peuc5a6ubhymababbkik2ds3yqw4i",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5bcpyqg32a",
+    "durationMs": 1587264,
+    "createdAt": "2026-03-28T18:30:54Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/7Rrv0E0",
+    "description": "Bluesky, a VC-backed company, runs public infrastructure that's widely depended upon by ATProto builders.\r\n\r\nMicrocosm, a set of community-funded open-source infra, supports dozens of ATProto projects and growing.\r\n\r\nI'll dive into AT-protocol-specific economics of operating and scaling public infrastructure, and look ahead at how we get to a sustainable and diverse infra future. All grounded in the day-to-day reality of actually running big indexes, caches, relays, jetstreams, a PLC mirror, ...",
+    "speakers": [
+      {
+        "id": "bad-example.com",
+        "name": "fig"
+      }
+    ],
+    "room": "Great Hall South",
+    "talkType": "presentation",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-28T18:30:00.000Z",
+    "endsAt": "2026-03-28T19:00:00.000Z",
+    "transcriptFile": "transcripts/3mi5bcpyqg32a.json"
+  },
+  {
+    "rkey": "3mi5hza73vs2z",
+    "title": "Sattestations",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5hza73vs2z",
+    "vodCid": "bafyreia3av5kkddv3ptkcga77x3bkdg4cqlhk73s375hrxdj2aae5eipxi",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5hza73vs2z",
+    "durationMs": 869930,
+    "createdAt": "2026-03-28T20:30:51Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/000Syverson",
+    "description": "ATProtocol Identities and HTTP Signatures in conjunction with Onion Routing",
+    "speakers": [
+      {
+        "id": "psyverson.bsky.social",
+        "name": "Paul Syverson"
+      }
+    ],
+    "room": "Great Hall South",
+    "talkType": "lightning-talk",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-28T20:30:00.000Z",
+    "endsAt": "2026-03-28T20:40:00.000Z",
+    "transcriptFile": "transcripts/3mi5hza73vs2z.json"
+  },
+  {
+    "rkey": "3mi5hy457fu2r",
+    "title": "Building Cirrus: a single-user, serverless PDS",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5hy457fu2r",
+    "vodCid": "bafyreie5o6d6uhvwqjwqygonq76he3c7zz33hceqyoqh622psb43se6glu",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5hy457fu2r",
+    "durationMs": 2235931,
+    "createdAt": "2026-03-28T20:30:13Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/XxP4RzL",
+    "description": "The reference PDS implementation is a powerful Node.js monolith designed for scale, but it's overkill for a single user who just wants to own their data. This talk introduces Cirrus, an alternative PDS built on Cloudflare Workers that scales to zero and costs pennies to run. We'll explore the technical challenges of implementing the AT Protocol in a serverless environment – you'll learn how to handle long-lived firehose connections using Durable Objects with WebSocket hibernation, and maintain repository consistency with embedded SQLite.",
+    "speakers": [
+      {
+        "id": "mk.gg",
+        "name": "Matt Kane"
+      }
+    ],
+    "room": "Room 2301",
+    "talkType": "presentation",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-28T20:30:00.000Z",
+    "endsAt": "2026-03-28T21:00:00.000Z",
+    "transcriptFile": "transcripts/3mi5hy457fu2r.json"
+  },
+  {
+    "rkey": "3mi5hx4v6cr26",
+    "title": "Advocating for Digital Sovereignty: European Experiences and Global Lessons",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5hx4v6cr26",
+    "vodCid": "bafyreidwi4d7yxdkviwmrgpxxmgupqsjutdxjpljy535dodatyywk7hztm",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5hx4v6cr26",
+    "durationMs": 1945240,
+    "createdAt": "2026-03-28T20:29:41Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/QKlrLXG",
+    "description": "The concept of digital sovereignty has rapidly gained momentum in both Canada and Europe, reflecting growing concerns about who controls our digital infrastructure, data, and public discourse. Nowhere is this debate more dynamic than in the European Union, where lawmakers and advocacy organizations are actively shaping the future of the social web and the digital public sphere. As the founder of the Alliance of Open Networks and Democratic Public Spheres and a recent participant in the EU Summit on Digital Sovereignty, I will examine the communication strategies advocacy groups use to shape public discourse, build alliances, and engage with policymakers and the media. Attendees will understand how digital sovereignty is being debated in the EU, learn about the specific demands and advocacy tactics of European digital rights organizations, with a focus on open protocols, decentralized networks, and democratic governance. The goal of this talk is to identify opportunities for cross-border collaboration and knowledge exchange. In a year when digital policy is at the forefront of public debate, this talk offers timely, in-depth insights from the European experience, providing both inspiration and practical guidance for building a more open, decentralized, and democratic digital future.",
+    "speakers": [
+      {
+        "id": "samvie.eurosky.social",
+        "name": "Sandra Barthel"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "presentation",
+    "category": "Media and Civics",
+    "startsAt": "2026-03-28T20:30:00.000Z",
+    "endsAt": "2026-03-28T21:00:00.000Z",
+    "transcriptFile": "transcripts/3mi5hx4v6cr26.json"
+  },
+  {
+    "rkey": "3mi5itmi65s2z",
+    "title": "Feeds Are The New Websites",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5itmi65s2z",
+    "vodCid": "bafyreiexramwyhollpqcsqcnnabahdh5eqk6ks7i5x4dqfust5md5egzx4",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5itmi65s2z",
+    "durationMs": 816027,
+    "createdAt": "2026-03-28T20:45:36Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/81Xovjr",
+    "description": "How can we bring the open social web to millions more people? In 2 minutes, we'll show you how to curate content and create community that others can engage with from anywhere. Let's decentralize custom feeds and make them as easy to find and engage with as a website.",
+    "speakers": [
+      {
+        "id": "mmccue.bsky.social",
+        "name": "Mike McCue"
+      }
+    ],
+    "room": "Great Hall South",
+    "talkType": "lightning-talk",
+    "category": "Community",
+    "startsAt": "2026-03-28T20:40:00.000Z",
+    "endsAt": "2026-03-28T20:50:00.000Z",
+    "transcriptFile": "transcripts/3mi5itmi65s2z.json"
+  },
+  {
+    "rkey": "3mi5k3brfax2b",
+    "title": "Rethinking the Client: Why User Choice is the Key to Growth for ATProto",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5k3brfax2b",
+    "vodCid": "bafyreifphohl37wsdxkj6utfte2ylnl72uc5ycppj4swq57ty7eijdjgde",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5k3brfax2b",
+    "durationMs": 1271224,
+    "createdAt": "2026-03-28T21:07:47Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/MelQ8Ak",
+    "description": "To grow the ATProto user base, the developer community needs to offer client experiences that surpass the Web 2.0 experience. Tyler Fisher, the creator of Sill and [Tyler's Currently Untitled Sports Client], will present the challenges and opportunities around building better clients that entice users to leave existing social platforms. Attendees will learn about strategies for building new clients on top of existing lexicons and opportunities for shared infrastructure.",
+    "speakers": [
+      {
+        "id": "tylerjfisher.com",
+        "name": "Tyler Fisher"
+      }
+    ],
+    "room": "Room 2301",
+    "talkType": "presentation",
+    "category": "Community",
+    "startsAt": "2026-03-28T21:00:00.000Z",
+    "endsAt": "2026-03-28T21:30:00.000Z",
+    "transcriptFile": "transcripts/3mi5k3brfax2b.json"
+  },
+  {
+    "rkey": "3mi5jrjmk6y2n",
+    "title": "Open social tech and geopolitical risk",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5jrjmk6y2n",
+    "vodCid": "bafyreicaku6lgoz2q3mpspyjpy5oz62bhr3onizus23d3vb75htabpf5um",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5jrjmk6y2n",
+    "durationMs": 1716488,
+    "createdAt": "2026-03-28T21:02:20Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/OD2PpYA",
+    "description": "The AT Protocol was developed as a decentralized alternative to big tech; it wasn’t envisioned as a response to authoritarian state power.  Now, however, ATProto’s openness is also potentially a source of vulnerability. What are the potential threats, and how can they be countered? We’ll explore a brief history of networked authoritarianism, and consider options and strategies to manage ATProto in adversarial political environments.",
+    "speakers": [
+      {
+        "id": "ivansigal.bsky.social",
+        "name": "Ivan Sigal"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "presentation",
+    "category": "Media and Civics",
+    "startsAt": "2026-03-28T21:00:00.000Z",
+    "endsAt": "2026-03-28T21:30:00.000Z",
+    "transcriptFile": "transcripts/3mi5jrjmk6y2n.json"
+  },
+  {
+    "rkey": "3mi5jmsg6kn2m",
+    "title": "Consent Before Cryptography",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5jmsg6kn2m",
+    "vodCid": "bafyreidviq3tnso6ywahywfnsisxwh6vkxx47dunkiaf4zghx25luufavy",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5jmsg6kn2m",
+    "durationMs": 1794372,
+    "createdAt": "2026-03-28T20:59:42Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/LZxV6dv",
+    "description": "In this talk, Germ Network co-founder Tessa Brown asks us to center consent in our ongoing conversations about privacy, agency, and self-determination. She describes how Germ is built for consenting connections and shares the team’s learnings from integrating atproto handles into their end-to-end encrypted messenger. As we all onboard users familiar with centralized social media paradigms into the Atmosphere, Tessa reflects on the UX design choices Germ made to help users understand what they consent to when they bring their atproto identities into Germ.",
+    "speakers": [
+      {
+        "id": "tessa.germnetwork.com",
+        "name": "Tessa Brown"
+      }
+    ],
+    "room": "Great Hall South",
+    "talkType": "presentation",
+    "category": "Community",
+    "startsAt": "2026-03-28T21:00:00.000Z",
+    "endsAt": "2026-03-28T21:30:00.000Z",
+    "transcriptFile": "transcripts/3mi5jmsg6kn2m.json"
+  },
+  {
+    "rkey": "3mi5lexqbqf2z",
+    "title": "Building Public-Interest Infrastructure on ATProto",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5lexqbqf2z",
+    "vodCid": "bafyreigsvpbcmgvwbwwqbpjzoea7mrtqrheb77kkfgagyvckbchugp4pq4",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5lexqbqf2z",
+    "durationMs": 1616842,
+    "createdAt": "2026-03-28T21:31:06Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/ja4ooAa",
+    "description": "Eurosky is a European initiative building shared ATProto infrastructure operated under EU law: PDS, relays, AppView capacity, and protocol-level moderation services. This talk explains why social media must be treated as critical infrastructure, how self-certifying data enables real separation of powers, and how a shared-cost moderation model lets independent developers comply with diverse legal regimes without central platform control.",
+    "speakers": [
+      {
+        "id": "sebastian.eurosky.social",
+        "name": "Sebastian Vogelsang"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "presentation",
+    "category": "Media and Civics",
+    "startsAt": "2026-03-28T21:30:00.000Z",
+    "endsAt": "2026-03-28T22:00:00.000Z",
+    "transcriptFile": "transcripts/3mi5lexqbqf2z.json"
+  },
+  {
+    "rkey": "3mi5ldvd46r2i",
+    "title": "From protocol to product: How Expo powers the next wave of AT Proto applications",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5ldvd46r2i",
+    "vodCid": "bafyreigivkxexry6krj6g7elywih4yqmqcm5siphntzd7tv4jbxvojjvg4",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5ldvd46r2i",
+    "durationMs": 2216210,
+    "createdAt": "2026-03-28T21:30:30Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/Y561Qv6",
+    "description": "What does it actually take to build and ship an AT Proto app? This panel features developers who have done exactly that using Expo. We'll cover the full journey: authentication and OAuth, working with decentralized identity, deploying to app stores, and scaling to real users. Whether you're exploring AT Proto for the first time or ready to start building, you'll walk away with practical insights from people who've shipped.",
+    "speakers": [
+      {
+        "id": "eliot.sh",
+        "name": "Eliot Hertenstein"
+      },
+      {
+        "id": "pfrazee.com",
+        "name": "Paul Frazee"
+      },
+      {
+        "id": "iame.li",
+        "name": "Eli Mallon"
+      },
+      {
+        "id": "reedharmeyer.bsky.social",
+        "name": "Reed Harmeyer"
+      }
+    ],
+    "room": "Great Hall South",
+    "talkType": "panel",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-28T21:30:00.000Z",
+    "endsAt": "2026-03-28T22:00:00.000Z",
+    "transcriptFile": "transcripts/3mi5ldvd46r2i.json"
+  },
+  {
+    "rkey": "3mi5lb763vn2j",
+    "title": "Account logic in ATProto using Trusted Execution Environments",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5lb763vn2j",
+    "vodCid": "bafyreiexdrycqrjskurhk6znkw22f53xsa77obwabzrvpkrp53sfrpgk3e",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5lb763vn2j",
+    "durationMs": 2013541,
+    "createdAt": "2026-03-28T21:29:00Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/gDP6A8N",
+    "description": "ATProto is fundamentally verifiable - identities have cryptographic keys attached to them, posts are signed and integrity is upheld by authenticated data structure. This is the core of what enables the trustless decentralized nature of ATProto.\n\nWhat if we could go beyond signatures and add verifiable end-to-end logic attached to accounts? We present a recent project, exploring the use of Trusted Execution Environments to manage cryptographic keys that only sign records under specific rules.\n\nWe show a couple of examples of possible rules for Bluesky accounts:\n\n1. One that requires 2-out-of-3 signatures, allowing company and group accounts\n2. Another that uses an LLM to analyze each post before posting\n\nWe further discuss how end-to-end verifiability is achieved with TEEs, through reproducible builds and remote attestation.\n\nThis project was done with Nick Gerakines, a prominent ATProto contributor, utilizing Nick Gerakines’s recent work on adding attestations to ATProto records.\n\n# Cryptography in the service of ATProto\n\nThe ATProto ecosystem is maturing has the desire to add functionalities in a way that preserves its ethos of decentralization and user protection. With an ecosystem having tens of millions of users, these solutions have to be both scalable and secure.\n\nWe review work on mutual contact discovery (and discovery in general), identity, anonymous credentials and payments, and different ways to achieve them using advanced cryptography and trusted execution environments.\n\nWe discuss the assumptions and trust models the community needs to keep in mind and what is possible to do, and gradual deployment methods to be able to experiment with different ideas.\n\nWe hope it can be a call to action to explore these ideas in ATProto more deeply.",
+    "speakers": [
+      {
+        "id": "kobi.bsky.social",
+        "name": "Kobi Gurkan"
+      }
+    ],
+    "room": "Room 2301",
+    "talkType": "presentation",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-28T21:30:00.000Z",
+    "endsAt": "2026-03-28T22:00:00.000Z",
+    "transcriptFile": "transcripts/3mi5lb763vn2j.json"
+  },
+  {
+    "rkey": "3mi5mvmovsn2i",
+    "title": "join us in https://stream.place/stream1.atmosphereconf.org for  2026 Atmosphere Report",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5mvmovsn2i",
+    "vodCid": "bafyreifyj4vq42expvzgdfdktqg2shmywmsmi3y5x3k6ssxto3vhpmj5vy",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5mvmovsn2i",
+    "durationMs": 3410981,
+    "createdAt": "2026-03-28T21:58:19Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/aQ1J9GE",
+    "description": "Paul Frazee, CTO of Bluesky, gives a report on the Atmosphere from Bluesky's point of view.\n\nNew standards efforts, new protocol features, new developer tools and APIs - this year has it all.\n\nPaul will share what's going on, what Bluesky is working on, and why 2026 is going to be a great year for the Atmosphere.\n\nPaul will also be joined on stage by Chief Innovation Officer Jay Graber to talk about the future of building on atproto",
+    "speakers": [
+      {
+        "id": "pfrazee.com",
+        "name": "Paul Frazee"
+      },
+      {
+        "id": "jay.bsky.team",
+        "name": "Jay Graber"
+      }
+    ],
+    "room": "Great Hall South",
+    "talkType": "presentation",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-28T22:00:00.000Z",
+    "endsAt": "2026-03-28T23:00:00.000Z",
+    "transcriptFile": null
+  },
+  {
+    "rkey": "3mi5q57diht27",
+    "title": "Semble: Rediscovering the Magic of Trails",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5q57diht27",
+    "vodCid": "bafyreifgsghjz56afr7fhcypbafywlgqxzy7hvsyw67igio5gkbb4n5iki",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5q57diht27",
+    "durationMs": 906014,
+    "createdAt": "2026-03-28T22:56:14Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/OD6Gd0A",
+    "description": "The early web was full of trails: open paths that led to serendipitous discovery. Web2 platforms paved them over with superhighways built to extract your attention. Semble is bringing the trails back, turning everyday browsing into collective mapping, where every connection you make becomes a trail-marker that helps others navigate the open web. Built on atproto, because open trails belong on open, interoperable and collectively stewarded infrastructure.",
+    "speakers": [
+      {
+        "id": "ronentk.me",
+        "name": "Ronen Tamari"
+      }
+    ],
+    "room": "Great Hall South",
+    "talkType": "lightning-talk",
+    "category": "Media and Civics",
+    "startsAt": "2026-03-28T23:00:00.000Z",
+    "endsAt": "2026-03-28T23:10:00.000Z",
+    "transcriptFile": "transcripts/3mi5q57diht27.json"
+  },
+  {
+    "rkey": "3mi5q4ey4232y",
+    "title": "Stop Hallucinating the Protocol: Grounding your AI Agents with the Official ATproto Docs",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5q4ey4232y",
+    "vodCid": "bafyreih2jhwv7iuar3asxa2ha5kbfp3tlb6j4y46ln34js6ov7qxro6w4a",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5q4ey4232y",
+    "durationMs": 1000740,
+    "createdAt": "2026-03-28T22:55:47Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/9qP16Kp",
+    "description": "Unleash the full power of the AT Protocol documentation for your AI agents. In this lightning talk, Jessie will show you how to feed your agent the exact documentation it needs when it needs it. You will learn how to query the current official documentation through a remote MCP server, making it quicker and easier to build ATproto apps.",
+    "speakers": [
+      {
+        "id": "immber.bsky.social",
+        "name": "Jessie Rushing"
+      }
+    ],
+    "room": "Room 2301",
+    "talkType": "lightning-talk",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-28T23:00:00.000Z",
+    "endsAt": "2026-03-28T23:10:00.000Z",
+    "transcriptFile": "transcripts/3mi5q4ey4232y.json"
+  },
+  {
+    "rkey": "3mi5q3oibtu2i",
+    "title": "Why Gander Social?",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5q3oibtu2i",
+    "vodCid": "bafyreiaxdu6w75bzrizb5ihb7mq7b6fvtpu2yl3ofqnhde5ipjyc6knwpa",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5q3oibtu2i",
+    "durationMs": 1003760,
+    "createdAt": "2026-03-28T22:55:23Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/Bzr448Q",
+    "description": "A lightening talk showcasing Gander Social. Why we exist and how we interoperate.",
+    "speakers": [
+      {
+        "id": "jennie-gander.bsky.social",
+        "name": "Jennifer Mitchell"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "lightning-talk",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-28T23:00:00.000Z",
+    "endsAt": "2026-03-28T23:10:00.000Z",
+    "transcriptFile": "transcripts/3mi5q3oibtu2i.json"
+  },
+  {
+    "rkey": "3mi5r2rp7a62e",
+    "title": "How (de)centralized is Bluesky, really?",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5r2rp7a62e",
+    "vodCid": "bafyreib6bgnif6hkfbske4jkqex43ng5v2g7bubohdvj57xaoyg5zsntoa",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5r2rp7a62e",
+    "durationMs": 607077,
+    "createdAt": "2026-03-28T23:12:47Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/QKZoLBX",
+    "description": "In this presentation, I will discuss a working paper on the functional (de)centralization of Bluesky. This includes the extent to which AT Protocol infrastructure is owned and operated by entities other than Bluesky Social (through a computational mapping of ownership of PDS endpoints), the implications this (de)centralization has for Bluesky Social's goals, and what might be done. Following the presentation of quantitative results and associated theory, there will be time for a Q&A and discussion. Looking forward to hearing from attendees about efforts to further decentralize AT Protocol infrastructure!",
+    "speakers": [
+      {
+        "id": "billwpierce.co",
+        "name": "Billy Pierce"
+      }
+    ],
+    "room": "Room 2301",
+    "talkType": "lightning-talk",
+    "category": "Media and Civics",
+    "startsAt": "2026-03-28T23:10:00.000Z",
+    "endsAt": "2026-03-28T23:20:00.000Z",
+    "transcriptFile": "transcripts/3mi5r2rp7a62e.json"
+  },
+  {
+    "rkey": "3mi5qzkwfe42z",
+    "title": "Who, Where, Why, What about W Social",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5qzkwfe42z",
+    "vodCid": "bafyreidpgjqzxausbno2inhcrprzzdtpgxof5wdear4i376b6mrmdszr5e",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5qzkwfe42z",
+    "durationMs": 586025,
+    "createdAt": "2026-03-28T23:12:06Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/000WSocial",
+    "description": "We explain why this newest of AT-federation members has been created, how we believe social media can be made social again and what that means for the users and the business model. There will also be some hints about future plans.",
+    "speakers": [
+      {
+        "id": "jan.wsocial.eu",
+        "name": "Jan Lindblad"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "lightning-talk",
+    "category": "Media and Civics",
+    "startsAt": "2026-03-28T23:10:00.000Z",
+    "endsAt": "2026-03-28T23:20:00.000Z",
+    "transcriptFile": "transcripts/3mi5qzkwfe42z.json"
+  },
+  {
+    "rkey": "3mi5qywid6z25",
+    "title": "What 350,000 users taught me about growing on Open Social",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5qywid6z25",
+    "vodCid": "bafyreieatweglxvqiapcvp6lt7kmwfgpevq7czg3paynmh7ggfcehnxf74",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5qywid6z25",
+    "durationMs": 640024,
+    "createdAt": "2026-03-28T23:11:45Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/2EG4YMj",
+    "description": "In nine months, we grew Skylight Social from zero to over 350,000 downloads. This lightning talk distills the most important lessons from that journey; how to message open social to a broader audience, how to read user behavior over user requests, and which tools and collaborations actually scaled. It’s a practical look at what worked, what didn’t, and what I’d do again if I were starting today.",
+    "speakers": [
+      {
+        "id": "buildwithtori.com",
+        "name": "Victoria White"
+      }
+    ],
+    "room": "Great Hall South",
+    "talkType": "lightning-talk",
+    "category": "Community",
+    "startsAt": "2026-03-28T23:10:00.000Z",
+    "endsAt": "2026-03-28T23:20:00.000Z",
+    "transcriptFile": "transcripts/3mi5qywid6z25.json"
+  },
+  {
+    "rkey": "3mi5rnhjugb2h",
+    "title": "E2EE DMs for Solidarity Social",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5rnhjugb2h",
+    "vodCid": "bafyreic444qjtykgf65nj46wqxgf5zzbt6jd7o4cuvhhtsthuvxru6mgce",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5rnhjugb2h",
+    "durationMs": 543952,
+    "createdAt": "2026-03-28T23:23:13Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/Xxd7xqj",
+    "description": "Demonstrate E2EE DMs in the Solidar App (https://solidar.app), which enables Solidarity Social (https://solidarity.social), a Bluesky community and a hub for coordination across communities. Explain the benefits of integrating Matrix into Bluesky, to aid progress on social justice, human rights, human dignity and democracy.",
+    "speakers": [
+      {
+        "id": "rangakrishnan1.bsky.social",
+        "name": "Ranga Krishnan"
+      }
+    ],
+    "room": "Room 2301",
+    "talkType": "lightning-talk",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-28T23:20:00.000Z",
+    "endsAt": "2026-03-28T23:30:00.000Z",
+    "transcriptFile": "transcripts/3mi5rnhjugb2h.json"
+  },
+  {
+    "rkey": "3mi5rm4y7ts2b",
+    "title": "The Future of Open Source is Social",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5rm4y7ts2b",
+    "vodCid": "bafyreidqau7ycyig3whnitjyhfsfdqcmeq3ygt2hybabbwvzltpvewlclu",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5rm4y7ts2b",
+    "durationMs": 474045,
+    "createdAt": "2026-03-28T23:22:29Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/000Jer",
+    "description": "open source changed the world, but now it’s stuck in the age of pull requests and gatekeepers. what happens when you build it on a social protocol instead? (and complimentary to tangled) jeremie miller — creator of XMPP (the protocol behind whatsapp, zoom, and billions of daily messages) and bluesky board member — will demo something new built entirely on AT Protocol that reimagines how open source software gets discovered, shared, and trusted. this one’s going to break some brains.",
+    "speakers": [
+      {
+        "id": "jeremie.com",
+        "name": "Jer Miller"
+      }
+    ],
+    "room": "Great Hall South",
+    "talkType": "lightning-talk",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-28T23:20:00.000Z",
+    "endsAt": "2026-03-28T23:30:00.000Z",
+    "transcriptFile": "transcripts/3mi5rm4y7ts2b.json"
+  },
+  {
+    "rkey": "3mi5rl4r4a725",
+    "title": "Bridging Social Graphs: How Sky Follower Bridge helps people move to Bluesky",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5rl4r4a725",
+    "vodCid": "bafyreict4ch3wibdj4mvvusdjlnk2s6l6d7hffedxk5wjwkmy6fgwibc5e",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5rl4r4a725",
+    "durationMs": 580020,
+    "createdAt": "2026-03-28T23:21:55Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/000Ryo",
+    "description": "Moving to a new social network is easy. Finding your people again is the hard part. This lightning talk introduces Sky Follower Bridge, a tool that helps users reconnect with their social graph on Bluesky. It also explores two technical challenges behind the project: extracting follow lists from browser pages and improving account matching across platforms.",
+    "speakers": [
+      {
+        "id": "kawamataryo.bsky.social",
+        "name": "Ryo Kawamata"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "lightning-talk",
+    "category": "Community",
+    "startsAt": "2026-03-28T23:20:00.000Z",
+    "endsAt": "2026-03-28T23:30:00.000Z",
+    "transcriptFile": "transcripts/3mi5rl4r4a725.json"
+  },
+  {
+    "rkey": "3mi5s5mqmgj2r",
+    "title": "Pollen: Prototyping a toolkit for journalists and researchers to restore source transparency in an AI-saturated feed",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5s5mqmgj2r",
+    "vodCid": "bafyreihftporturdy73rmavalnicavsotda7c3freoxr5q33x7mymhb64q",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5s5mqmgj2r",
+    "durationMs": 727272,
+    "createdAt": "2026-03-28T23:32:16Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/7Rr2zW6",
+    "description": "Pollen is a technical prototype by Hypha that enables journalists and researchers to anchor authenticated claims, such as photographer attribution and trusted timestamps, directly to their Personal Data Server. By attending this session, media professionals will learn how authenticated claims can protect the integrity of their reporting against generative AI \"slop\" and how a shared provenance layer empowers the community to collectively maintain digital facticity.",
+    "speakers": [
+      {
+        "id": "hypha.coop",
+        "name": "Hypha Coop"
+      },
+      {
+        "id": "makeworld.space",
+        "name": "Cole Anthony Capilongo"
+      },
+      {
+        "id": "udit.bsky.social",
+        "name": "Udit Vira"
+      }
+    ],
+    "room": "Room 2301",
+    "talkType": "lightning-talk",
+    "category": "Media and Civics",
+    "startsAt": "2026-03-28T23:30:00.000Z",
+    "endsAt": "2026-03-28T23:40:00.000Z",
+    "transcriptFile": "transcripts/3mi5s5mqmgj2r.json"
+  },
+  {
+    "rkey": "3mi5s4foj7h2a",
+    "title": "Oaklog: Building a community calendar in the Oakland Bay Area",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5s4foj7h2a",
+    "vodCid": "bafyreifkpf5dcstlp5egmsgaoljblsjctyqfistqpp3qcqsw6fep7udtd4",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5s4foj7h2a",
+    "durationMs": 555980,
+    "createdAt": "2026-03-28T23:31:35Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/lbkWPeN",
+    "description": "Our working group (oaklog.org) is collaborating with local media publications, civic organizations, community leaders, and local venues to build a digital commons for event listings in the Oakland Bay Area. We'll share findings from our work co-designing with local information stewards and how we're exploring AT Protocol as a municipal utility that makes local data reliable, accessible, and reusable across organizations and tools.",
+    "speakers": [
+      {
+        "id": "pop.pe",
+        "name": "Glenn Poppe"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "lightning-talk",
+    "category": "Media and Civics",
+    "startsAt": "2026-03-28T23:30:00.000Z",
+    "endsAt": "2026-03-28T23:40:00.000Z",
+    "transcriptFile": "transcripts/3mi5s4foj7h2a.json"
+  },
+  {
+    "rkey": "3mi5s2x6tkd2d",
+    "title": "Burning down data walls in the US Fire Service and Beyond",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5s2x6tkd2d",
+    "vodCid": "bafyreihlr5c4pn6jfnj34w54uavue2fgx2glqdhkb3ttk7ifwt3mno6yfa",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5s2x6tkd2d",
+    "durationMs": 675948,
+    "createdAt": "2026-03-28T23:30:46Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/2EGLPML",
+    "description": "My team at FSRI recently overhauled how all firefighters in the US report data with NERIS (https://neris.fsri.org/faqs).  I want to share insights I gained into how centralization and the resulting enshittification has played out in fire software and how NERIS hasn’t fully solved the problem.  I’d like to encourage more people to build fire (and other niche) software and create an open ecosystem of interoperable tools where fire department data ownership is at its heart and outline some opportunities and resources.\r\nIf time permits I may very quickly reference similar initiatives like FHIR and open banking.",
+    "speakers": [
+      {
+        "id": "stephanjnoel.bsky.social",
+        "name": "Stephan Noel"
+      }
+    ],
+    "room": "Great Hall South",
+    "talkType": "lightning-talk",
+    "category": "Community",
+    "startsAt": "2026-03-28T23:30:00.000Z",
+    "endsAt": "2026-03-28T23:40:00.000Z",
+    "transcriptFile": "transcripts/3mi5s2x6tkd2d.json"
+  },
+  {
+    "rkey": "3mi5stzyxji2e",
+    "title": "How Streamplace Works: VODs",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5stzyxji2e",
+    "vodCid": "bafyreicewuaatuo53ekzmwgrtlmghzrtjyf6huy2ngmazig7mqgctktvhe",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5stzyxji2e",
+    "durationMs": 1714000,
+    "createdAt": "2026-03-28T23:44:48Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/RGqppqd",
+    "description": "Here's a hard-won lesson from a video engineer: if you're gonna do both livestreaming and VOD, do livestreaming first, it's harder. And hey, livestreaming is working pretty good. Here's how we're going to do VOD, and here's why the architecture looks pretty much like building a globally-distributed fleet of atproto PDS and Relays. And here's how you can join!",
+    "speakers": [
+      {
+        "id": "iame.li",
+        "name": "Eli Mallon"
+      }
+    ],
+    "room": "Room 2301",
+    "talkType": "presentation",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-28T23:45:00.000Z",
+    "endsAt": "2026-03-29T00:15:00.000Z",
+    "transcriptFile": "transcripts/3mi5stzyxji2e.json"
+  },
+  {
+    "rkey": "3mi5spj6izy2a",
+    "title": "The Phoenix Architecture",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5spj6izy2a",
+    "vodCid": "bafyreighqyhh5dkd6fymhj5ij5c7k3ydi2e43d2q53cxerhehrlz4g7w3q",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5spj6izy2a",
+    "durationMs": 1778000,
+    "createdAt": "2026-03-28T23:42:16Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/OD2G9j8",
+    "description": "Phoenix Architecture is a way of thinking about software in a world where implementations can be rewritten faster than they can be understood. As AI shifts the economics from maintenance to regeneration, the real architectural questions move upstream: what must remain stable, what can safely change, and what breaks humans when it breaks at all. This talk offers a set of lenses (not answers) for reasoning about durability, trust, and coherence in long-lived systems. Attendees should leave with new instincts, sharper questions, and a sense that some of our deepest assumptions about software may need to be revisited.",
+    "speakers": [
+      {
+        "id": "chadfowler.com",
+        "name": "Chad Fowler"
+      }
+    ],
+    "room": "Great Hall South",
+    "talkType": "presentation",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-28T23:45:00.000Z",
+    "endsAt": "2026-03-29T00:15:00.000Z",
+    "transcriptFile": "transcripts/3mi5spj6izy2a.json"
+  },
+  {
+    "rkey": "3mi5sn7zmfy23",
+    "title": "A Free Press needs Free Protocols",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5sn7zmfy23",
+    "vodCid": "bafyreigiimx5qui7fvuphrssemf364azzw6pdnpw3uptm5hh5jzrsoifli",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5sn7zmfy23",
+    "durationMs": 2145763,
+    "createdAt": "2026-03-28T23:41:00Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/EkGROKB",
+    "description": "Proprietary social media platforms intermediate the two main things journalism needs to survive: attention and revenue. Drawing from our combined experience building tech for newsrooms from the Chicago Tribune to ProPublica, we'll explore how building on protocols, not platforms could create a media environment where both publishers and audiences control their own destiny. Two veteran news/open social web nerds have ideas about what this could look like in practice (and want to hear yours!)",
+    "speakers": [
+      {
+        "id": "joe.germuska.com",
+        "name": "Joe Germuska"
+      },
+      {
+        "id": "werd.io",
+        "name": "Ben Werdmuller"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "presentation",
+    "category": "Community",
+    "startsAt": "2026-03-28T23:45:00.000Z",
+    "endsAt": "2026-03-29T00:15:00.000Z",
+    "transcriptFile": "transcripts/3mi5sn7zmfy23.json"
+  },
+  {
+    "rkey": "3mi5uqr2spg2l",
+    "title": "Hypercerts on ATProto: Collective Funding, Evaluation, and Ownership as Social Data",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5uqr2spg2l",
+    "vodCid": "bafyreiahdfgo7cwb6mwt5tab4j4bi2e4qre44stnnd57dqfq6u36syolmq",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5uqr2spg2l",
+    "durationMs": 1863270,
+    "createdAt": "2026-03-29T00:18:45Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/J9EgEdX",
+    "description": "This talk introduces hypercerts as a primitive for collective funding. It shows how activities, evidence, and plural evaluations can be published as durable records without relying on centralized platforms or single metrics. Attendees will learn how ATProto’s identity, record, and graph model enables new allocation mechanisms in which information production is endogenous and reusable across applications. The session connects protocol architecture with real-world funding workflows, offering concrete patterns others can adapt for funding public goods and collective action.",
+    "speakers": [
+      {
+        "id": "holke.xyz",
+        "name": "Holke Brammer"
+      }
+    ],
+    "room": "Room 2301",
+    "talkType": "presentation",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-29T00:15:00.000Z",
+    "endsAt": "2026-03-29T00:45:00.000Z",
+    "transcriptFile": "transcripts/3mi5uqr2spg2l.json"
+  },
+  {
+    "rkey": "3mi5unzkbat27",
+    "title": "Journalism must create its own algorithms",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5unzkbat27",
+    "vodCid": "bafyreifhgr2yl4mcjxfxxt3kjyl23mgiljmmeblenfolvfx4jdzoyye66m",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5unzkbat27",
+    "durationMs": 2244939,
+    "createdAt": "2026-03-29T00:17:14Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/PdJ6Q8d",
+    "description": "There is now an abundance of evidence that corporate social media owners are putting their thumb on the algorithmic scale. Between increasing the visibility of far-right viewpoints, shadowbanning content with external links, and the disintermediation of media orgs through AI-based summary results, it is an incredibly challenging time to be in the news business.\r\n\r\nThere is one bright spot, however: ATProto. \r\n\r\nJoin Aendra Rininsland, creator of the News and Trending News feeds, as she discusses why it's not just possible for the media industry to create its own algorithms for news content, but also profoundly necessary for the future of quality journalism.",
+    "speakers": [
+      {
+        "id": "aendra.com",
+        "name": "Aendra Rininsland"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "presentation",
+    "category": "Media and Civics",
+    "startsAt": "2026-03-29T00:15:00.000Z",
+    "endsAt": "2026-03-29T00:45:00.000Z",
+    "transcriptFile": "transcripts/3mi5unzkbat27.json"
+  },
+  {
+    "rkey": "3mi5unhqisv22",
+    "title": "This Title Left Intentionally Blank",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5unhqisv22",
+    "vodCid": "bafyreiggeahiicdqjcmh4hljqai7tla76uylpq22borkwklhh4eej5fnka",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5unhqisv22",
+    "durationMs": 2152506,
+    "createdAt": "2026-03-29T00:16:55Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/rj8Xv62",
+    "description": "From Software Engineering to Software Ecologies",
+    "speakers": [
+      {
+        "id": "blaine.bsky.social",
+        "name": "Blaine Cook"
+      }
+    ],
+    "room": "Great Hall South",
+    "talkType": "presentation",
+    "category": "Media and Civics",
+    "startsAt": "2026-03-29T00:15:00.000Z",
+    "endsAt": "2026-03-29T00:45:00.000Z",
+    "transcriptFile": "transcripts/3mi5unhqisv22.json"
+  },
+  {
+    "rkey": "3mi5wqocga62h",
+    "title": "Closing remarks, I guess, if i have to.",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5wqocga62h",
+    "vodCid": "bafyreigode4edpq5q4ajk5tmgnx7wnjvc5jcnhwa4yuc2qik7xbgms7cxy",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5wqocga62h",
+    "durationMs": 856377,
+    "createdAt": "2026-03-29T00:54:30Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/day-3-closing-remarks",
+    "description": null,
+    "speakers": [],
+    "room": "Great Hall South",
+    "talkType": "info",
+    "category": null,
+    "startsAt": "2026-03-29T00:45:00.000Z",
+    "endsAt": "2026-03-29T01:00:00.000Z",
+    "transcriptFile": "transcripts/3mi5wqocga62h.json"
+  },
+  {
+    "rkey": "3mi7jhwzagl2n",
+    "title": "Day 2 Opening Remarks!",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi7jhwzagl2n",
+    "vodCid": "bafyreif6tdxc7hyj5zciffuvu4bm7bunscodkc5mwqzxa4ueif2mkpr7wy",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi7jhwzagl2n",
+    "durationMs": 822003,
+    "createdAt": "2026-03-29T16:02:18Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/opening-remarks-day-4",
+    "description": "Opening Remarks Day 4",
+    "speakers": [],
+    "room": "Great Hall South",
+    "talkType": "info",
+    "category": null,
+    "startsAt": "2026-03-29T16:00:00.000Z",
+    "endsAt": "2026-03-29T16:15:00.000Z",
+    "transcriptFile": "transcripts/3mi7jhwzagl2n.json"
+  },
+  {
+    "rkey": "3mi7kaogqjs22",
+    "title": "npmx - a fast, modern browser for the npm registry",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi7kaogqjs22",
+    "vodCid": "bafyreiconjgsa4njtsnf6wb4fnoc3xm2hwrx4glchihnulczdhhon2juuu",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi7kaogqjs22",
+    "durationMs": 2132729,
+    "createdAt": "2026-03-29T16:16:08Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/MeWBzWX",
+    "description": "We're building npmx in the open as a community project. Join us as we explore how we work together, how atproto has helped as connect, and how we have been adding social features to our website.",
+    "speakers": [
+      {
+        "id": "zeu.dev",
+        "name": "Zeu"
+      },
+      {
+        "id": "patak.cat",
+        "name": "Patak"
+      }
+    ],
+    "room": "Great Hall South",
+    "talkType": "presentation",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-29T16:15:00.000Z",
+    "endsAt": "2026-03-29T17:00:00.000Z",
+    "transcriptFile": "transcripts/3mi7kaogqjs22.json"
+  },
+  {
+    "rkey": "3mi7mb4jbag23",
+    "title": "tangled: The Lewis end",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi7mb4jbag23",
+    "vodCid": "bafyreigl6c5yfqger5xzqd2ljwtnyd6xest6xnqqnipnvtvwzejb6axwxu",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi7mb4jbag23",
+    "durationMs": 2298461,
+    "createdAt": "2026-03-29T16:52:10Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/VLgVWM6",
+    "description": "Building a company on an open protocol is a different ballgame. In this talk I aim to cover why we decided to make Tangled a company, how we're financed, why we went this route, the challenges we faced and our plans for the future.",
+    "speakers": [
+      {
+        "id": "oyster.cafe",
+        "name": "Lewis Torrington"
+      }
+    ],
+    "room": "Great Hall South",
+    "talkType": "presentation",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-29T17:00:00.000Z",
+    "endsAt": "2026-03-29T17:30:00.000Z",
+    "transcriptFile": "transcripts/3mi7mb4jbag23.json"
+  },
+  {
+    "rkey": "3mi7ldfbjwe26",
+    "title": "How and Why News Organizations Should Build on the ATProtocol",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi7ldfbjwe26",
+    "vodCid": "bafyreiafz2nanw4uuommn35ekicpssywzkydxkfy5eu3zoft3pdbt4y62a",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi7ldfbjwe26",
+    "durationMs": 3011281,
+    "createdAt": "2026-03-29T16:35:33Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/VLXBbzJ",
+    "description": "For decades, news organizations have chased audiences on proprietary social platforms where they have no control over how their content is delivered. The ATProtocol offers a chance for news organizations to start fresh and participate as first-class citizens in the open social web. In this panel, we will discuss strategies for getting started on ATProto as a news organization and the potential benefits of moving early.",
+    "speakers": [
+      {
+        "id": "jimray.bsky.team",
+        "name": "Jim Ryan"
+      },
+      {
+        "id": "tylerjfisher.com",
+        "name": "Tyler Fisher"
+      },
+      {
+        "id": "aendra.com",
+        "name": "Aendra Rininsland"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "panel",
+    "category": "Media and Civics",
+    "startsAt": "2026-03-29T17:00:00.000Z",
+    "endsAt": "2026-03-29T17:30:00.000Z",
+    "transcriptFile": "transcripts/3mi7ldfbjwe26.json"
+  },
+  {
+    "rkey": "3mi7lapdbjc2t",
+    "title": "Roomy and community organizing for system change",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi7lapdbjc2t",
+    "vodCid": "bafyreiem3tfohar3d2ur4hdprhekvlij3vwzhfvboamkucx3j2tqh4a2mq",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi7lapdbjc2t",
+    "durationMs": 3513161,
+    "createdAt": "2026-03-29T16:34:02Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/Mej2N5X",
+    "description": "Roomy is a group messaging app that gives online communities tools for autonomous collaboration — designable spaces not just for chat, but for cultivating a web of shared understanding together.\r\n\r\nWe show how cheap, user-controlled, interoperable data on ATProto can enable online communities to channel impassioned mobilizing into sustained organizing in the shadow of Big Tech's empire.",
+    "speakers": [
+      {
+        "id": "meri.garden",
+        "name": "Meri Leeworthy"
+      }
+    ],
+    "room": "Room 2301",
+    "talkType": "presentation",
+    "category": "Community",
+    "startsAt": "2026-03-29T17:00:00.000Z",
+    "endsAt": "2026-03-29T17:30:00.000Z",
+    "transcriptFile": "transcripts/3mi7lapdbjc2t.json"
+  },
+  {
+    "rkey": "3mi7ok5zmuk2k",
+    "title": "How to have more non-english speaking users",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi7ok5zmuk2k",
+    "vodCid": "bafyreiawgs7wc4lde6m3maytmvtzyxou5wfgnanmyughcc6s6le5fcpvmu",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi7ok5zmuk2k",
+    "durationMs": 1722022,
+    "createdAt": "2026-03-29T17:33:01Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/WOkL11Q",
+    "description": "This panel will reveal some common mistakes that make it harder for your app to be used by non-English speakers around the world. Following a few tips and guidelines can help new apps avoid falling into the same problems. Expect to see some real examples from across the Atmosphere. English speakers are welcome to bring any questions, and non-English speakers are welcome to join the discussion and bring additional points of view.",
+    "speakers": [
+      {
+        "id": "vicwalker.dev.br",
+        "name": "Victoria Machado de Oliveira"
+      }
+    ],
+    "room": "Room 2301",
+    "talkType": "panel",
+    "category": "Community",
+    "startsAt": "2026-03-29T17:30:00.000Z",
+    "endsAt": "2026-03-29T18:00:00.000Z",
+    "transcriptFile": "transcripts/3mi7ok5zmuk2k.json"
+  },
+  {
+    "rkey": "3mi7ofq7ob72a",
+    "title": "One Year of Graze - lessons learned funding, building, and growing in the atmosphere",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi7ofq7ob72a",
+    "vodCid": "bafyreic7zwwkmrwexwifm63snbqkyj66mweodryznradtlogv75xcdb7di",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi7ofq7ob72a",
+    "durationMs": 1178187,
+    "createdAt": "2026-03-29T17:30:33Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/gDPMMa1",
+    "description": "I'll be sharing an abbreviated history of building Graze, our own product's theory of action and how it slots into our more broad theory of how the AT Protocol disrupts the existing social layer of the web. We'll move into successes and challenges with fundraising, what we learned during that process and what others should know. We'll wrap with our own theories on development in 2026, how we fully move beyond the \"skeuomorph\" era of ATProto.",
+    "speakers": [
+      {
+        "id": "devingaffney.com",
+        "name": "Devin Gaffney"
+      }
+    ],
+    "room": "Great Hall South",
+    "talkType": "presentation",
+    "category": "Media and Civics",
+    "startsAt": "2026-03-29T17:30:00.000Z",
+    "endsAt": "2026-03-29T18:00:00.000Z",
+    "transcriptFile": "transcripts/3mi7ofq7ob72a.json"
+  },
+  {
+    "rkey": "3mi7o5amqqx2d",
+    "title": "Bringing Self Sovereign Identities to the Masses via ATproto",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi7o5amqqx2d",
+    "vodCid": "bafyreibfgfrfigvcc63bfni376rcbckdr7z6hssj5skitssgexmk72rmqe",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi7o5amqqx2d",
+    "durationMs": 1959443,
+    "createdAt": "2026-03-29T17:25:48Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/jaAWVRY",
+    "description": "I will make the case that DID:PLC forks will inevitably emerge as the wider atproto ecosystem keeps gaining global relevance: pressure on the governance model of the identity system will increase to a point where conflicts (e.g. over which DID suspension requests should be honored and which should be ignored) cannot be easilly resolved within a ‘permissioned consortium’ (as proposed in https://atproto.com/guides/identity) anymore. It seems evident that we can only argue about WHEN this will happen, not IF it will happen.\r\n\r\nIn order to be able to maintain coherent UI experiences (without threads looking more and more broken due to different forks being used in different appviews) it seems necessary to extend the adversarial design patterns at the heart of the bluesky project (‘the company is the future adversary’) to the governance model of the underlying DID:PLC identity system: ‘the consortium will become target of future adversaries’.\r\n\r\nCan permissionless observatory networks help?\r\nCan we avoid using cryptoeconomics?\r\nWhat other options seem useful?\r\n\r\nDuring this presentation, I will present the results of my ongoing PhD research project on these questions.\r\n\r\n---\r\n\r\nAbout me:\r\n\r\nI'm part of a small team (including Marcus Sabadello, co-author and editor of the DID specification) that started to advocate for the adoption of DIDs within ActivityPub networks back in 2018 (predating Jay Graber’s ecosystem review and the birth of the bluesky project).\r\n\r\nhttps://github.com/WebOfTrustInfo/rwot9-prague/blob/master/topics-and-advance-readings/fediverse-did-integration.md\r\n\r\nhttps://chaos.social/@cypherhippie/102270069807129706\r\n\r\nLink to a (somewhat cringe) video for a grant application in 2018: https://youtu.be/UJn7cLNh_q8?t=85\r\n\r\nRecent talk at fediday berlin:\r\nProtocol Convergence within Open Science Communication Networks\r\nhttps://fair.tube/w/p/2PEFZ5cdptsVASU4HTUakA\r\n\r\nUpcoming presentation at fosdem:\r\nIncreasing Long Term Stability of Relations Between Fediverse Identities using SSI\r\nhttps://fosdem.org/2026/schedule/event/RZRZ9P-increasing_long_term_stability_of_relations_between_fediverse_identities_using_s/",
+    "speakers": [
+      {
+        "id": "cypherhippie.bsky.social",
+        "name": "Paul Fuxjäger"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "presentation",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-29T17:30:00.000Z",
+    "endsAt": "2026-03-29T18:00:00.000Z",
+    "transcriptFile": "transcripts/3mi7o5amqqx2d.json"
+  },
+  {
+    "rkey": "3mi7q5mjlbe2c",
+    "title": "Blousques: Case Study on the Challenges in Translating Bluesky's UI",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi7q5mjlbe2c",
+    "vodCid": "bafyreidzzikssu3of32zl7n53547nrhopwayggf2w4zcvaobbetsed55ie",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi7q5mjlbe2c",
+    "durationMs": 2241921,
+    "createdAt": "2026-03-29T18:01:48Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/zxRkxk8",
+    "description": "Translating Bluesky's user interface into French was the easy part. Making it feel ‘native’ to users is something else entirely!\r\n\r\nI18n is common in software, yet Bluesky has specific challenges: should we translate it using gender-neutral terms? How to translate names embedded on-protocol? How to translate features not yet released, as an external, voluntary contributor?\r\n\r\nTranslating the UI is also a good way to spot what is really missing in the daily lives of non-English users of the platform.",
+    "speakers": [
+      {
+        "id": "signez.fr",
+        "name": "Stanislas Signoud (Signez)"
+      }
+    ],
+    "room": "Room 2301",
+    "talkType": "presentation",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-29T18:00:00.000Z",
+    "endsAt": "2026-03-29T18:30:00.000Z",
+    "transcriptFile": "transcripts/3mi7q5mjlbe2c.json"
+  },
+  {
+    "rkey": "3mi7pxl6xkz22",
+    "title": "Bluenotes: Community Notes for ATProto",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi7pxl6xkz22",
+    "vodCid": "bafyreiagkous6kivb7cio5wq4znsjnpp2httov2v6d3m436bmyapzk5osm",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi7pxl6xkz22",
+    "durationMs": 1885840,
+    "createdAt": "2026-03-29T17:58:25Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/1AzdYWM",
+    "description": "I'll briefly demonstrate Bluenotes, a fork of the Bluesky with Community Notes. Then I'll discuss a proposed \"Open Community Notes\" standard and lexicon for Community Notes on ATProto, and discuss challenges such as preserving contributor anonymity and defending against manipulation.",
+    "speakers": [
+      {
+        "id": "jonathanwarden.com",
+        "name": "Jonathan Warden"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "presentation",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-29T18:00:00.000Z",
+    "endsAt": "2026-03-29T18:30:00.000Z",
+    "transcriptFile": "transcripts/3mi7pxl6xkz22.json"
+  },
+  {
+    "rkey": "3mi7pjfdkhv2b",
+    "title": "Waiting for the Future to Load",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi7pjfdkhv2b",
+    "vodCid": "bafyreieir5o6etjdpa3iwzldcorlmln2mqxjluiq7x4llrueex6pke63lu",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi7pjfdkhv2b",
+    "durationMs": 2561467,
+    "createdAt": "2026-03-29T17:50:29Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/ODqQQJA",
+    "description": "The Future is not what you think. People trained on self driving cars or notions from the 1950s are ill-prepared to see what's actually growing behind the scenes, out of public view. It's not like anything on social media right now. It's in the cracks, almost imperceptible. \r\n\r\nOften it's the opposite of what's been said for years. We've stayed in this timeline for a long time. What will it take to get out of the 2010s?",
+    "speakers": [
+      {
+        "id": "case.bsky.social",
+        "name": "Amber Case"
+      }
+    ],
+    "room": "Great Hall South",
+    "talkType": "presentation",
+    "category": "Media and Civics",
+    "startsAt": "2026-03-29T18:00:00.000Z",
+    "endsAt": "2026-03-29T18:30:00.000Z",
+    "transcriptFile": "transcripts/3mi7pjfdkhv2b.json"
+  },
+  {
+    "rkey": "3mi7rvqdpj722",
+    "title": "A Fireside Chat on Resonant Computing: Why we wrote the manifesto and where we go from here",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi7rvqdpj722",
+    "vodCid": "bafyreidyz7tw4wkuhtn6siumjg3y7exfpl6min5uyf5gv56y7qgbizwv3y",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi7rvqdpj722",
+    "durationMs": 1944355,
+    "createdAt": "2026-03-29T18:33:11Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/kdobWjj",
+    "description": "Resonant Computing manifesto co-authors Mike Masnick (Bluesky board member, Techdirt) and Alex Komoroske (Common Tools) discuss why they felt compelled to articulate an alternative vision for computing—one that's private, plural, and prosocial. They'll explore what resonance actually means in practice, why the ATProto community is uniquely positioned to build this future, and talk about the infrastructure work to make it real.",
+    "speakers": [
+      {
+        "id": "komorama.bsky.social",
+        "name": "Alex Komoroske"
+      },
+      {
+        "id": "masnick.com",
+        "name": "Mike Masnick"
+      }
+    ],
+    "room": "Great Hall South",
+    "talkType": "panel",
+    "category": "Community",
+    "startsAt": "2026-03-29T18:30:00.000Z",
+    "endsAt": "2026-03-29T19:00:00.000Z",
+    "transcriptFile": "transcripts/3mi7rvqdpj722.json"
+  },
+  {
+    "rkey": "3mi7rpxijg725",
+    "title": "Community privacy in a decentralized network",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi7rpxijg725",
+    "vodCid": "bafyreicy5ockpgo7aoj2leuiaibhr5zffnnmqacjm7wcvclmq6wxmcssei",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi7rpxijg725",
+    "durationMs": 1646886,
+    "createdAt": "2026-03-29T18:29:57Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/q4qlVLY",
+    "description": "How we can build a community that is on ATproto with content that can be contained to users within their community boundary, a form of privacy without forcing us completely off the protocol. Rather than focusing on how to handle private data with the dimensions of access we will implement a design that functions at the appview allowing any client to see it.",
+    "speakers": [
+      {
+        "id": "kandake.africa",
+        "name": "Evelyn Osman"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "presentation",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-29T18:30:00.000Z",
+    "endsAt": "2026-03-29T19:00:00.000Z",
+    "transcriptFile": "transcripts/3mi7rpxijg725.json"
+  },
+  {
+    "rkey": "3mi7tqadgv22d",
+    "title": "Social Components",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi7tqadgv22d",
+    "vodCid": "bafyreierptkgl2gbph4j3rphkleiq2se3h4m43qwnpxcy2cqmnlctzkg5m",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi7tqadgv22d",
+    "durationMs": 6532790,
+    "createdAt": "2026-03-29T19:05:54Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/9q8ZX5Q",
+    "description": "What if social products were remixable?Imagine you could take a social product and break it its user interface into pieces. Then imagine that you, or anyone else, could recombine those pieces in different ways, swap things out, composing and remixing experiences made and hosted by different people.We already know a way to compose UI: Components. However, we didn't have a way to compose components across products. Atmosphere gives us that way: lexicons define component contracts, records point at the endpoints, everyone uses the same data.So let's put components on the protocol! In this talk, Dan will present Inlay—an experimental browser for remixable cross-product server-driven user interfaces on the Atmosphere. You can think of it as \"React for atproto\" or like \"HyperCard for social\".Whether it's a terrible idea or a glimpse of a post-app future remains to be seen.---(Demo teaser: https://bsky.app/profile/did:plc:fpruhuo22xkm5o7ttr2ktxdo/post/3mdjhy2bofk2h)",
+    "speakers": [
+      {
+        "id": "danabra.mov",
+        "name": "Dan Abramov"
+      }
+    ],
+    "room": "Great Hall South",
+    "talkType": "presentation",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-29T20:30:00.000Z",
+    "endsAt": "2026-03-29T21:00:00.000Z",
+    "transcriptFile": "transcripts/3mi7tqadgv22d.json"
+  },
+  {
+    "rkey": "3mi7tcodsqu2t",
+    "title": "Creating a Safer Web: Blacksky's Moderation Tool",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi7tcodsqu2t",
+    "vodCid": "bafyreibunl3dwk3sveacc7yt5h7qdt577bv6owqjkvr7qekc376iy7rgbq",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi7tcodsqu2t",
+    "durationMs": 7350904,
+    "createdAt": "2026-03-29T18:58:18Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/2E9XG1b",
+    "description": "In this presentation, I will discuss our moderation service, how we use Polis to bring the community in to make decisions on creating new labels, and some of the best practices among our volunteer moderators and Trust and Safety team. The goal is to give others (communities and developers) on the protocol some ideas to think about when spinning up their own moderation tools.",
+    "speakers": [
+      {
+        "id": "drkalyncoghill.blacksky.team",
+        "name": "Dr. KaLyn Coghill"
+      }
+    ],
+    "room": "Room 2301",
+    "talkType": "presentation",
+    "category": "Community",
+    "startsAt": "2026-03-29T20:30:00.000Z",
+    "endsAt": "2026-03-29T21:00:00.000Z",
+    "transcriptFile": "transcripts/3mi7tcodsqu2t.json"
+  },
+  {
+    "rkey": "3mi7tbwgymp25",
+    "title": "Compete or kill Cooperate and Succeed!",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi7tbwgymp25",
+    "vodCid": "bafyreie7u4pypp4gszmaumetlmx7qog7syayih4tml4s3l6zh4wi5ksnea",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi7tbwgymp25",
+    "durationMs": 7165603,
+    "createdAt": "2026-03-29T18:57:54Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/EkexvrN",
+    "description": "Products no longer need to steal another killer feature that's on another app, they can just share it! This presentation will go through a product I'm working on that uses lexicons to integrate bidirectionally with a few other applications on the protocol. Future considerations could involve collaborative UI components for a lexicon.",
+    "speakers": [
+      {
+        "id": "gov.glados.computer",
+        "name": "Govind Mohan"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "presentation",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-29T20:30:00.000Z",
+    "endsAt": "2026-03-29T21:00:00.000Z",
+    "transcriptFile": "transcripts/3mi7tbwgymp25.json"
+  },
+  {
+    "rkey": "3mia26ffz2j2c",
+    "title": "Two Years of Skywatch: Lessons Learned for Community Moderation",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mia26ffz2j2c",
+    "vodCid": "bafyreid4qbyqfluxg7zqozabfogcprnauyvpmdro3oupmreqzol7d655zu",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mia26ffz2j2c",
+    "durationMs": 1854262,
+    "createdAt": "2026-03-29T21:01:11Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/LZ4oWrj",
+    "description": "What has it been like to run a large community labeler over the course of two years? I'll focus heavily on lessons learned, including reflections on what and who it serves, the missteps and pitfalls made along the way, and what I would do differently if I were to start all over again.\r\n\r\nI'll reflect on how I've come to view community labeling is distinct from Trust & Safety or moderation and the role it can still play in the ecosystem, along with thoughts on what directions the labeler ecosystem might explore in the future.",
+    "speakers": [
+      {
+        "id": "scoiattolo.mountainherder.xyz",
+        "name": "D Scarnecchia"
+      }
+    ],
+    "room": "Room 2301",
+    "talkType": "presentation",
+    "category": "Community",
+    "startsAt": "2026-03-29T21:00:00.000Z",
+    "endsAt": "2026-03-29T21:30:00.000Z",
+    "transcriptFile": "transcripts/3mia26ffz2j2c.json"
+  },
+  {
+    "rkey": "3mi7zxhekcu2d",
+    "title": "Building decentralized AI on atproto",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi7zxhekcu2d",
+    "vodCid": "bafyreibf4ryl2pehijopxmsghy7unwq2rezceqdxr4zm6stexkz2kv2pfa",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi7zxhekcu2d",
+    "durationMs": 1991758,
+    "createdAt": "2026-03-29T20:57:18Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/q4QAgVk",
+    "description": "With a renewed push in the AI field toward smaller, distilled models, the community outside the Big Labs™️ has greater and greater power to shape AI's future. @maxine.science will share a story of how Forecast Bio is building tools on atproto for (1) distributed, structured, streamable AI training data, and (2) a full phylogeny of model weights and evals across different training paths. Attendees will see how open infra built on atproto can put the frontier of AI back in the community's hands.",
+    "speakers": [
+      {
+        "id": "maxine.science",
+        "name": "Maxine Levesque"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "presentation",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-29T21:00:00.000Z",
+    "endsAt": "2026-03-29T21:30:00.000Z",
+    "transcriptFile": "transcripts/3mi7zxhekcu2d.json"
+  },
+  {
+    "rkey": "3mi7ztge2sf2h",
+    "title": "Designing for the social web",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi7ztge2sf2h",
+    "vodCid": "bafyreibig53xjzelsacagkmpte5h4bya5rixn5hztg6s3dz6pnwoalzmwi",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi7ztge2sf2h",
+    "durationMs": 2217245,
+    "createdAt": "2026-03-29T20:55:03Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/GxEe0Vz",
+    "description": "A panel with prominent designers/builders from the community to talk about design.",
+    "speakers": [
+      {
+        "id": "darrin.bsky.team",
+        "name": "Darrin Loeliger"
+      }
+    ],
+    "room": "Great Hall South",
+    "talkType": "panel",
+    "category": "Community",
+    "startsAt": "2026-03-29T21:00:00.000Z",
+    "endsAt": "2026-03-29T21:30:00.000Z",
+    "transcriptFile": "transcripts/3mi7ztge2sf2h.json"
+  },
+  {
+    "rkey": "3mia3vqrg4r23",
+    "title": "Data Sovereignty for Games (and Everything Else): Building Decentralized Industry Infrastructure on ATProto",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mia3vqrg4r23",
+    "vodCid": "bafyreig4ckmab3a2lhlkrn42qduut37m6bme4hsyz2kpnlpw4n3a6h3hea",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mia3vqrg4r23",
+    "durationMs": 1665000,
+    "createdAt": "2026-03-29T21:32:09Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/xXWE9Dv",
+    "description": "Game developers publish data across dozens of platforms they don't control... until payment processors or platform policies change the rules overnight. I'm building The Pentaract: both the lexicons and the management platform that let developers control their game data on ATProto, enabling true data sovereignty, player-owned achievements and saves, and decentralized modding systems. This talk breaks down how I'm using ATProto's distributed infrastructure to solve real industry problems, from scattered metadata to platform lock-in, and provides a blueprint for developers in any industry facing similar centralization challenges.",
+    "speakers": [
+      {
+        "id": "trezy.codes",
+        "name": "Trezy Who"
+      }
+    ],
+    "room": "Great Hall South",
+    "talkType": "presentation",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-29T21:30:00.000Z",
+    "endsAt": "2026-03-29T22:00:00.000Z",
+    "transcriptFile": "transcripts/3mia3vqrg4r23.json"
+  },
+  {
+    "rkey": "3mia3vm5oyd2u",
+    "title": "Coop: Open source Trust & Safety infrastructure for all",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mia3vm5oyd2u",
+    "vodCid": "bafyreif44mqbf7apnn4v6x5nlqtgkkhwtn4hnilcfxokxa2apb7bh6jmru",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mia3vm5oyd2u",
+    "durationMs": 1950417,
+    "createdAt": "2026-03-29T21:32:04Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/0Qq9NlZ",
+    "description": "As protocols and platforms grow, so do the demands of trust and safety dashboards, human review queues, and automated policy enforcement—yet most trust and safety solutions remain closed, proprietary, reinvented in isolation, and too often out of reach for smaller and decentralized platforms.\r\n\r\nRobust Open Online Safety Tools (ROOST) is building a different future: one where the trust and safety tools that form this critical layer of Internet infrastructure are open, transparent, community-governed, and usable by platforms and organizations of all sizes. Attendees will get a quick refresher on what “trust and safety” means, hear how ROOST is succeeding with a non-profit and open source approach; see a demo of the open source Coop review tool in action; and finally, learn how to adopt and contribute to Coop and other open source trust and safety tools with ROOST.",
+    "speakers": [
+      {
+        "id": "cassidyjames.com",
+        "name": "Cassidy James Blaede"
+      }
+    ],
+    "room": "Room 2301",
+    "talkType": "presentation",
+    "category": "Media and Civics",
+    "startsAt": "2026-03-29T21:30:00.000Z",
+    "endsAt": "2026-03-29T22:00:00.000Z",
+    "transcriptFile": "transcripts/3mia3vm5oyd2u.json"
+  },
+  {
+    "rkey": "3mia3svkvjw22",
+    "title": "furryli.st — Building Communities Without Landlords From the Protocol Up",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mia3svkvjw22",
+    "vodCid": "bafyreigr77b3o7vtuic6l3bkiaw22ufgvxsyfovo2wi4vy6fuu7pstr5ra",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mia3svkvjw22",
+    "durationMs": 1916033,
+    "createdAt": "2026-03-29T21:30:33Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/WObY04Q",
+    "description": "The AT Protocol guarantees sovereignty to the user. But it does not yet do the same for communities. Community stewards, like platforms, become landlords by necessity. Can we address this from the protocol up?\n\nIn this presentation, I’ll use furryli.st, which defines and serves a community of 60,000+ furries on the AT Protocol, as a case study to deconstruct the \"community\" into distinct roles and relationships, identify existing protocol-native analogues, and propose what needs to be built next to create resilient, protocol-native communities defined by *people*, rather than infrastructure.",
+    "speakers": [
+      {
+        "id": "baldemo.to",
+        "name": "Baldemar Motomochi"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "presentation",
+    "category": "Community",
+    "startsAt": "2026-03-29T21:30:00.000Z",
+    "endsAt": "2026-03-29T22:00:00.000Z",
+    "transcriptFile": "transcripts/3mia3svkvjw22.json"
+  },
+  {
+    "rkey": "3mia5q5vu4q2h",
+    "title": "WebTiles Showcase",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mia5q5vu4q2h",
+    "vodCid": "bafyreiey4fnvwn7jvep6xicv76deadbkl6sowbzzytjlmaz7qvaa2utzse",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mia5q5vu4q2h",
+    "durationMs": 1902339,
+    "createdAt": "2026-03-29T22:04:48Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/000WebTiles",
+    "description": "WebTiles Showcase",
+    "speakers": [
+      {
+        "id": "knowtheory.net",
+        "name": "Ted Han"
+      },
+      {
+        "id": "robin.berjon.com",
+        "name": "Robin Berjon"
+      }
+    ],
+    "room": "Room 2301",
+    "talkType": "presentation",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-29T22:00:00.000Z",
+    "endsAt": "2026-03-29T22:30:00.000Z",
+    "transcriptFile": "transcripts/3mia5q5vu4q2h.json"
+  },
+  {
+    "rkey": "3mia5mbp4tf22",
+    "title": "From Toilets to Moths: The Future of Social Media is Weird and Not For Everyone",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mia5mbp4tf22",
+    "vodCid": "bafyreiddwurnzlg4lyw3dnxitfgoavmf4bauih3gbo7crxrajiizt7o2ee",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mia5mbp4tf22",
+    "durationMs": 1854245,
+    "createdAt": "2026-03-29T22:02:38Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/9qjDJZG",
+    "description": "Over the course of 12 months, I created a dozen ATmosphere based projects, apps, and experiences ranging from a decentralized toilet to a client interface named after a moth. Collectively these projects amassed 100,000 unique visitors and over half a million page views. Each project took me deeper and deeper into the world of the AT Protocol and showed me what the future of social media might look like... and what it could take to get there. Over the course of this presentation I will share the lessons I learned and what I think it means for the future of social media.",
+    "speakers": [
+      {
+        "id": "dame.is",
+        "name": "Dame"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "presentation",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-29T22:00:00.000Z",
+    "endsAt": "2026-03-29T22:30:00.000Z",
+    "transcriptFile": "transcripts/3mia5mbp4tf22.json"
+  },
+  {
+    "rkey": "3mia5khdija2h",
+    "title": "Protocol Governance & Hard Decentralization",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mia5khdija2h",
+    "vodCid": "bafyreierfgqregw6vkayr24sp4l5k22s7eid2ngyflkou54ymyko6av474",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mia5khdija2h",
+    "durationMs": 1668175,
+    "createdAt": "2026-03-29T22:01:37Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/rjQ96kl",
+    "description": "AT is entering a critical phase of maturation and becoming truly multi-stakeholder infrastructure. This talk covers the concrete steps both Bluesky and the AT ecosystem are taking to achieve \"hard decentralization\": forming an IETF working group to standardize the protocol, establishing independent governance for PLC, and implementing the technical foundations that make decentralization real - more and larger PDSes, seamless account portability, full network sync, and more.",
+    "speakers": [
+      {
+        "id": "dholms.at",
+        "name": "Daniel Holmgren"
+      }
+    ],
+    "room": "Great Hall South",
+    "talkType": "presentation",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-29T22:00:00.000Z",
+    "endsAt": "2026-03-29T22:30:00.000Z",
+    "transcriptFile": "transcripts/3mia5khdija2h.json"
+  },
+  {
+    "rkey": "3mia7iun75l2x",
+    "title": "Keywords vs Embeddings",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mia7iun75l2x",
+    "vodCid": "bafyreihejeqj42xbtcrfpuxwz4ouzljdu3v6mhmq7c7ybukyij45k6dgue",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mia7iun75l2x",
+    "durationMs": 2079654,
+    "createdAt": "2026-03-29T22:36:31Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/5B02jaM",
+    "description": "Insights from building discovery feeds: from naive keyword extraction to naive embedder usage to better insights into how both work and might be combined to understand and match Bluesky posts(-ers). Based on your feedback I can make this more or less ATproto specific (e.g. scraping pitfalls), also more or less technical, leaning towards less technical. A light intro to TF-IDF (sparse) vs EmbeddingGemma (dense) vectors.",
+    "speakers": [
+      {
+        "id": "raedisch.net",
+        "name": "Jasper Rädisch"
+      }
+    ],
+    "room": "Room 2301",
+    "talkType": "lightning-talk",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-29T23:00:00.000Z",
+    "endsAt": "2026-03-29T23:10:00.000Z",
+    "transcriptFile": "transcripts/3mia7iun75l2x.json"
+  },
+  {
+    "rkey": "3mia7dt6fnp2m",
+    "title": "ATProto design philosophy behind BookHive",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mia7dt6fnp2m",
+    "vodCid": "bafyreigvfdgoirfbk2umj2pjin7egcmzbsdazc4xemyokla23vlnnizk44",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mia7dt6fnp2m",
+    "durationMs": 2190837,
+    "createdAt": "2026-03-29T22:33:42Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/q4QdXj7",
+    "description": "This talk will go into depth on the design philosophy that underpins my project BookHive, a book tracking application comparable to Goodreads. The main point is a call to action that we should give users' agency over their data, by aiming to make the data that we store in their PDS as interoperable as possible. This means more than just recording IDs in their PDS, actually giving them the data that you use to construct your application.\n\nhttps://nick-the-sick.pckt.blog/the-design-philosophy-of-bookhive-s23cz85",
+    "speakers": [
+      {
+        "id": "nickthesick.com",
+        "name": "Nicholas Perez"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "lightning-talk",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-29T23:00:00.000Z",
+    "endsAt": "2026-03-29T23:10:00.000Z",
+    "transcriptFile": "transcripts/3mia7dt6fnp2m.json"
+  },
+  {
+    "rkey": "3mia74qg3622a",
+    "title": "Building Bridgy, Not Walls",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mia74qg3622a",
+    "vodCid": "bafyreiesnh45wjrpjgyxjgsl63vxg6eiiekqgzdcmyy6kvwngsqlb6b2ba",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mia74qg3622a",
+    "durationMs": 3111972,
+    "createdAt": "2026-03-29T22:29:44Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/81gXlXP",
+    "description": "A breakdown of improvements in multi-protocol services, including Bridgy Fed and Bounce, and where those services are going in 2026. Some things include:\r\n\r\n1. Direct integrations with platforms + client tools\r\n2. Moderation improvements\r\n3. Working with other multi-protocol services\r\n4. Major updates coming to Bridgy Fed",
+    "speakers": [
+      {
+        "id": "quillmatiq.com",
+        "name": "Anuj Ahooja"
+      }
+    ],
+    "room": "Great Hall South",
+    "talkType": "lightning-talk",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-29T23:00:00.000Z",
+    "endsAt": "2026-03-29T23:10:00.000Z",
+    "transcriptFile": "transcripts/3mia74qg3622a.json"
+  },
+  {
+    "rkey": "3miac22soys22",
+    "title": "Affordances of the Atmosphere",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3miac22soys22",
+    "vodCid": "bafyreihy4ercixns4g6iu5b3xh2p76vnrokyluyv7lgpdkdmnvgjl2tmeu",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3miac22soys22",
+    "durationMs": 587841,
+    "createdAt": "2026-03-29T23:21:56Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/aQJAWl9",
+    "description": "The AT Protocol introduces several affordances to social products which are unfamiliar to both product creators and users of social products. This presents a challenge in both imagining the new features and experiences made possible by the protocol and how to share those capabilities with users. I'll walk through a few of the unique powers of ATproto, what implications those have for how we build social products, and some thoughts on how to make it all make sense, and be compelling, for users.",
+    "speakers": [
+      {
+        "id": "tynanpurdy.com",
+        "name": "Tynan Purdy"
+      }
+    ],
+    "room": "Great Hall South",
+    "talkType": "lightning-talk",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-29T23:10:00.000Z",
+    "endsAt": "2026-03-29T23:20:00.000Z",
+    "transcriptFile": "transcripts/3miac22soys22.json"
+  },
+  {
+    "rkey": "3miabh2g67c2c",
+    "title": "Scaling the Atmosphere",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3miabh2g67c2c",
+    "vodCid": "bafyreibrggcmefyyxloaxfcasfeguaxyftujvjaecqjdam7axgxh7vkeie",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3miabh2g67c2c",
+    "durationMs": 718262,
+    "createdAt": "2026-03-29T23:11:18Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/QKNkKMX",
+    "description": "Lessons learned from building and scaling atproto and bsky.app. How do you move beyond an appview powered by a single sqlite? How are we at Bluesky PBC building scalable and reliable infrastructure that can A) be provided as a service and B) be run by self-hosters. What's next for us and the ecosystem scaling-wise?",
+    "speakers": [
+      {
+        "id": "calabro.io",
+        "name": "Jim Calabro"
+      }
+    ],
+    "room": "Room 2301",
+    "talkType": "lightning-talk",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-29T23:10:00.000Z",
+    "endsAt": "2026-03-29T23:20:00.000Z",
+    "transcriptFile": "transcripts/3miabh2g67c2c.json"
+  },
+  {
+    "rkey": "3miabfvrtei26",
+    "title": "Abstracting the AppView",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3miabfvrtei26",
+    "vodCid": "bafyreifgrejxlq3wmu3r36vlzzfd3oanpmw3uvp3ish3nch5wmo7cpjhay",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3miabfvrtei26",
+    "durationMs": 721267,
+    "createdAt": "2026-03-29T23:10:39Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/dWGJ41y",
+    "description": "Quick dive into AppViews. Talk about what an AppView is/does, explore different implementations/setups, and show how tools like quickslice can abstract that all away allowing you to focus on your lexicons and UI/UX.",
+    "speakers": [
+      {
+        "id": "chadtmiller.com",
+        "name": "Chad Miller"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "lightning-talk",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-29T23:10:00.000Z",
+    "endsAt": "2026-03-29T23:20:00.000Z",
+    "transcriptFile": "transcripts/3miabfvrtei26.json"
+  },
+  {
+    "rkey": "3miacmdq4sm2a",
+    "title": "How to use Bluesky to easily and securely preview a software product to users.",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3miacmdq4sm2a",
+    "vodCid": "bafyreib3t5jei3jdsexmxqb66ho6o5acuek2xlhauxwjdu3qw6iqe4ctge",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3miacmdq4sm2a",
+    "durationMs": 678053,
+    "createdAt": "2026-03-29T23:32:09Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/ob8N65V",
+    "description": "ATProto is a great way to manage identity! One of my favorite things about it is that it's vendor-neutral. I'll describe how I used ATProto to build self-service licensing and analytics for a software beta with no third-party dependencies.",
+    "speakers": [
+      {
+        "id": "timburks.me",
+        "name": "Tim Burks"
+      }
+    ],
+    "room": "Great Hall South",
+    "talkType": "lightning-talk",
+    "category": "Community",
+    "startsAt": "2026-03-29T23:20:00.000Z",
+    "endsAt": "2026-03-29T23:30:00.000Z",
+    "transcriptFile": "transcripts/3miacmdq4sm2a.json"
+  },
+  {
+    "rkey": "3miac5ez6a22r",
+    "title": "Skylimit: A curating web client with fine-grained controls to mimic the newspaper experience",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3miac5ez6a22r",
+    "vodCid": "bafyreia44uwnrll3v2prxuphvo5entvq7aqwhz5vndo7tdsv5y2okon2ie",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3miac5ez6a22r",
+    "durationMs": 564989,
+    "createdAt": "2026-03-29T23:23:47Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/xX5yRJr",
+    "description": "The goal of many social media platforms is to maximize your screen time. Skylimit is a curation algorithm designed to optimize your limited screen time. It attempts to answer the following question: If I decide to limit myself to viewing, say, 500 posts per day (on average), what is the best way to manage my Following Feed?\r\n\r\nAs a Bluesky user who follows many people, I would like to view the most relevant and interesting posts in my feed. This is similar to the decisions editors make when populating a fixed number of pages in a printed newspaper—they must choose from news items on numerous topics, regular pieces by columnists, and more. Skylimit aims to mimic aspects of the print news reading experience in the digital world by creating a curated version of the Following Feed with statistical settings for each followee that go beyond just muting.\r\n\r\nThe talk will discuss the various trade-offs involved in achieving this goal and demonstrate a prototype Bluesky web client (skylimit.dev) that implements the curation algorithm. Issues to be discussed include: how to (statistically) select and display “important” posts, handling “quiet posters,” and presenting periodic digest editions.",
+    "speakers": [
+      {
+        "id": "sarava.net",
+        "name": "Ramalingam Saravanan"
+      }
+    ],
+    "room": "Room 2301",
+    "talkType": "lightning-talk",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-29T23:20:00.000Z",
+    "endsAt": "2026-03-29T23:30:00.000Z",
+    "transcriptFile": "transcripts/3miac5ez6a22r.json"
+  },
+  {
+    "rkey": "3miac3urhgt23",
+    "title": "Using GraphQL to build with ATProto",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3miac3urhgt23",
+    "vodCid": "bafyreid5mrx45wn7id6r4ogyg4xk7o737bvwse3abn36c32mj3wflxa42q",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3miac3urhgt23",
+    "durationMs": 540157,
+    "createdAt": "2026-03-29T23:22:57Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/686gZde",
+    "description": "When developing applications, there are a lot of client technologies that can talk to server backends. ATProto is extensible, federated, and works with backend data stores; GraphQL is often fixed for a specific application, precompiled, and yet performs a somewhat similar function. Because GraphQL tooling is common for application development (e.g. Relay, Apollo) it would make sense to bridge these two technologies so developers can bootstrap ATProto applications with widely available tools. My talk would explain my deep dive into this (starting with an Expo App) and some thoughts about how this would scale to introduce more developers into the ATmosphere.",
+    "speakers": [
+      {
+        "id": "timryan.org",
+        "name": "Tim Ryan"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "lightning-talk",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-29T23:20:00.000Z",
+    "endsAt": "2026-03-29T23:30:00.000Z",
+    "transcriptFile": "transcripts/3miac3urhgt23.json"
+  },
+  {
+    "rkey": "3miadb23fme2a",
+    "title": "Wherever You Get Your Podcasts: Interoperability in the Atmosphere",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3miadb23fme2a",
+    "vodCid": "bafyreihxnlmwsybuaygebxeclka5yxh5snv2rlynlsw53knvizpyrm2wla",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3miadb23fme2a",
+    "durationMs": 1192066,
+    "createdAt": "2026-03-29T23:43:44Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/RG6Nepp",
+    "description": "Connecting the \"Wherever You Get Your Podcasts\" blog I posted a ~month ago (https://knotbin.leaflet.pub/3lx3uqveyj22f) to interoperability in atproto.m using the podcast metaphor for feature adoption & how they're just one type of RSS feed, just like lexicons with records. In theory, apps can implement any lexicon. I'd then go into the actual experience of implementing this at the huge scale of Bluesky's lexicon and why Spark decided to take a different approach to lexicon interop in the end.",
+    "speakers": [
+      {
+        "id": "knotbin.com",
+        "name": "Roscoe Rubin-Rottenberg"
+      }
+    ],
+    "room": "Great Hall South",
+    "talkType": "presentation",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-29T23:30:00.000Z",
+    "endsAt": "2026-03-30T00:00:00.000Z",
+    "transcriptFile": "transcripts/3miadb23fme2a.json"
+  },
+  {
+    "rkey": "3miacona6fc2e",
+    "title": "AT Transparency Logs: accountable record collections",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3miacona6fc2e",
+    "vodCid": "bafyreigr4m65jlpkh2zkkqqabyc6ohac5dr6flgpag7ub5blk24gt2v2x4",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3miacona6fc2e",
+    "durationMs": 679175,
+    "createdAt": "2026-03-29T23:33:26Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/000TLog",
+    "description": "atproto lets us delete and modify records, which for social media is definitely good. But there are cases where you'd like to instead ensure everyone is seeing the same append-only set of records, forever: software releases, for example. That's what tlogs are for! tlogs are the technology that makes Certificate Transparency, the Go Checksum Database, Sigstore and Sigsum possible. atproto gives us everything we need to make a tlog: canonically hashed records and a global mechanism to access them. We can even make the tlog configuration in-protocol, letting multiple tlog operators work like any other AppView.",
+    "speakers": [
+      {
+        "id": "filippo.abyssdomain.expert",
+        "name": "Filippo Valsorda"
+      }
+    ],
+    "room": "Room 2301",
+    "talkType": "lightning-talk",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-29T23:30:00.000Z",
+    "endsAt": "2026-03-29T23:40:00.000Z",
+    "transcriptFile": "transcripts/3miacona6fc2e.json"
+  },
+  {
+    "rkey": "3miacmwnd2z2z",
+    "title": "Jacquard Magic: how to make atproto actually easy with Rust",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3miacmwnd2z2z",
+    "vodCid": "bafyreiezewncvjwhxh7n6rsfbpmgtl4ug4fu66ysenamizhjo3unrgfloe",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3miacmwnd2z2z",
+    "durationMs": 1781732,
+    "createdAt": "2026-03-29T23:32:29Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/ZjL74D0",
+    "description": "A talk about spite-driven development and the process of using a language with a reputation for difficulty to make atproto development approachable. How do we encode the constraints (and freedoms) of the protocol in a way that makes sense and doesn't impose undue friction? What are good things to have in the defaults? There is not one right answer, and the answer, as well as the points of freedom to choose a different answer for yourself, matters.\n\nWhat can that ethos and its result allow you to do which you might not expect is possible?",
+    "speakers": [
+      {
+        "id": "nonbinary.computer",
+        "name": "Orual"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "presentation",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-29T23:30:00.000Z",
+    "endsAt": "2026-03-30T00:00:00.000Z",
+    "transcriptFile": "transcripts/3miacmwnd2z2z.json"
+  },
+  {
+    "rkey": "3miadd43al32c",
+    "title": "Matadata! Publishing scientific data straight to AT",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3miadd43al32c",
+    "vodCid": "bafyreiguxaud2su4qnygvrak7roe7g5l3yzaah34vmi3j5qn4cyn4sadce",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3miadd43al32c",
+    "durationMs": 619089,
+    "createdAt": "2026-03-29T23:44:53Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/ZjMOl7o",
+    "description": "Project Matadata is a project to publish and read science metadata directly to AT. This makes scientific data accessible in verified ways and widely disseminated.",
+    "speakers": [
+      {
+        "id": "robin.berjon.com",
+        "name": "Robin Berjon"
+      }
+    ],
+    "room": "Room 2301",
+    "talkType": "lightning-talk",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-29T23:40:00.000Z",
+    "endsAt": "2026-03-29T23:50:00.000Z",
+    "transcriptFile": "transcripts/3miadd43al32c.json"
+  },
+  {
+    "rkey": "3miaef2b4mh2h",
+    "title": "Rewilding the internet with ATProto",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3miaef2b4mh2h",
+    "vodCid": "bafyreifrrqroht3uajao4uvt7er4ytwq745mwlx4v2fdhpxzr2m2mm4kgq",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3miaef2b4mh2h",
+    "durationMs": 1451878,
+    "createdAt": "2026-03-30T00:03:52Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/PdNOkAP",
+    "description": "So far, many of the projects in the ATProtocol ecosystem have focused on bringing parity—making projects that replicate our existing tools and platforms, but with the affordances of the protocol instead. That's cool and we need to do that, but I think we can go much farther, and take this opportunity to challenge some of the biggest assumptions of what the modern internet is for, who builds it, and how we interact with it.\n\nThis talk is in conversation with several of the talks from last year, and in I'll argue that we'll never get away from skeuomorphism until we've fundamentally changed the definition of what \"the social internet\" means in the first place.",
+    "speakers": [
+      {
+        "id": "offline.arushibandi.com",
+        "name": "Arushi Bandi"
+      }
+    ],
+    "room": "Great Hall South",
+    "talkType": "presentation",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-30T00:00:00.000Z",
+    "endsAt": "2026-03-30T00:30:00.000Z",
+    "transcriptFile": "transcripts/3miaef2b4mh2h.json"
+  },
+  {
+    "rkey": "3miaec7exqi25",
+    "title": "An artist dreaming in the Atmosphere: visions about community, sustainability and creativity",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3miaec7exqi25",
+    "vodCid": "bafyreidynb73krrvb26mxrmlij5a7w34lfbdczziogqwpjpkl2kyouympe",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3miaec7exqi25",
+    "durationMs": 1683428,
+    "createdAt": "2026-03-30T00:02:17Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/A7YLlpl",
+    "description": "Sharing visions about how artists could thrive in the ATProto ecosystem:\n\n1. building community and inspiration in different paces, with an artist curated app, from microvisuals, microblogging to book clubs and music shows.\n\n2. financial sustainability: a proposal for artist owned music distribution and licensing from the PDS\n\n3. creativity: redefining composition techniques with ATProto technology",
+    "speakers": [
+      {
+        "id": "hilk.eu",
+        "name": "Hilke Ros"
+      }
+    ],
+    "room": "Performance Theatre",
+    "talkType": "presentation",
+    "category": "Community",
+    "startsAt": "2026-03-30T00:00:00.000Z",
+    "endsAt": "2026-03-30T00:30:00.000Z",
+    "transcriptFile": "transcripts/3miaec7exqi25.json"
+  },
+  {
+    "rkey": "3miadvkvhfv2h",
+    "title": "DID:PLC War Games",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3miadvkvhfv2h",
+    "vodCid": "bafyreihe5252dxkkcho6ssjeucka6w3b6kigakrggtupqwrydfzsym5noq",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3miadvkvhfv2h",
+    "durationMs": 2247942,
+    "createdAt": "2026-03-29T23:55:12Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/QKqWDrG",
+    "description": "- What the current DID:PLC design does and doesn't protect\r\n- What could possibly go wrong\r\n- How we can strengthen the social layer\r\n- Some approaches to making the technology more robust",
+    "speakers": [
+      {
+        "id": "goat.navy",
+        "name": "Edmund Edgar"
+      }
+    ],
+    "room": "Room 2301",
+    "talkType": "presentation",
+    "category": "Development and Protocol",
+    "startsAt": "2026-03-30T00:00:00.000Z",
+    "endsAt": "2026-03-30T00:30:00.000Z",
+    "transcriptFile": "transcripts/3miadvkvhfv2h.json"
+  },
+  {
+    "rkey": "3miafuv53nh2z",
+    "title": "Please join us in stream 1 for closing remarks",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3miafuv53nh2z",
+    "vodCid": "bafyreif6tqrv2rtvk3eyckrxdvqmlnbcsbo7hda3e6knvx5ixa2vopqzke",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3miafuv53nh2z",
+    "durationMs": 279571,
+    "createdAt": "2026-03-30T00:30:37Z",
+    "eventUri": "at://did:plc:3xewinw4wtimo2lqfy5fm5sw/community.lexicon.calendar.event/day-4-closing-remarks",
+    "description": null,
+    "speakers": [],
+    "room": null,
+    "talkType": "info",
+    "category": null,
+    "startsAt": "2026-03-30T00:30:00.000Z",
+    "endsAt": "2026-03-30T00:45:00.000Z",
+    "transcriptFile": "transcripts/3miafuv53nh2z.json"
+  },
+  {
+    "rkey": "3mi2ikg6gij26",
+    "title": "ATScience at ATmosphereConf 2026!",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi2ikg6gij26",
+    "vodCid": "bafyreiat2xwwqgm3cbggywlvumgokp6wj45ntry6wkzgfuxwj7vxarrnv4",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi2ikg6gij26",
+    "durationMs": 698000,
+    "createdAt": "2026-03-27T16:02:28Z",
+    "eventUri": null,
+    "description": null,
+    "speakers": [],
+    "room": null,
+    "talkType": null,
+    "category": null,
+    "startsAt": null,
+    "endsAt": null,
+    "transcriptFile": "transcripts/3mi2ikg6gij26.json"
+  },
+  {
+    "rkey": "3mipbwdhy3v2m",
+    "title": "Crowdsourced Research Synthesis on ATProto: Envisioning an Inclusive Future",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mipbwdhy3v2m",
+    "vodCid": "bafyreiffclry4morrjhovn5fr6rfrooardxbwgfxaqdnfcpxdsqbu4z7ba",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mipbwdhy3v2m",
+    "durationMs": 601000,
+    "createdAt": "2026-03-27T22:00:00.000Z",
+    "eventUri": null,
+    "description": null,
+    "speakers": [],
+    "room": null,
+    "talkType": null,
+    "category": null,
+    "startsAt": null,
+    "endsAt": null,
+    "transcriptFile": "transcripts/3mipbwdhy3v2m.json"
+  },
+  {
+    "rkey": "3mipbxjavnf2m",
+    "title": "Narrative strands & memetic lineages in community social data using Community Archive",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mipbxjavnf2m",
+    "vodCid": "bafyreicdiadqjpkmun7ntskpfbdnngx2kjyy4fxokelqjoympw67xpzzoy",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mipbxjavnf2m",
+    "durationMs": 940000,
+    "createdAt": "2026-03-27T22:25:00.000Z",
+    "eventUri": null,
+    "description": null,
+    "speakers": [],
+    "room": null,
+    "talkType": null,
+    "category": null,
+    "startsAt": null,
+    "endsAt": null,
+    "transcriptFile": "transcripts/3mipbxjavnf2m.json"
+  },
+  {
+    "rkey": "3mi3ar75zqs23",
+    "title": "Everything Everywhere All at Once - Blaine",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi3ar75zqs23",
+    "vodCid": "bafyreibh2snh5cjd5t7zdcvf7n5pdmeinbx32qlwxdo5jpdqvazthzypke",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi3ar75zqs23",
+    "durationMs": 670360,
+    "createdAt": "2026-03-27T23:15:46Z",
+    "eventUri": null,
+    "description": null,
+    "speakers": [],
+    "room": null,
+    "talkType": null,
+    "category": null,
+    "startsAt": null,
+    "endsAt": null,
+    "transcriptFile": "transcripts/3mi3ar75zqs23.json"
+  },
+  {
+    "rkey": "3mi3bf7s6zn27",
+    "title": "Everything Everywhere All at Once - an impromtu session",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi3bf7s6zn27",
+    "vodCid": "bafyreifefakurpnjhn3flwjdt23ramembhlvrvdojltzudsam7hs4yzbri",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi3bf7s6zn27",
+    "durationMs": 1193420,
+    "createdAt": "2026-03-27T23:26:58Z",
+    "eventUri": null,
+    "description": null,
+    "speakers": [],
+    "room": null,
+    "talkType": null,
+    "category": null,
+    "startsAt": null,
+    "endsAt": null,
+    "transcriptFile": "transcripts/3mi3bf7s6zn27.json"
+  },
+  {
+    "rkey": "3mi3cjemc6a27",
+    "title": "Everything Everywhere All at Once - an impromtu session - panproto.dev",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi3cjemc6a27",
+    "vodCid": "bafyreif6vgqebdbofhbz5uaiudjwtdsi524kw562wys5uvisaqdiwknscq",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi3cjemc6a27",
+    "durationMs": 1803675,
+    "createdAt": "2026-03-27T23:47:11Z",
+    "eventUri": null,
+    "description": null,
+    "speakers": [],
+    "room": null,
+    "talkType": null,
+    "category": null,
+    "startsAt": null,
+    "endsAt": null,
+    "transcriptFile": "transcripts/3mi3cjemc6a27.json"
+  },
+  {
+    "rkey": "3mi3e7ly25h2b",
+    "title": "https://atmosphereconf.org/#schedule-conf1",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi3e7ly25h2b",
+    "vodCid": "bafyreifn4txkqz7mnn4ilsl2z6wawoaauo7qst4aetdooguwbmbldhpriu",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi3e7ly25h2b",
+    "durationMs": 544106,
+    "createdAt": "2026-03-28T00:17:30Z",
+    "eventUri": null,
+    "description": null,
+    "speakers": [],
+    "room": null,
+    "talkType": null,
+    "category": null,
+    "startsAt": null,
+    "endsAt": null,
+    "transcriptFile": null
+  },
+  {
+    "rkey": "3mi4y35l2f425",
+    "title": "ATmosphereConf 2026!!!",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi4y35l2f425",
+    "vodCid": "bafyreigxf7asevkql7jch6sdqxufbhoevn3rbqy47hwzsr7j5ynzobdpsq",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi4y35l2f425",
+    "durationMs": 4767750,
+    "createdAt": "2026-03-28T15:45:35Z",
+    "eventUri": null,
+    "description": null,
+    "speakers": [],
+    "room": null,
+    "talkType": null,
+    "category": null,
+    "startsAt": null,
+    "endsAt": null,
+    "transcriptFile": "transcripts/3mi4y35l2f425.json"
+  },
+  {
+    "rkey": "3mi4ziviq2d25",
+    "title": "ATmosphereConf 2026 - Performance Theater",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi4ziviq2d25",
+    "vodCid": "bafyreiewstqdikj3sbmgp45mszrscdxllhxrwdzc3bezxipexskkuq2tqq",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi4ziviq2d25",
+    "durationMs": 2707748,
+    "createdAt": "2026-03-28T16:11:10Z",
+    "eventUri": null,
+    "description": null,
+    "speakers": [],
+    "room": null,
+    "talkType": null,
+    "category": null,
+    "startsAt": null,
+    "endsAt": null,
+    "transcriptFile": null
+  },
+  {
+    "rkey": "3mi4zoce3a22j",
+    "title": "ATmosphereConf 2026 - Room 2301",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi4zoce3a22j",
+    "vodCid": "bafyreib446kmetdeag3kvd2u5r272o4exi5c6jogt4bgozp5s3tkspsgbu",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi4zoce3a22j",
+    "durationMs": 2770857,
+    "createdAt": "2026-03-28T16:14:11Z",
+    "eventUri": null,
+    "description": null,
+    "speakers": [],
+    "room": null,
+    "talkType": null,
+    "category": null,
+    "startsAt": null,
+    "endsAt": null,
+    "transcriptFile": null
+  },
+  {
+    "rkey": "3mi56l4hpil2x",
+    "title": "ho owns the group chat? Building collaborative spaces on ATProto",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi56l4hpil2x",
+    "vodCid": "bafyreidpzvbdmhvp2747qiegaoynmb4xv3pn4jol3pp6tpwnilnyfjlrwm",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi56l4hpil2x",
+    "durationMs": 55985,
+    "createdAt": "2026-03-28T17:41:54Z",
+    "eventUri": null,
+    "description": null,
+    "speakers": [],
+    "room": null,
+    "talkType": null,
+    "category": null,
+    "startsAt": null,
+    "endsAt": null,
+    "transcriptFile": "transcripts/3mi56l4hpil2x.json"
+  },
+  {
+    "rkey": "3mi5csvtgdg22",
+    "title": "Lunch Break",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5csvtgdg22",
+    "vodCid": "bafyreihdy4aep3nh77ttrkfg6cdqlrdhgnamialdszmvl7yey5kdfurxyi",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5csvtgdg22",
+    "durationMs": 5488189,
+    "createdAt": "2026-03-28T18:57:50Z",
+    "eventUri": null,
+    "description": null,
+    "speakers": [],
+    "room": null,
+    "talkType": null,
+    "category": null,
+    "startsAt": null,
+    "endsAt": null,
+    "transcriptFile": "transcripts/3mi5csvtgdg22.json"
+  },
+  {
+    "rkey": "3mi5dv7xthz26",
+    "title": "lunch",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5dv7xthz26",
+    "vodCid": "bafyreihjyadn266ah5kjtz5qg3djxrbpteq2kldsvy733k7z4nei67ru4e",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5dv7xthz26",
+    "durationMs": 4307178,
+    "createdAt": "2026-03-28T19:17:02Z",
+    "eventUri": null,
+    "description": null,
+    "speakers": [],
+    "room": null,
+    "talkType": null,
+    "category": null,
+    "startsAt": null,
+    "endsAt": null,
+    "transcriptFile": null
+  },
+  {
+    "rkey": "3mi5dvnqcf72u",
+    "title": "lunch",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5dvnqcf72u",
+    "vodCid": "bafyreiflwvqjoq4u5ckcsgz3qrssbslpi4smhivfzsiu66qhx3nrnlk6gm",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5dvnqcf72u",
+    "durationMs": 4333614,
+    "createdAt": "2026-03-28T19:17:16Z",
+    "eventUri": null,
+    "description": null,
+    "speakers": [],
+    "room": null,
+    "talkType": null,
+    "category": null,
+    "startsAt": null,
+    "endsAt": null,
+    "transcriptFile": "transcripts/3mi5dvnqcf72u.json"
+  },
+  {
+    "rkey": "3mi5n54d6r42u",
+    "title": "join us in https://stream.place/stream1.atmosphereconf.org for  2026 Atmosphere Report",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5n54d6r42u",
+    "vodCid": "bafyreieilyethn24g3jeo35wlg2wzduubqpki7hro2tgmygcju4mfw6tci",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5n54d6r42u",
+    "durationMs": 3173563,
+    "createdAt": "2026-03-28T22:02:30Z",
+    "eventUri": null,
+    "description": null,
+    "speakers": [],
+    "room": null,
+    "talkType": null,
+    "category": null,
+    "startsAt": null,
+    "endsAt": null,
+    "transcriptFile": null
+  },
+  {
+    "rkey": "3mi5nh7yjb326",
+    "title": "THE AtmosYear 2026",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5nh7yjb326",
+    "vodCid": "bafyreiett5nsjmibxyxccrc5wr4grsqdafobuahnjou2n6hzutq6yfabwu",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5nh7yjb326",
+    "durationMs": 2770690,
+    "createdAt": "2026-03-28T22:08:09Z",
+    "eventUri": null,
+    "description": null,
+    "speakers": [],
+    "room": null,
+    "talkType": null,
+    "category": null,
+    "startsAt": null,
+    "endsAt": null,
+    "transcriptFile": "transcripts/3mi5nh7yjb326.json"
+  },
+  {
+    "rkey": "3mi5q2kpn7o2m",
+    "title": "THE AtmosYear 2026",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5q2kpn7o2m",
+    "vodCid": "bafyreiaajax5l4mcycdjqtvuctpn5a7ajhr2fcusveqb3ibui2trwx5jjq",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5q2kpn7o2m",
+    "durationMs": 69977,
+    "createdAt": "2026-03-28T22:54:46Z",
+    "eventUri": null,
+    "description": null,
+    "speakers": [],
+    "room": null,
+    "talkType": null,
+    "category": null,
+    "startsAt": null,
+    "endsAt": null,
+    "transcriptFile": null
+  },
+  {
+    "rkey": "3mi5wj4mc6t2e",
+    "title": "Join us tomorrow!",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5wj4mc6t2e",
+    "vodCid": "bafyreicuxjfdwspoupdltxxl3nmjelwnnwxaajxvxoa7okgpsfmfgrr5be",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5wj4mc6t2e",
+    "durationMs": 366638,
+    "createdAt": "2026-03-29T00:50:17Z",
+    "eventUri": null,
+    "description": null,
+    "speakers": [],
+    "room": null,
+    "talkType": null,
+    "category": null,
+    "startsAt": null,
+    "endsAt": null,
+    "transcriptFile": null
+  },
+  {
+    "rkey": "3mi5wnpkchp2z",
+    "title": "the bonus content, IDK, not on the schedule",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5wnpkchp2z",
+    "vodCid": "bafyreicy7qcda34golrmhtb4rozpuqnp664vkkb3csreu7b5dup3rg2yba",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5wnpkchp2z",
+    "durationMs": 93987,
+    "createdAt": "2026-03-29T00:52:51Z",
+    "eventUri": null,
+    "description": null,
+    "speakers": [],
+    "room": null,
+    "talkType": null,
+    "category": null,
+    "startsAt": null,
+    "endsAt": null,
+    "transcriptFile": "transcripts/3mi5wnpkchp2z.json"
+  },
+  {
+    "rkey": "3mi5wqwpqx72z",
+    "title": "Join us tomorrow!",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5wqwpqx72z",
+    "vodCid": "bafyreidgixtabvw3oztnfkke33inp7twrrzxzcpzhwvtyufrxdhyu6ekee",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5wqwpqx72z",
+    "durationMs": 162282,
+    "createdAt": "2026-03-29T00:54:39Z",
+    "eventUri": null,
+    "description": null,
+    "speakers": [],
+    "room": null,
+    "talkType": null,
+    "category": null,
+    "startsAt": null,
+    "endsAt": null,
+    "transcriptFile": null
+  },
+  {
+    "rkey": "3mi5xky7ogz23",
+    "title": "Join us tomorrow!",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi5xky7ogz23",
+    "vodCid": "bafyreih6og2fnj33jn3ru2kmnr65dzxnn7dgglpjkiarnsbo2cuoiilfwi",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi5xky7ogz23",
+    "durationMs": 550006,
+    "createdAt": "2026-03-29T01:09:13Z",
+    "eventUri": null,
+    "description": null,
+    "speakers": [],
+    "room": null,
+    "talkType": null,
+    "category": null,
+    "startsAt": null,
+    "endsAt": null,
+    "transcriptFile": null
+  },
+  {
+    "rkey": "3mi7isob4ae2a",
+    "title": "ATmosphereConf starting soon!",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi7isob4ae2a",
+    "vodCid": "bafyreihfx6lsjvbfuexsw65bog4vxtns6ytls3bqavntnbpbpcdqd3nuxe",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi7isob4ae2a",
+    "durationMs": 705981,
+    "createdAt": "2026-03-29T15:50:24Z",
+    "eventUri": null,
+    "description": null,
+    "speakers": [],
+    "room": null,
+    "talkType": null,
+    "category": null,
+    "startsAt": null,
+    "endsAt": null,
+    "transcriptFile": "transcripts/3mi7isob4ae2a.json"
+  },
+  {
+    "rkey": "3mi7jnnnh7i2h",
+    "title": "ATmosphereConf Starting Soon!",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi7jnnnh7i2h",
+    "vodCid": "bafyreihsp6beoub4srnok2ebn2xkfvfft35uee63fhved2rrb7trpdjqxy",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi7jnnnh7i2h",
+    "durationMs": 36066,
+    "createdAt": "2026-03-29T16:05:29Z",
+    "eventUri": null,
+    "description": null,
+    "speakers": [],
+    "room": null,
+    "talkType": null,
+    "category": null,
+    "startsAt": null,
+    "endsAt": null,
+    "transcriptFile": null
+  },
+  {
+    "rkey": "3mi7jx4xi2g25",
+    "title": "ATmosphereConf Starting Soon",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi7jx4xi2g25",
+    "vodCid": "bafyreibt7rmeavl43ix5kynajbw2hhdgbxmq35kr754ainlebmbqrb3sh4",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi7jx4xi2g25",
+    "durationMs": 1478580,
+    "createdAt": "2026-03-29T16:10:47Z",
+    "eventUri": null,
+    "description": null,
+    "speakers": [],
+    "room": null,
+    "talkType": null,
+    "category": null,
+    "startsAt": null,
+    "endsAt": null,
+    "transcriptFile": null
+  },
+  {
+    "rkey": "3mi7sb5disa2y",
+    "title": "IRL only / No Stream",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi7sb5disa2y",
+    "vodCid": "bafyreickbrukr4yusqzaj5fvfciudcmudhsh3zwlg5ka3uovcvburvpk7u",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3mi7sb5disa2y",
+    "durationMs": 1099930,
+    "createdAt": "2026-03-29T18:39:33Z",
+    "eventUri": null,
+    "description": null,
+    "speakers": [],
+    "room": null,
+    "talkType": null,
+    "category": null,
+    "startsAt": null,
+    "endsAt": null,
+    "transcriptFile": null
+  },
+  {
+    "rkey": "3miafr5amxa2m",
+    "title": "closing remarks",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3miafr5amxa2m",
+    "vodCid": "bafyreidm3ygv2wmzj7fxgk7g4qb3jc2sshwjjkzyyrfq4coddpvw47sede",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3miafr5amxa2m",
+    "durationMs": 1505914,
+    "createdAt": "2026-03-30T00:28:31Z",
+    "eventUri": null,
+    "description": null,
+    "speakers": [],
+    "room": null,
+    "talkType": null,
+    "category": null,
+    "startsAt": null,
+    "endsAt": null,
+    "transcriptFile": "transcripts/3miafr5amxa2m.json"
+  },
+  {
+    "rkey": "3miah6keewv2n",
+    "title": "follow @stream.place for VODs",
+    "vodUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3miah6keewv2n",
+    "vodCid": "bafyreiebotmxc7j5yw7iwxckgeek2ee65ke4p3ycujew7y5kgbss3otigm",
+    "hlsUrl": "https://vod-beta.stream.place/xrpc/place.stream.playback.getVideoPlaylist?uri=at%3A%2F%2Fdid%3Aplc%3Arbvrr34edl5ddpuwcubjiost%2Fplace.stream.video%2F3miah6keewv2n",
+    "durationMs": 400437,
+    "createdAt": "2026-03-30T00:53:55Z",
+    "eventUri": null,
+    "description": null,
+    "speakers": [],
+    "room": null,
+    "talkType": null,
+    "category": null,
+    "startsAt": null,
+    "endsAt": null,
+    "transcriptFile": "transcripts/3miah6keewv2n.json"
+  }
+]

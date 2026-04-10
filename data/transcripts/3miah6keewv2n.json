@@ -1,0 +1,41 @@
+{
+  "uri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3miah6keewv2n",
+  "cid": "bafyreiebotmxc7j5yw7iwxckgeek2ee65ke4p3ycujew7y5kgbss3otigm",
+  "title": "follow @stream.place for VODs",
+  "creator": "did:plc:7tattzlorncahxgtdiuci7x7",
+  "duration": 400436916666,
+  "createdAt": "2026-03-30T00:53:55Z",
+  "transcription": {
+    "id": "d960d49c-2896-4bbe-acae-55743cf8acbb",
+    "status": "completed",
+    "text": "Brown.",
+    "utterances": [
+      {
+        "speaker": "A",
+        "text": "Brown.",
+        "confidence": 0.6357631,
+        "start": 0,
+        "end": 240,
+        "words": [
+          {
+            "text": "Brown.",
+            "start": 0,
+            "end": 240,
+            "confidence": 0.6357631,
+            "speaker": "A"
+          }
+        ]
+      }
+    ],
+    "words": [
+      {
+        "text": "Brown.",
+        "start": 0,
+        "end": 240,
+        "confidence": 0.6357631,
+        "speaker": "A"
+      }
+    ],
+    "audio_duration": 401
+  }
+}

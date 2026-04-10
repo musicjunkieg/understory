@@ -1,0 +1,1361 @@
+{
+  "uri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi7isob4ae2a",
+  "cid": "bafyreihfx6lsjvbfuexsw65bog4vxtns6ytls3bqavntnbpbpcdqd3nuxe",
+  "title": "ATmosphereConf starting soon!",
+  "creator": "did:plc:7tattzlorncahxgtdiuci7x7",
+  "duration": 705980633333,
+  "createdAt": "2026-03-29T15:50:24Z",
+  "transcription": {
+    "id": "2f950e6d-aaba-4034-8551-abce939be0c8",
+    "status": "completed",
+    "text": "Oh yeah, your skin and bones, it's something beautiful. You know I love you so, you know I love you so. I said maybe you're going to be the one who saves me. You're going to be the one who Saves me, and after all, you're my one, you're my one, you're my one, you're my one. Without you, you spell it all out in black and white. I'm down, you've got something down that I like, but I can't quite put my thinking on it. Got a good appetite for a bad reputation.",
+    "utterances": [
+      {
+        "speaker": "A",
+        "text": "Oh yeah, your skin and bones, it's something beautiful. You know I love you so, you know I love you so.",
+        "confidence": 0.8248964,
+        "start": 223300,
+        "end": 253388,
+        "words": [
+          {
+            "text": "Oh",
+            "start": 223300,
+            "end": 223316,
+            "confidence": 0.6229794,
+            "speaker": "A"
+          },
+          {
+            "text": "yeah,",
+            "start": 223428,
+            "end": 223957,
+            "confidence": 0.84268785,
+            "speaker": "A"
+          },
+          {
+            "text": "your",
+            "start": 224037,
+            "end": 224357,
+            "confidence": 0.5114419,
+            "speaker": "A"
+          },
+          {
+            "text": "skin",
+            "start": 224454,
+            "end": 224886,
+            "confidence": 0.9964288,
+            "speaker": "A"
+          },
+          {
+            "text": "and",
+            "start": 224935,
+            "end": 225159,
+            "confidence": 0.9361467,
+            "speaker": "A"
+          },
+          {
+            "text": "bones,",
+            "start": 225159,
+            "end": 225704,
+            "confidence": 0.324145,
+            "speaker": "A"
+          },
+          {
+            "text": "it's",
+            "start": 226762,
+            "end": 228044,
+            "confidence": 0.4599816,
+            "speaker": "A"
+          },
+          {
+            "text": "something",
+            "start": 228044,
+            "end": 228670,
+            "confidence": 0.8858586,
+            "speaker": "A"
+          },
+          {
+            "text": "beautiful.",
+            "start": 228686,
+            "end": 229359,
+            "confidence": 0.9029254,
+            "speaker": "A"
+          },
+          {
+            "text": "You",
+            "start": 229968,
+            "end": 230962,
+            "confidence": 0.9073314,
+            "speaker": "A"
+          },
+          {
+            "text": "know",
+            "start": 232052,
+            "end": 232437,
+            "confidence": 0.98451346,
+            "speaker": "A"
+          },
+          {
+            "text": "I",
+            "start": 232469,
+            "end": 232645,
+            "confidence": 0.83392966,
+            "speaker": "A"
+          },
+          {
+            "text": "love",
+            "start": 233286,
+            "end": 234392,
+            "confidence": 0.99862385,
+            "speaker": "A"
+          },
+          {
+            "text": "you",
+            "start": 236540,
+            "end": 237294,
+            "confidence": 0.98899126,
+            "speaker": "A"
+          },
+          {
+            "text": "so,",
+            "start": 246479,
+            "end": 247056,
+            "confidence": 0.48794818,
+            "speaker": "A"
+          },
+          {
+            "text": "you",
+            "start": 248178,
+            "end": 248579,
+            "confidence": 0.7812958,
+            "speaker": "A"
+          },
+          {
+            "text": "know",
+            "start": 248579,
+            "end": 251080,
+            "confidence": 0.9757111,
+            "speaker": "A"
+          },
+          {
+            "text": "I",
+            "start": 251384,
+            "end": 251400,
+            "confidence": 0.97914726,
+            "speaker": "A"
+          },
+          {
+            "text": "love",
+            "start": 251400,
+            "end": 252635,
+            "confidence": 0.9989427,
+            "speaker": "A"
+          },
+          {
+            "text": "you",
+            "start": 252987,
+            "end": 253067,
+            "confidence": 0.9925249,
+            "speaker": "A"
+          },
+          {
+            "text": "so.",
+            "start": 253067,
+            "end": 253388,
+            "confidence": 0.9112693,
+            "speaker": "A"
+          }
+        ]
+      },
+      {
+        "speaker": "B",
+        "text": "I said maybe you're going to be the one who saves me. You're going to be the one who Saves me, and after all, you're my one, you're my one, you're my one, you're my one.",
+        "confidence": 0.846262,
+        "start": 524725,
+        "end": 572980,
+        "words": [
+          {
+            "text": "I",
+            "start": 524725,
+            "end": 524741,
+            "confidence": 0.23294169,
+            "speaker": "B"
+          },
+          {
+            "text": "said",
+            "start": 527209,
+            "end": 530414,
+            "confidence": 0.56726635,
+            "speaker": "B"
+          },
+          {
+            "text": "maybe",
+            "start": 530670,
+            "end": 532192,
+            "confidence": 0.86252075,
+            "speaker": "B"
+          },
+          {
+            "text": "you're",
+            "start": 532337,
+            "end": 532737,
+            "confidence": 0.6330727,
+            "speaker": "B"
+          },
+          {
+            "text": "going",
+            "start": 533218,
+            "end": 533907,
+            "confidence": 0.9443451,
+            "speaker": "B"
+          },
+          {
+            "text": "to",
+            "start": 534324,
+            "end": 534468,
+            "confidence": 0.994869,
+            "speaker": "B"
+          },
+          {
+            "text": "be",
+            "start": 534901,
+            "end": 535157,
+            "confidence": 0.9989102,
+            "speaker": "B"
+          },
+          {
+            "text": "the",
+            "start": 535526,
+            "end": 535878,
+            "confidence": 0.9989654,
+            "speaker": "B"
+          },
+          {
+            "text": "one",
+            "start": 536102,
+            "end": 536263,
+            "confidence": 0.99702793,
+            "speaker": "B"
+          },
+          {
+            "text": "who",
+            "start": 536263,
+            "end": 536391,
+            "confidence": 0.76145023,
+            "speaker": "B"
+          },
+          {
+            "text": "saves",
+            "start": 537881,
+            "end": 538474,
+            "confidence": 0.9991391,
+            "speaker": "B"
+          },
+          {
+            "text": "me.",
+            "start": 538682,
+            "end": 539964,
+            "confidence": 0.72562176,
+            "speaker": "B"
+          },
+          {
+            "text": "You're",
+            "start": 542096,
+            "end": 542705,
+            "confidence": 0.81084096,
+            "speaker": "B"
+          },
+          {
+            "text": "going",
+            "start": 542737,
+            "end": 543923,
+            "confidence": 0.97563136,
+            "speaker": "B"
+          },
+          {
+            "text": "to",
+            "start": 545477,
+            "end": 545926,
+            "confidence": 0.9527038,
+            "speaker": "B"
+          },
+          {
+            "text": "be",
+            "start": 546342,
+            "end": 546999,
+            "confidence": 0.9791388,
+            "speaker": "B"
+          },
+          {
+            "text": "the",
+            "start": 546999,
+            "end": 547240,
+            "confidence": 0.958375,
+            "speaker": "B"
+          },
+          {
+            "text": "one",
+            "start": 547480,
+            "end": 547688,
+            "confidence": 0.9848001,
+            "speaker": "B"
+          },
+          {
+            "text": "who",
+            "start": 547945,
+            "end": 548089,
+            "confidence": 0.8060222,
+            "speaker": "B"
+          },
+          {
+            "text": "Saves",
+            "start": 548682,
+            "end": 554741,
+            "confidence": 0.31399724,
+            "speaker": "B"
+          },
+          {
+            "text": "me,",
+            "start": 556039,
+            "end": 556119,
+            "confidence": 0.4320386,
+            "speaker": "B"
+          },
+          {
+            "text": "and",
+            "start": 556359,
+            "end": 557241,
+            "confidence": 0.9852363,
+            "speaker": "B"
+          },
+          {
+            "text": "after",
+            "start": 557241,
+            "end": 557770,
+            "confidence": 0.9899625,
+            "speaker": "B"
+          },
+          {
+            "text": "all,",
+            "start": 557802,
+            "end": 557850,
+            "confidence": 0.9139527,
+            "speaker": "B"
+          },
+          {
+            "text": "you're",
+            "start": 558443,
+            "end": 559437,
+            "confidence": 0.9466826,
+            "speaker": "B"
+          },
+          {
+            "text": "my",
+            "start": 560847,
+            "end": 560895,
+            "confidence": 0.9856974,
+            "speaker": "B"
+          },
+          {
+            "text": "one,",
+            "start": 561264,
+            "end": 561472,
+            "confidence": 0.33105037,
+            "speaker": "B"
+          },
+          {
+            "text": "you're",
+            "start": 562209,
+            "end": 564005,
+            "confidence": 0.97432834,
+            "speaker": "B"
+          },
+          {
+            "text": "my",
+            "start": 564469,
+            "end": 564550,
+            "confidence": 0.99824595,
+            "speaker": "B"
+          },
+          {
+            "text": "one,",
+            "start": 565014,
+            "end": 565575,
+            "confidence": 0.74318624,
+            "speaker": "B"
+          },
+          {
+            "text": "you're",
+            "start": 565655,
+            "end": 566970,
+            "confidence": 0.9154283,
+            "speaker": "B"
+          },
+          {
+            "text": "my",
+            "start": 568076,
+            "end": 568108,
+            "confidence": 0.9980229,
+            "speaker": "B"
+          },
+          {
+            "text": "one,",
+            "start": 569198,
+            "end": 569326,
+            "confidence": 0.9557011,
+            "speaker": "B"
+          },
+          {
+            "text": "you're",
+            "start": 569662,
+            "end": 570416,
+            "confidence": 0.9869832,
+            "speaker": "B"
+          },
+          {
+            "text": "my",
+            "start": 570736,
+            "end": 570993,
+            "confidence": 0.9982951,
+            "speaker": "B"
+          },
+          {
+            "text": "one.",
+            "start": 571522,
+            "end": 572980,
+            "confidence": 0.8129808,
+            "speaker": "B"
+          }
+        ]
+      },
+      {
+        "speaker": "C",
+        "text": "Without you, you spell it all out in black and white. I'm down, you've got something down that I like, but I can't quite put my thinking on it. Got a good appetite for a bad reputation.",
+        "confidence": 0.90187657,
+        "start": 662034,
+        "end": 686580,
+        "words": [
+          {
+            "text": "Without",
+            "start": 662034,
+            "end": 662948,
+            "confidence": 0.6533624,
+            "speaker": "C"
+          },
+          {
+            "text": "you,",
+            "start": 663879,
+            "end": 664007,
+            "confidence": 0.40413386,
+            "speaker": "C"
+          },
+          {
+            "text": "you",
+            "start": 664184,
+            "end": 664376,
+            "confidence": 0.8218877,
+            "speaker": "C"
+          },
+          {
+            "text": "spell",
+            "start": 664376,
+            "end": 664809,
+            "confidence": 0.9771369,
+            "speaker": "C"
+          },
+          {
+            "text": "it",
+            "start": 665499,
+            "end": 665612,
+            "confidence": 0.9968887,
+            "speaker": "C"
+          },
+          {
+            "text": "all",
+            "start": 666446,
+            "end": 666590,
+            "confidence": 0.9976591,
+            "speaker": "C"
+          },
+          {
+            "text": "out",
+            "start": 666606,
+            "end": 667232,
+            "confidence": 0.99520856,
+            "speaker": "C"
+          },
+          {
+            "text": "in",
+            "start": 667232,
+            "end": 667296,
+            "confidence": 0.9773666,
+            "speaker": "C"
+          },
+          {
+            "text": "black",
+            "start": 667312,
+            "end": 667633,
+            "confidence": 0.9995473,
+            "speaker": "C"
+          },
+          {
+            "text": "and",
+            "start": 668034,
+            "end": 668178,
+            "confidence": 0.99586356,
+            "speaker": "C"
+          },
+          {
+            "text": "white.",
+            "start": 668275,
+            "end": 668403,
+            "confidence": 0.9510466,
+            "speaker": "C"
+          },
+          {
+            "text": "I'm",
+            "start": 668772,
+            "end": 669815,
+            "confidence": 0.975777,
+            "speaker": "C"
+          },
+          {
+            "text": "down,",
+            "start": 669815,
+            "end": 671788,
+            "confidence": 0.60401404,
+            "speaker": "C"
+          },
+          {
+            "text": "you've",
+            "start": 671804,
+            "end": 671949,
+            "confidence": 0.9755022,
+            "speaker": "C"
+          },
+          {
+            "text": "got",
+            "start": 671981,
+            "end": 672205,
+            "confidence": 0.99893206,
+            "speaker": "C"
+          },
+          {
+            "text": "something",
+            "start": 672205,
+            "end": 672654,
+            "confidence": 0.9995592,
+            "speaker": "C"
+          },
+          {
+            "text": "down",
+            "start": 672654,
+            "end": 672751,
+            "confidence": 0.64125556,
+            "speaker": "C"
+          },
+          {
+            "text": "that",
+            "start": 672783,
+            "end": 672943,
+            "confidence": 0.75804996,
+            "speaker": "C"
+          },
+          {
+            "text": "I",
+            "start": 672943,
+            "end": 672959,
+            "confidence": 0.9963617,
+            "speaker": "C"
+          },
+          {
+            "text": "like,",
+            "start": 672959,
+            "end": 673216,
+            "confidence": 0.910617,
+            "speaker": "C"
+          },
+          {
+            "text": "but",
+            "start": 673585,
+            "end": 674467,
+            "confidence": 0.9983417,
+            "speaker": "C"
+          },
+          {
+            "text": "I",
+            "start": 674467,
+            "end": 674644,
+            "confidence": 0.99893564,
+            "speaker": "C"
+          },
+          {
+            "text": "can't",
+            "start": 674868,
+            "end": 675318,
+            "confidence": 0.9980331,
+            "speaker": "C"
+          },
+          {
+            "text": "quite",
+            "start": 675414,
+            "end": 675799,
+            "confidence": 0.99406564,
+            "speaker": "C"
+          },
+          {
+            "text": "put",
+            "start": 675831,
+            "end": 676409,
+            "confidence": 0.99807596,
+            "speaker": "C"
+          },
+          {
+            "text": "my",
+            "start": 676409,
+            "end": 676713,
+            "confidence": 0.9970925,
+            "speaker": "C"
+          },
+          {
+            "text": "thinking",
+            "start": 676713,
+            "end": 677564,
+            "confidence": 0.5826803,
+            "speaker": "C"
+          },
+          {
+            "text": "on",
+            "start": 677692,
+            "end": 677772,
+            "confidence": 0.9980679,
+            "speaker": "C"
+          },
+          {
+            "text": "it.",
+            "start": 677772,
+            "end": 678077,
+            "confidence": 0.96522754,
+            "speaker": "C"
+          },
+          {
+            "text": "Got",
+            "start": 678237,
+            "end": 679585,
+            "confidence": 0.8177121,
+            "speaker": "C"
+          },
+          {
+            "text": "a",
+            "start": 679585,
+            "end": 679601,
+            "confidence": 0.98871034,
+            "speaker": "C"
+          },
+          {
+            "text": "good",
+            "start": 679601,
+            "end": 679906,
+            "confidence": 0.99959534,
+            "speaker": "C"
+          },
+          {
+            "text": "appetite",
+            "start": 679906,
+            "end": 681125,
+            "confidence": 0.9971374,
+            "speaker": "C"
+          },
+          {
+            "text": "for",
+            "start": 681687,
+            "end": 682505,
+            "confidence": 0.89003193,
+            "speaker": "C"
+          },
+          {
+            "text": "a",
+            "start": 682810,
+            "end": 682890,
+            "confidence": 0.5552445,
+            "speaker": "C"
+          },
+          {
+            "text": "bad",
+            "start": 682890,
+            "end": 683355,
+            "confidence": 0.9996619,
+            "speaker": "C"
+          },
+          {
+            "text": "reputation.",
+            "start": 683788,
+            "end": 686580,
+            "confidence": 0.96064806,
+            "speaker": "C"
+          }
+        ]
+      }
+    ],
+    "words": [
+      {
+        "text": "Oh",
+        "start": 223300,
+        "end": 223316,
+        "confidence": 0.6229794,
+        "speaker": "A"
+      },
+      {
+        "text": "yeah,",
+        "start": 223428,
+        "end": 223957,
+        "confidence": 0.84268785,
+        "speaker": "A"
+      },
+      {
+        "text": "your",
+        "start": 224037,
+        "end": 224357,
+        "confidence": 0.5114419,
+        "speaker": "A"
+      },
+      {
+        "text": "skin",
+        "start": 224454,
+        "end": 224886,
+        "confidence": 0.9964288,
+        "speaker": "A"
+      },
+      {
+        "text": "and",
+        "start": 224935,
+        "end": 225159,
+        "confidence": 0.9361467,
+        "speaker": "A"
+      },
+      {
+        "text": "bones,",
+        "start": 225159,
+        "end": 225704,
+        "confidence": 0.324145,
+        "speaker": "A"
+      },
+      {
+        "text": "it's",
+        "start": 226762,
+        "end": 228044,
+        "confidence": 0.4599816,
+        "speaker": "A"
+      },
+      {
+        "text": "something",
+        "start": 228044,
+        "end": 228670,
+        "confidence": 0.8858586,
+        "speaker": "A"
+      },
+      {
+        "text": "beautiful.",
+        "start": 228686,
+        "end": 229359,
+        "confidence": 0.9029254,
+        "speaker": "A"
+      },
+      {
+        "text": "You",
+        "start": 229968,
+        "end": 230962,
+        "confidence": 0.9073314,
+        "speaker": "A"
+      },
+      {
+        "text": "know",
+        "start": 232052,
+        "end": 232437,
+        "confidence": 0.98451346,
+        "speaker": "A"
+      },
+      {
+        "text": "I",
+        "start": 232469,
+        "end": 232645,
+        "confidence": 0.83392966,
+        "speaker": "A"
+      },
+      {
+        "text": "love",
+        "start": 233286,
+        "end": 234392,
+        "confidence": 0.99862385,
+        "speaker": "A"
+      },
+      {
+        "text": "you",
+        "start": 236540,
+        "end": 237294,
+        "confidence": 0.98899126,
+        "speaker": "A"
+      },
+      {
+        "text": "so,",
+        "start": 246479,
+        "end": 247056,
+        "confidence": 0.48794818,
+        "speaker": "A"
+      },
+      {
+        "text": "you",
+        "start": 248178,
+        "end": 248579,
+        "confidence": 0.7812958,
+        "speaker": "A"
+      },
+      {
+        "text": "know",
+        "start": 248579,
+        "end": 251080,
+        "confidence": 0.9757111,
+        "speaker": "A"
+      },
+      {
+        "text": "I",
+        "start": 251384,
+        "end": 251400,
+        "confidence": 0.97914726,
+        "speaker": "A"
+      },
+      {
+        "text": "love",
+        "start": 251400,
+        "end": 252635,
+        "confidence": 0.9989427,
+        "speaker": "A"
+      },
+      {
+        "text": "you",
+        "start": 252987,
+        "end": 253067,
+        "confidence": 0.9925249,
+        "speaker": "A"
+      },
+      {
+        "text": "so.",
+        "start": 253067,
+        "end": 253388,
+        "confidence": 0.9112693,
+        "speaker": "A"
+      },
+      {
+        "text": "I",
+        "start": 524725,
+        "end": 524741,
+        "confidence": 0.23294169,
+        "speaker": "B"
+      },
+      {
+        "text": "said",
+        "start": 527209,
+        "end": 530414,
+        "confidence": 0.56726635,
+        "speaker": "B"
+      },
+      {
+        "text": "maybe",
+        "start": 530670,
+        "end": 532192,
+        "confidence": 0.86252075,
+        "speaker": "B"
+      },
+      {
+        "text": "you're",
+        "start": 532337,
+        "end": 532737,
+        "confidence": 0.6330727,
+        "speaker": "B"
+      },
+      {
+        "text": "going",
+        "start": 533218,
+        "end": 533907,
+        "confidence": 0.9443451,
+        "speaker": "B"
+      },
+      {
+        "text": "to",
+        "start": 534324,
+        "end": 534468,
+        "confidence": 0.994869,
+        "speaker": "B"
+      },
+      {
+        "text": "be",
+        "start": 534901,
+        "end": 535157,
+        "confidence": 0.9989102,
+        "speaker": "B"
+      },
+      {
+        "text": "the",
+        "start": 535526,
+        "end": 535878,
+        "confidence": 0.9989654,
+        "speaker": "B"
+      },
+      {
+        "text": "one",
+        "start": 536102,
+        "end": 536263,
+        "confidence": 0.99702793,
+        "speaker": "B"
+      },
+      {
+        "text": "who",
+        "start": 536263,
+        "end": 536391,
+        "confidence": 0.76145023,
+        "speaker": "B"
+      },
+      {
+        "text": "saves",
+        "start": 537881,
+        "end": 538474,
+        "confidence": 0.9991391,
+        "speaker": "B"
+      },
+      {
+        "text": "me.",
+        "start": 538682,
+        "end": 539964,
+        "confidence": 0.72562176,
+        "speaker": "B"
+      },
+      {
+        "text": "You're",
+        "start": 542096,
+        "end": 542705,
+        "confidence": 0.81084096,
+        "speaker": "B"
+      },
+      {
+        "text": "going",
+        "start": 542737,
+        "end": 543923,
+        "confidence": 0.97563136,
+        "speaker": "B"
+      },
+      {
+        "text": "to",
+        "start": 545477,
+        "end": 545926,
+        "confidence": 0.9527038,
+        "speaker": "B"
+      },
+      {
+        "text": "be",
+        "start": 546342,
+        "end": 546999,
+        "confidence": 0.9791388,
+        "speaker": "B"
+      },
+      {
+        "text": "the",
+        "start": 546999,
+        "end": 547240,
+        "confidence": 0.958375,
+        "speaker": "B"
+      },
+      {
+        "text": "one",
+        "start": 547480,
+        "end": 547688,
+        "confidence": 0.9848001,
+        "speaker": "B"
+      },
+      {
+        "text": "who",
+        "start": 547945,
+        "end": 548089,
+        "confidence": 0.8060222,
+        "speaker": "B"
+      },
+      {
+        "text": "Saves",
+        "start": 548682,
+        "end": 554741,
+        "confidence": 0.31399724,
+        "speaker": "B"
+      },
+      {
+        "text": "me,",
+        "start": 556039,
+        "end": 556119,
+        "confidence": 0.4320386,
+        "speaker": "B"
+      },
+      {
+        "text": "and",
+        "start": 556359,
+        "end": 557241,
+        "confidence": 0.9852363,
+        "speaker": "B"
+      },
+      {
+        "text": "after",
+        "start": 557241,
+        "end": 557770,
+        "confidence": 0.9899625,
+        "speaker": "B"
+      },
+      {
+        "text": "all,",
+        "start": 557802,
+        "end": 557850,
+        "confidence": 0.9139527,
+        "speaker": "B"
+      },
+      {
+        "text": "you're",
+        "start": 558443,
+        "end": 559437,
+        "confidence": 0.9466826,
+        "speaker": "B"
+      },
+      {
+        "text": "my",
+        "start": 560847,
+        "end": 560895,
+        "confidence": 0.9856974,
+        "speaker": "B"
+      },
+      {
+        "text": "one,",
+        "start": 561264,
+        "end": 561472,
+        "confidence": 0.33105037,
+        "speaker": "B"
+      },
+      {
+        "text": "you're",
+        "start": 562209,
+        "end": 564005,
+        "confidence": 0.97432834,
+        "speaker": "B"
+      },
+      {
+        "text": "my",
+        "start": 564469,
+        "end": 564550,
+        "confidence": 0.99824595,
+        "speaker": "B"
+      },
+      {
+        "text": "one,",
+        "start": 565014,
+        "end": 565575,
+        "confidence": 0.74318624,
+        "speaker": "B"
+      },
+      {
+        "text": "you're",
+        "start": 565655,
+        "end": 566970,
+        "confidence": 0.9154283,
+        "speaker": "B"
+      },
+      {
+        "text": "my",
+        "start": 568076,
+        "end": 568108,
+        "confidence": 0.9980229,
+        "speaker": "B"
+      },
+      {
+        "text": "one,",
+        "start": 569198,
+        "end": 569326,
+        "confidence": 0.9557011,
+        "speaker": "B"
+      },
+      {
+        "text": "you're",
+        "start": 569662,
+        "end": 570416,
+        "confidence": 0.9869832,
+        "speaker": "B"
+      },
+      {
+        "text": "my",
+        "start": 570736,
+        "end": 570993,
+        "confidence": 0.9982951,
+        "speaker": "B"
+      },
+      {
+        "text": "one.",
+        "start": 571522,
+        "end": 572980,
+        "confidence": 0.8129808,
+        "speaker": "B"
+      },
+      {
+        "text": "Without",
+        "start": 662034,
+        "end": 662948,
+        "confidence": 0.6533624,
+        "speaker": "C"
+      },
+      {
+        "text": "you,",
+        "start": 663879,
+        "end": 664007,
+        "confidence": 0.40413386,
+        "speaker": "C"
+      },
+      {
+        "text": "you",
+        "start": 664184,
+        "end": 664376,
+        "confidence": 0.8218877,
+        "speaker": "C"
+      },
+      {
+        "text": "spell",
+        "start": 664376,
+        "end": 664809,
+        "confidence": 0.9771369,
+        "speaker": "C"
+      },
+      {
+        "text": "it",
+        "start": 665499,
+        "end": 665612,
+        "confidence": 0.9968887,
+        "speaker": "C"
+      },
+      {
+        "text": "all",
+        "start": 666446,
+        "end": 666590,
+        "confidence": 0.9976591,
+        "speaker": "C"
+      },
+      {
+        "text": "out",
+        "start": 666606,
+        "end": 667232,
+        "confidence": 0.99520856,
+        "speaker": "C"
+      },
+      {
+        "text": "in",
+        "start": 667232,
+        "end": 667296,
+        "confidence": 0.9773666,
+        "speaker": "C"
+      },
+      {
+        "text": "black",
+        "start": 667312,
+        "end": 667633,
+        "confidence": 0.9995473,
+        "speaker": "C"
+      },
+      {
+        "text": "and",
+        "start": 668034,
+        "end": 668178,
+        "confidence": 0.99586356,
+        "speaker": "C"
+      },
+      {
+        "text": "white.",
+        "start": 668275,
+        "end": 668403,
+        "confidence": 0.9510466,
+        "speaker": "C"
+      },
+      {
+        "text": "I'm",
+        "start": 668772,
+        "end": 669815,
+        "confidence": 0.975777,
+        "speaker": "C"
+      },
+      {
+        "text": "down,",
+        "start": 669815,
+        "end": 671788,
+        "confidence": 0.60401404,
+        "speaker": "C"
+      },
+      {
+        "text": "you've",
+        "start": 671804,
+        "end": 671949,
+        "confidence": 0.9755022,
+        "speaker": "C"
+      },
+      {
+        "text": "got",
+        "start": 671981,
+        "end": 672205,
+        "confidence": 0.99893206,
+        "speaker": "C"
+      },
+      {
+        "text": "something",
+        "start": 672205,
+        "end": 672654,
+        "confidence": 0.9995592,
+        "speaker": "C"
+      },
+      {
+        "text": "down",
+        "start": 672654,
+        "end": 672751,
+        "confidence": 0.64125556,
+        "speaker": "C"
+      },
+      {
+        "text": "that",
+        "start": 672783,
+        "end": 672943,
+        "confidence": 0.75804996,
+        "speaker": "C"
+      },
+      {
+        "text": "I",
+        "start": 672943,
+        "end": 672959,
+        "confidence": 0.9963617,
+        "speaker": "C"
+      },
+      {
+        "text": "like,",
+        "start": 672959,
+        "end": 673216,
+        "confidence": 0.910617,
+        "speaker": "C"
+      },
+      {
+        "text": "but",
+        "start": 673585,
+        "end": 674467,
+        "confidence": 0.9983417,
+        "speaker": "C"
+      },
+      {
+        "text": "I",
+        "start": 674467,
+        "end": 674644,
+        "confidence": 0.99893564,
+        "speaker": "C"
+      },
+      {
+        "text": "can't",
+        "start": 674868,
+        "end": 675318,
+        "confidence": 0.9980331,
+        "speaker": "C"
+      },
+      {
+        "text": "quite",
+        "start": 675414,
+        "end": 675799,
+        "confidence": 0.99406564,
+        "speaker": "C"
+      },
+      {
+        "text": "put",
+        "start": 675831,
+        "end": 676409,
+        "confidence": 0.99807596,
+        "speaker": "C"
+      },
+      {
+        "text": "my",
+        "start": 676409,
+        "end": 676713,
+        "confidence": 0.9970925,
+        "speaker": "C"
+      },
+      {
+        "text": "thinking",
+        "start": 676713,
+        "end": 677564,
+        "confidence": 0.5826803,
+        "speaker": "C"
+      },
+      {
+        "text": "on",
+        "start": 677692,
+        "end": 677772,
+        "confidence": 0.9980679,
+        "speaker": "C"
+      },
+      {
+        "text": "it.",
+        "start": 677772,
+        "end": 678077,
+        "confidence": 0.96522754,
+        "speaker": "C"
+      },
+      {
+        "text": "Got",
+        "start": 678237,
+        "end": 679585,
+        "confidence": 0.8177121,
+        "speaker": "C"
+      },
+      {
+        "text": "a",
+        "start": 679585,
+        "end": 679601,
+        "confidence": 0.98871034,
+        "speaker": "C"
+      },
+      {
+        "text": "good",
+        "start": 679601,
+        "end": 679906,
+        "confidence": 0.99959534,
+        "speaker": "C"
+      },
+      {
+        "text": "appetite",
+        "start": 679906,
+        "end": 681125,
+        "confidence": 0.9971374,
+        "speaker": "C"
+      },
+      {
+        "text": "for",
+        "start": 681687,
+        "end": 682505,
+        "confidence": 0.89003193,
+        "speaker": "C"
+      },
+      {
+        "text": "a",
+        "start": 682810,
+        "end": 682890,
+        "confidence": 0.5552445,
+        "speaker": "C"
+      },
+      {
+        "text": "bad",
+        "start": 682890,
+        "end": 683355,
+        "confidence": 0.9996619,
+        "speaker": "C"
+      },
+      {
+        "text": "reputation.",
+        "start": 683788,
+        "end": 686580,
+        "confidence": 0.96064806,
+        "speaker": "C"
+      }
+    ],
+    "audio_duration": 707
+  }
+}
