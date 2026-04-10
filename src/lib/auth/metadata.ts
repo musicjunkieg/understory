@@ -50,12 +50,15 @@ type ResponseType =
   | "id_token";
 
 export function buildClientMetadata(appUrl: string) {
-  const clientId = `${appUrl}${CLIENT_METADATA_PATH}`;
+  // Strip trailing slash so a misconfigured APP_URL=https://example.com/
+  // doesn't produce double-slashed URLs (https://example.com//oauth/...).
+  const base = appUrl.replace(/\/+$/, "");
+  const clientId = `${base}${CLIENT_METADATA_PATH}`;
   return {
     client_id: clientId,
     client_name: "Understory",
-    client_uri: appUrl,
-    redirect_uris: [`${appUrl}/oauth/callback`] as [string, ...string[]],
+    client_uri: base,
+    redirect_uris: [`${base}/oauth/callback`] as [string, ...string[]],
     grant_types: ["authorization_code", "refresh_token"] as [
       GrantType,
       ...GrantType[],

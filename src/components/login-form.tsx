@@ -23,9 +23,11 @@ export function LoginForm() {
   const [suggestions, setSuggestions] = useState<TypeaheadActor[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const abortRef = useRef<AbortController | null>(null);
 
   const fetchSuggestions = useCallback((query: string) => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
+    if (abortRef.current) abortRef.current.abort();
 
     if (query.trim().length < MIN_QUERY_LENGTH) {
       setSuggestions([]);
@@ -34,15 +36,20 @@ export function LoginForm() {
     }
 
     debounceRef.current = setTimeout(async () => {
+      const controller = new AbortController();
+      abortRef.current = controller;
       try {
         const url = `${TYPEAHEAD_URL}?q=${encodeURIComponent(query.trim())}&limit=6`;
-        const res = await fetch(url);
+        const res = await fetch(url, { signal: controller.signal });
         if (!res.ok) return;
         const data = await res.json();
-        setSuggestions(data.actors ?? []);
-        setShowSuggestions(true);
+        // Only apply results if this request wasn't aborted by a newer one
+        if (!controller.signal.aborted) {
+          setSuggestions(data.actors ?? []);
+          setShowSuggestions(true);
+        }
       } catch {
-        // Typeahead failure is non-fatal — user can still type manually
+        // Typeahead failure (including abort) is non-fatal
       }
     }, DEBOUNCE_MS);
   }, []);
