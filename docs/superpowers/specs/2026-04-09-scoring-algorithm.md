@@ -128,7 +128,7 @@ export interface ScoringInputs {
   mentions: TalkMentions | null;  // null = crawl not yet completed
   followCount: number;            // from CrawlResult.followCount
   weights?: ScoringWeights;
-  active?: import("./combine").ActiveLayers; // omitted = layer 1 only (today's deployment)
+  active?: ActiveLayers;          // omitted = layer 1 only (today's deployment)
 }
 
 export const DEFAULT_WEIGHTS: ScoringWeights = {
@@ -286,6 +286,11 @@ function clamp(n: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, n));
 }
 
+/**
+ * Coerce non-finite numeric inputs (NaN, ±Infinity) to 0. Defense in depth
+ * against uninitialized React state or JSON-parsed nulls slipping past
+ * TypeScript types and propagating into the sort key.
+ */
 function safe(n: number): number {
   return Number.isFinite(n) ? n : 0;
 }
@@ -582,7 +587,7 @@ All tests are pure: no mocks, no fixtures from disk, no network. Inputs are cons
 | L2 active, no interest score | `{l2:true,  l3:false}` | `1.0` | `0`   | `0` | default | `(1.0·0.5 + 0·0.5·0.3) / 0.8 = 0.625` |
 | L3 active, friend boost only | `{l2:false, l3:true }` | `0.0` | `0`   | `1.0` | `friends=1` | `(0·0.5 + 1·1·0.2) / 0.7 ≈ 0.2857` |
 | All three active, design-doc maximum | `{l2:true,  l3:true }` | `1.0` | `1.0` | `1.0` | `surprise=0, friends=1` | `0.5 + 0.3 + 0.2 = 1.0` |
-| Slider out of range | `{l2:true,  l3:false}` | `1.0` | `1.0` | `0` | `surprise=1.5` | result clamped to `[0, 1]` |
+| Slider drives raw above 1 → clamps | `{l2:true,  l3:false}` | `1.0` | `1.0` | `0` | `surprise=-2` | raw = `(1·0.5 + 1·3·0.3)/0.8 = 1.75`, clamped to `1.0` |
 | NaN slider | `{l2:true,  l3:false}` | `1.0` | `1.0` | `0` | `surprise=NaN` | `safe(NaN)=0` → equivalent to `surprise=0` case = `1.0` |
 
 **Regression test — the per-talk discontinuity bug.** This case exists specifically to lock in the correct behavior the renormalization fix introduced. If a future refactor reintroduces a per-talk `> 0` branch, this assertion will fail loudly:
