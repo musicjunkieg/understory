@@ -28,14 +28,17 @@ export interface TalkScore {
 }
 
 export interface ScoringWeights {
-  surpriseSlider: number;    // 0–1; controls Layer 2 contribution (high = serendipity)
-  friendsSlider: number;     // 0–1; controls Layer 3 contribution (high = friends override)
+  readonly surpriseSlider: number; // 0–1; controls Layer 2 contribution (high = serendipity)
+  readonly friendsSlider: number;  // 0–1; controls Layer 3 contribution (high = friends override)
 }
 
-export const DEFAULT_WEIGHTS: ScoringWeights = {
+// Frozen so the exported sentinel can't be mutated by accident — it's used
+// as a default parameter value in scoreTalk/rankTalks, so any mutation would
+// corrupt every subsequent call that takes the default.
+export const DEFAULT_WEIGHTS: Readonly<ScoringWeights> = Object.freeze({
   surpriseSlider: 0.5,
   friendsSlider: 0.5,
-};
+});
 
 export interface ScoringInputs {
   talks: TalkEntry[];

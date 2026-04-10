@@ -17,13 +17,19 @@ import {
 } from "./combine";
 
 function unknownScore(rkey: string, followCount: number): TalkScore {
+  // Sanitize: if followCount is non-finite or negative (e.g., from a corrupted
+  // cache or a slider-derived value that wasn't validated upstream), don't
+  // propagate the bad number into the result. Stash 0 so JSON serialization,
+  // React rendering, and downstream consumers see a stable shape.
+  const safeTotalFollows =
+    Number.isFinite(followCount) && followCount > 0 ? followCount : 0;
   return {
     rkey,
     intensity: 0,
     state: "unknown",
     layer1: {
       uniqueFollows: 0,
-      totalFollows: followCount,
+      totalFollows: safeTotalFollows,
       reachRatio: 0,
       attentionInverse: 0,
     },
@@ -37,7 +43,8 @@ function unknownScore(rkey: string, followCount: number): TalkScore {
  *
  * Returns `unknown` state when:
  *   - mentions is null (crawl hasn't run)
- *   - followCount is 0 (user has no follows; reach is undefined)
+ *   - followCount is non-finite or ≤ 0 (user has no follows OR a corrupted
+ *     value snuck through — reach is undefined either way)
  *   - mention is absent (talk is out of crawl scope, e.g. no eventUri)
  *
  * Otherwise runs Layer 1 + the two stubs through `combineLayers` with the
@@ -50,7 +57,10 @@ export function scoreTalk(
   weights: ScoringWeights = DEFAULT_WEIGHTS,
   active: ActiveLayers = DEFAULT_ACTIVE_LAYERS,
 ): TalkScore {
-  if (mentions === null || followCount === 0) {
+  // Robust guard: catches null mentions, zero/negative followCount, NaN, and
+  // ±Infinity in a single check. Anything that isn't a finite positive integer
+  // routes to `unknown` rather than silently producing a wrong "missed".
+  if (mentions === null || !Number.isFinite(followCount) || followCount <= 0) {
     return unknownScore(talk.rkey, followCount);
   }
   const mention = mentions[talk.rkey];

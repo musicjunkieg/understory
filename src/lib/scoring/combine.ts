@@ -21,14 +21,17 @@ function safe(n: number): number {
  * (#21–24 for Layer 2, #18 for Layer 3). Today both are false.
  */
 export interface ActiveLayers {
-  layer2: boolean;
-  layer3: boolean;
+  readonly layer2: boolean;
+  readonly layer3: boolean;
 }
 
-export const DEFAULT_ACTIVE_LAYERS: ActiveLayers = {
+// Frozen so the exported sentinel can't be mutated by accident — it's used
+// as a default parameter value in combineLayers/scoreTalk/rankTalks, so any
+// mutation would corrupt every subsequent call that takes the default.
+export const DEFAULT_ACTIVE_LAYERS: Readonly<ActiveLayers> = Object.freeze({
   layer2: false,
   layer3: false,
-};
+});
 
 /**
  * Design-doc weights from `docs/understory-design.md` §"The Scoring Algorithm".

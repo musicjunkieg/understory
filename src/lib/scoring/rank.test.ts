@@ -1,8 +1,9 @@
 import { describe, it, expect } from "vitest";
 import { scoreTalk, rankTalks } from "./rank";
+import { DEFAULT_WEIGHTS } from "./types";
+import { DEFAULT_ACTIVE_LAYERS, type ActiveLayers } from "./combine";
 import type { TalkEntry } from "@/lib/types";
 import type { TalkMention, TalkMentions } from "@/lib/crawl/types";
-import type { ActiveLayers } from "./combine";
 
 function makeTalk(rkey: string, overrides: Partial<TalkEntry> = {}): TalkEntry {
   return {
@@ -67,6 +68,52 @@ describe("scoreTalk — state derivation", () => {
     const score = scoreTalk(talk, { a: makeMention(3) }, 100);
     expect(score.state).toBe("engaged");
     expect(score.intensity).toBeCloseTo(0.97, 6);
+  });
+
+  it("returns unknown when followCount is negative", () => {
+    const score = scoreTalk(talk, { a: makeMention(5) }, -3);
+    expect(score.state).toBe("unknown");
+    // totalFollows is sanitized to 0, not the bogus -3, so JSON serialization
+    // and downstream consumers see a stable shape.
+    expect(score.layer1.totalFollows).toBe(0);
+  });
+
+  it("returns unknown when followCount is NaN", () => {
+    const score = scoreTalk(talk, { a: makeMention(5) }, Number.NaN);
+    expect(score.state).toBe("unknown");
+    expect(score.layer1.totalFollows).toBe(0);
+  });
+
+  it("returns unknown when followCount is +Infinity", () => {
+    const score = scoreTalk(
+      talk,
+      { a: makeMention(5) },
+      Number.POSITIVE_INFINITY,
+    );
+    expect(score.state).toBe("unknown");
+    expect(score.layer1.totalFollows).toBe(0);
+  });
+
+  it("returns unknown when followCount is -Infinity", () => {
+    const score = scoreTalk(
+      talk,
+      { a: makeMention(5) },
+      Number.NEGATIVE_INFINITY,
+    );
+    expect(score.state).toBe("unknown");
+    expect(score.layer1.totalFollows).toBe(0);
+  });
+});
+
+describe("DEFAULT_WEIGHTS / DEFAULT_ACTIVE_LAYERS — frozen sentinels", () => {
+  it("DEFAULT_WEIGHTS is frozen so accidental mutation throws or no-ops", () => {
+    // Object.freeze makes assignment a silent no-op in sloppy mode and throws
+    // in strict mode. Either way, the value cannot change.
+    expect(Object.isFrozen(DEFAULT_WEIGHTS)).toBe(true);
+  });
+
+  it("DEFAULT_ACTIVE_LAYERS is frozen so accidental mutation throws or no-ops", () => {
+    expect(Object.isFrozen(DEFAULT_ACTIVE_LAYERS)).toBe(true);
   });
 });
 
