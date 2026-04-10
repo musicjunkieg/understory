@@ -205,38 +205,71 @@ The `.env` file is gitignored (not committed). This change is documented so deve
 
 ## 4. Railway Infrastructure
 
-### 4.1 Create project and service
+### 4.1 Environments: staging + production
+
+The project uses two Railway environments with a promotion workflow:
+
+| Environment | Branch | Domain | Purpose |
+|---|---|---|---|
+| **Staging** | `staging` | Auto-generated `*.up.railway.app` | Validate changes before production. Push here first. |
+| **Production** | `main` | `understory.watch` (custom domain) | Public-facing. Code arrives via `staging` → `main` merge. |
+
+**Workflow:** Push to `staging` branch → Railway auto-deploys staging → validate on the Railway domain → merge `staging` → `main` → Railway auto-deploys production.
+
+This means you can make tweaks, test them on the staging URL, and only promote to production when confident. The two environments run the same code at different points in time, differentiated only by their `APP_URL` and domain.
+
+### 4.2 Create project and services
 
 Using Railway MCP tools or CLI:
 
 1. Create a new Railway project named "understory"
-2. Create a service linked to the GitHub repo `musicjunkieg/understory` on the `main` branch
-3. Railway auto-detects Next.js and uses its Node.js builder (Nixpacks)
-4. Auto-deploy on push to `main` is enabled by default
+2. Link to the GitHub repo `musicjunkieg/understory`
+3. Create two environments:
+   - **Production** environment: deploys from `main` branch
+   - **Staging** environment: deploys from `staging` branch
+4. Railway auto-detects Next.js and uses its Node.js builder (Nixpacks) for both
+5. Each environment gets its own service instance, env vars, and domain
 
-### 4.2 Environment variables
+### 4.3 Environment variables
 
-Set in Railway's service environment:
+**Staging environment:**
 
 | Variable | Value | Notes |
 |---|---|---|
-| `APP_URL` | `https://understory.watch` | Required. Initially use the Railway-generated `*.up.railway.app` URL for smoke testing, then switch to the custom domain. |
-| `HOSTNAME` | `0.0.0.0` | Required. The standalone server defaults to `localhost`, which won't accept connections on Railway. `0.0.0.0` binds on all interfaces. |
+| `APP_URL` | `https://<staging>.up.railway.app` | The auto-generated Railway domain for staging. Set after Railway creates it. |
+| `HOSTNAME` | `0.0.0.0` | Required. Standalone server defaults to `localhost`; `0.0.0.0` binds on all interfaces. |
 
-`NODE_ENV=production` is set automatically by Railway. `PORT` is set automatically by Railway (the standalone server reads it). `ASSEMBLYAI_API_KEY` is not needed at runtime (only for offline build scripts).
+**Production environment:**
 
-### 4.3 Domain configuration
+| Variable | Value | Notes |
+|---|---|---|
+| `APP_URL` | `https://understory.watch` | The custom domain. |
+| `HOSTNAME` | `0.0.0.0` | Same as staging. |
 
-**Phase 1 — Railway domain (smoke test):**
-Railway auto-generates a `*.up.railway.app` domain. Use this for initial verification. Temporarily set `APP_URL` to this domain.
+`NODE_ENV=production` is set automatically by Railway in both environments. `PORT` is set automatically. `ASSEMBLYAI_API_KEY` is not needed at runtime (only for offline build scripts).
 
-**Phase 2 — Custom domain:**
-1. Add `understory.watch` as a custom domain in Railway
+### 4.4 Domain configuration
+
+**Staging:** Uses the auto-generated `*.up.railway.app` domain. No custom domain needed — it's for validation only.
+
+**Production:**
+1. Add `understory.watch` as a custom domain in the production environment
 2. Railway provides a CNAME target (e.g., `<hash>.railway.app`)
 3. At your registrar, create a CNAME record: `understory.watch` → `<railway-cname-target>`
 4. Railway auto-provisions an SSL certificate via Let's Encrypt
-5. Update `APP_URL` to `https://understory.watch`
-6. DNS propagation typically takes 5–30 minutes
+5. DNS propagation typically takes 5–30 minutes
+
+### 4.5 Branch setup
+
+Create the `staging` branch from `main` and push it:
+
+```bash
+git checkout main
+git checkout -b staging
+git push -u origin staging
+```
+
+Going forward: feature branches merge into `staging` for testing, then `staging` merges into `main` for production release.
 
 ---
 
@@ -285,30 +318,38 @@ The files are:
 
 ### 7.1 Pre-deploy (local)
 
-Before pushing:
+Before pushing to `staging`:
 - [ ] `npm run build` succeeds with `output: "standalone"` — the `.next/standalone/` directory is created
+- [ ] The `postbuild` script ran: `.next/standalone/data/`, `.next/standalone/.next/static/`, and `.next/standalone/public/` all exist
 - [ ] `npm test` — all 40 scoring tests pass (unrelated to deploy, but confirms nothing broke)
 - [ ] `npx tsc --noEmit` — clean
 - [ ] `npx eslint src/` — clean
 - [ ] `GET /oauth/client-metadata.json` on `localhost:3000` returns valid metadata JSON with `client_id` matching `http://127.0.0.1:3000/oauth/client-metadata.json`
 - [ ] OAuth login flow works locally with the self-hosted metadata (no cimd-service)
 
-### 7.2 Post-deploy (Railway domain)
+### 7.2 Post-deploy — staging
 
-Using the auto-generated `*.up.railway.app` URL:
-- [ ] Landing page loads (confirms build + serve work)
+Push code to `staging` branch → Railway auto-deploys the staging environment. Using the auto-generated `*.up.railway.app` URL:
+
+- [ ] Landing page loads with correct styles (confirms standalone build + static assets served)
 - [ ] `/talks` shows 115+ talk grid (confirms `data/talks.json` was bundled)
 - [ ] `/talk/<any-rkey>` shows transcript + HLS video player (confirms transcript JSON files were bundled)
-- [ ] `/oauth/client-metadata.json` returns valid metadata with correct `client_id` URL
+- [ ] `/oauth/client-metadata.json` returns valid metadata with `client_id` matching the staging Railway URL
 - [ ] OAuth login flow completes — avatar appears in Nav
 - [ ] `/api/crawl` returns `TalkMentions` data (authenticated)
 - [ ] Second `/api/crawl` call returns `cached: true` (confirms in-memory cache works)
 - [ ] Build logs show no errors or unexpected warnings
 
-### 7.3 Post-DNS (custom domain)
+### 7.3 Promote to production
 
-After pointing `understory.watch` to Railway:
+After staging passes, merge `staging` → `main`. Railway auto-deploys the production environment.
+
+### 7.4 Post-DNS — production (custom domain)
+
+After pointing `understory.watch` to Railway's production CNAME and DNS propagates:
 - [ ] `https://understory.watch` loads with valid SSL certificate
+- [ ] Page loads with correct styles (CSS/JS bundles served)
+- [ ] `/talks` and `/talk/<any-rkey>` work (data bundled)
 - [ ] `/oauth/client-metadata.json` shows `client_id` = `https://understory.watch/oauth/client-metadata.json`
 - [ ] Full OAuth flow works on the production domain
 - [ ] `/api/crawl` works on the production domain
@@ -353,8 +394,7 @@ After pointing `understory.watch` to Railway:
 
 ## 11. Acceptance Criteria
 
-- [ ] Railway project "understory" exists with a service linked to `musicjunkieg/understory`
-- [ ] `APP_URL` and `HOSTNAME=0.0.0.0` environment variables set in Railway
+### Code
 - [ ] `next.config.ts` has `output: "standalone"` and `outputFileTracingIncludes` for `data/`
 - [ ] `package.json` has `postbuild` script copying `.next/static`, `public`, `data` into standalone directory
 - [ ] `package.json` `start` script is `node .next/standalone/server.js`
@@ -362,9 +402,23 @@ After pointing `understory.watch` to Railway:
 - [ ] `/oauth/client-metadata.json` route exists and returns valid metadata
 - [ ] `src/lib/auth/client.ts` uses `buildClientMetadata(appUrl)` (no `OAUTH_CLIENT_ID` env var)
 - [ ] `npm run build` produces a working standalone output with `data/`, `.next/static/`, and `public/` present in `.next/standalone/`
-- [ ] Railway deploy succeeds automatically on push; build logs are clean
-- [ ] Landing page, `/talks`, `/talk/[rkey]`, and OAuth flow all work on the Railway domain
-- [ ] `/api/crawl` returns valid crawl data when authenticated
-- [ ] Custom domain `understory.watch` configured with valid SSL
-- [ ] Full OAuth flow works on `https://understory.watch`
 - [ ] `npx tsc --noEmit` clean, `npx eslint src/` clean, `npm test` passes
+
+### Railway infrastructure
+- [ ] Railway project "understory" exists with a service linked to `musicjunkieg/understory`
+- [ ] Two environments configured: staging (deploys from `staging` branch) and production (deploys from `main` branch)
+- [ ] `APP_URL` and `HOSTNAME=0.0.0.0` set in both environments (different `APP_URL` values)
+- [ ] `staging` branch exists and is pushed to origin
+
+### Staging validation
+- [ ] Staging auto-deploys on push to `staging`; build logs clean
+- [ ] Landing page, `/talks`, `/talk/[rkey]` all work on the staging Railway domain
+- [ ] OAuth flow completes on staging
+- [ ] `/api/crawl` returns valid crawl data when authenticated on staging
+
+### Production validation
+- [ ] Production auto-deploys on merge to `main`; build logs clean
+- [ ] Custom domain `understory.watch` configured with valid SSL
+- [ ] Landing page, `/talks`, `/talk/[rkey]` all work on `https://understory.watch`
+- [ ] Full OAuth flow works on `https://understory.watch`
+- [ ] `/api/crawl` returns valid crawl data when authenticated on production
