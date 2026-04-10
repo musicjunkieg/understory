@@ -5,6 +5,9 @@ import type { TalkMention, TalkMentions } from "@/lib/crawl/types";
 // without needing to know `combine.ts` owns it.
 import type { ActiveLayers } from "./combine";
 export type { ActiveLayers };
+// Runtime re-export of the default sentinel so callers importing from
+// scoring/types get both the type and its default value in one place.
+export { DEFAULT_ACTIVE_LAYERS } from "./combine";
 
 export type TalkScoreState = "engaged" | "missed" | "unknown";
 
