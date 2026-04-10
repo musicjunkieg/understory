@@ -16,7 +16,8 @@ Deploy the Understory Next.js application to Railway with a custom domain (`unde
 
 ## 2. Background
 
-Understory is currently dev-only behind Tailscale Funnel. The conference ended April 5 — every day the site isn't live is a day the project's audience shrinks. The codebase is production-ready: 115+ talk pages with HLS video + transcripts, an OAuth login flow, a social graph crawler, and a scoring engine. What's missing is the deployment itself.
+Understory is currently dev-only behind Tailscale Funnel. The conference ended March 29
+ — every day the site isn't live is a day the project's audience shrinks. The codebase is production-ready: 115+ talk pages with HLS video + transcripts, an OAuth login flow, a social graph crawler, and a scoring engine. What's missing is the deployment itself.
 
 **Current state:**
 - Next.js 16 / React 19 / TypeScript 5
