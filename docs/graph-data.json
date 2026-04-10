@@ -241,6 +241,50 @@
       "created_at": "2026-04-09T20:04:11.504657-07:00",
       "updated_at": "2026-04-09T20:04:11.504657-07:00",
       "metadata_json": "{\"branch\":\"docs/social-graph-crawler-spec\",\"commit\":\"549dff0\",\"confidence\":95,\"files\":[\"docs/superpowers/specs/2026-04-07-social-graph-crawler.md\",\"docs/superpowers/plans/2026-04-07-social-graph-crawler.md\"]}"
+    },
+    {
+      "id": 23,
+      "change_id": "eb93a189-3398-4078-a67d-2b84dc0c49b3",
+      "node_type": "action",
+      "title": "Sync decision graph to docs/ for GH Pages",
+      "description": null,
+      "status": "pending",
+      "created_at": "2026-04-09T20:07:51.597765-07:00",
+      "updated_at": "2026-04-09T20:07:51.597765-07:00",
+      "metadata_json": "{\"branch\":\"chore/sync-decision-graph\",\"commit\":\"1cc518e\",\"confidence\":95,\"files\":[\"docs/graph-data.json\",\"docs/git-history.json\"]}"
+    },
+    {
+      "id": 24,
+      "change_id": "b9cfecde-e1ef-48af-82b8-43f63d387aac",
+      "node_type": "action",
+      "title": "Implemented scoring math layer: Layer 1 computeLayer1, Layer 2/3 stubs, combineLayers with ActiveLayers flag and weight rescaling (Chunk 2)",
+      "description": null,
+      "status": "pending",
+      "created_at": "2026-04-09T21:18:17.641378-07:00",
+      "updated_at": "2026-04-09T21:18:17.641378-07:00",
+      "metadata_json": "{\"branch\":\"feat/scoring-algorithm\",\"commit\":\"6af031e\",\"confidence\":95}"
+    },
+    {
+      "id": 25,
+      "change_id": "6dfcf073-5b37-4d7c-b26e-d63eefc5aca7",
+      "node_type": "action",
+      "title": "Implemented Layer 1 scoring algorithm + Vitest infrastructure",
+      "description": null,
+      "status": "pending",
+      "created_at": "2026-04-09T22:04:10.179704-07:00",
+      "updated_at": "2026-04-09T22:04:10.179704-07:00",
+      "metadata_json": "{\"branch\":\"main\",\"commit\":\"556ae42\",\"confidence\":95,\"files\":[\"src/lib/scoring/types.ts\",\"src/lib/scoring/networkAttention.ts\",\"src/lib/scoring/interestStub.ts\",\"src/lib/scoring/friendStub.ts\",\"src/lib/scoring/combine.ts\",\"src/lib/scoring/rank.ts\",\"src/lib/scoring/index.ts\",\"vitest.config.ts\"]}"
+    },
+    {
+      "id": 26,
+      "change_id": "9349c9f8-f017-44f5-b54f-bea64d9cc30d",
+      "node_type": "outcome",
+      "title": "Layer 1 scoring live: pure-function module with 40 unit tests, three-state classifier, ActiveLayers rescaling, NaN guards, plug-in stubs for L2/L3",
+      "description": null,
+      "status": "pending",
+      "created_at": "2026-04-09T22:04:16.162746-07:00",
+      "updated_at": "2026-04-09T22:04:16.162746-07:00",
+      "metadata_json": "{\"branch\":\"main\",\"commit\":\"556ae42\",\"confidence\":95}"
     }
   ],
   "edges": [
@@ -485,6 +529,50 @@
       "weight": 1.0,
       "rationale": "Documentation archived after PR #5 merged",
       "created_at": "2026-04-09T20:04:11.511166-07:00"
+    },
+    {
+      "id": 23,
+      "from_node_id": 22,
+      "to_node_id": 23,
+      "from_change_id": "f53b3b51-76aa-4b33-b58f-f88825991593",
+      "to_change_id": "eb93a189-3398-4078-a67d-2b84dc0c49b3",
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Publish updated graph after archiving spec",
+      "created_at": "2026-04-09T20:07:51.605194-07:00"
+    },
+    {
+      "id": 24,
+      "from_node_id": 1,
+      "to_node_id": 24,
+      "from_change_id": "64a3beb0-3fe9-44bd-9b4a-cfa8f5470cf2",
+      "to_change_id": "b9cfecde-e1ef-48af-82b8-43f63d387aac",
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Scoring algorithm implementation — Chunk 2 of issue #19",
+      "created_at": "2026-04-09T21:18:20.051376-07:00"
+    },
+    {
+      "id": 25,
+      "from_node_id": 1,
+      "to_node_id": 25,
+      "from_change_id": "64a3beb0-3fe9-44bd-9b4a-cfa8f5470cf2",
+      "to_change_id": "6dfcf073-5b37-4d7c-b26e-d63eefc5aca7",
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Scoring is the keystone for the personalized feed",
+      "created_at": "2026-04-09T22:04:16.169485-07:00"
+    },
+    {
+      "id": 26,
+      "from_node_id": 25,
+      "to_node_id": 26,
+      "from_change_id": "6dfcf073-5b37-4d7c-b26e-d63eefc5aca7",
+      "to_change_id": "9349c9f8-f017-44f5-b54f-bea64d9cc30d",
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Implementation result",
+      "created_at": "2026-04-09T22:04:16.177260-07:00"
     }
   ],
   "documents": [
