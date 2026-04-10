@@ -15,6 +15,7 @@ export const CLIENT_METADATA_PATH = "/oauth/client-metadata.json";
  * the app actually needs:
  *
  * - `atproto` — required for all AT Protocol OAuth sessions (identity)
+ * - `rpc:app.bsky.actor.getProfile?aud=*` — resolve the user's display name + avatar
  * - `rpc:app.bsky.graph.getFollows?aud=*` — read the user's follows
  * - `rpc:app.bsky.feed.searchPosts?aud=*` — search for conference posts
  *
@@ -23,6 +24,7 @@ export const CLIENT_METADATA_PATH = "/oauth/client-metadata.json";
  */
 export const OAUTH_SCOPE = [
   "atproto",
+  "rpc:app.bsky.actor.getProfile?aud=*",
   "rpc:app.bsky.graph.getFollows?aud=*",
   "rpc:app.bsky.feed.searchPosts?aud=*",
 ].join(" ");
