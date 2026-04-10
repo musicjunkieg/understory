@@ -14,8 +14,9 @@ export interface InterestStubResult {
  * When implemented, this should return cosine similarity in [0, 1] between
  * the user's recent-post embedding and the talk's topicIndex embedding.
  *
- * The leading underscore on `_talk` follows the `@typescript-eslint/no-unused-vars`
- * `argsIgnorePattern: "^_"` convention configured by `eslint-config-next/typescript`.
+ * The `void talk;` statement marks the parameter as intentionally unused so
+ * `@typescript-eslint/no-unused-vars` doesn't fire while the stub awaits its
+ * real implementation.
  */
 export function computeInterestStub(talk: TalkEntry): InterestStubResult {
   void talk;

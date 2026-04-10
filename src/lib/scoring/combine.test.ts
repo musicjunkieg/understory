@@ -160,6 +160,33 @@ describe("combineLayers — clamping and NaN guards", () => {
     // (1.0 * 0.5 + 0 + 0) / 1.0 = 0.5
     expect(result).toBeCloseTo(0.5, 6);
   });
+
+  it("zeroes out layer 2 contribution when surpriseSlider is exactly 1", () => {
+    // surprise = 1 → (1 - 1) = 0, so layer 2 contributes nothing even with
+    // layer 2 active and a positive interestScore. Equivalent to
+    // intensity = (1.0 * 0.5 + 0) / 0.8 = 0.625
+    const result = combineLayers(
+      l1(1.0),
+      { interestScore: 1.0 },
+      { friendBoost: 0, recommenders: [] },
+      { surpriseSlider: 1, friendsSlider: 0.5 },
+      { layer2: true, layer3: false },
+    );
+    expect(result).toBeCloseTo(0.625, 6);
+  });
+
+  it("zeroes out layer 3 contribution when friendsSlider is exactly 0", () => {
+    // friends = 0 → friendBoost * 0 * w3 = 0, so layer 3 contributes nothing
+    // even with layer 3 active. (0 * 0.5 + 1.0 * 0 * 0.2) / 0.7 = 0
+    const result = combineLayers(
+      l1(0.0),
+      { interestScore: 0 },
+      { friendBoost: 1.0, recommenders: ["did:plc:a"] },
+      { surpriseSlider: 0.5, friendsSlider: 0 },
+      { layer2: false, layer3: true },
+    );
+    expect(result).toBeCloseTo(0, 6);
+  });
 });
 
 describe("combineLayers — REGRESSION: per-talk discontinuity bug", () => {

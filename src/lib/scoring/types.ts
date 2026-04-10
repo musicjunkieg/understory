@@ -1,9 +1,8 @@
 import type { TalkEntry } from "@/lib/types";
 import type { TalkMention, TalkMentions } from "@/lib/crawl/types";
-// Local-import-then-re-export so we get a usable local binding for ScoringInputs
-// AND re-export the type so callers can `import { ActiveLayers } from "@/lib/scoring/types"`
-// without needing to know combine.ts owns it. combine.ts doesn't exist yet
-// — this import will resolve once Task 6 lands.
+// Local-import-then-re-export so `ScoringInputs` gets a usable local binding
+// for `ActiveLayers` AND callers can `import { ActiveLayers } from "@/lib/scoring/types"`
+// without needing to know `combine.ts` owns it.
 import type { ActiveLayers } from "./combine";
 export type { ActiveLayers };
 
