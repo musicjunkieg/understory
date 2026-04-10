@@ -30,7 +30,7 @@ function ScoreDetail({ score }: { score: TalkScore }) {
   }
 
   // engaged — show percentage
-  const pct = Math.round(score.layer1.attentionInverse * 100);
+  const pct = Math.min(99, Math.round(score.layer1.attentionInverse * 100));
   return (
     <div className="text-label-sm text-on-surface-variant">
       {pct}% of your network missed this

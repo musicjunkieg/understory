@@ -23,8 +23,9 @@ export function ScoredTalksGrid({ talks }: ScoredTalksGridProps) {
         return talks.map((talk) => ({ talk, score: null }));
       }
       const scores = rankTalks({ talks, mentions, followCount });
+      const talksByRkey = new Map(talks.map((t) => [t.rkey, t]));
       return scores.map((score) => ({
-        talk: talks.find((t) => t.rkey === score.rkey)!,
+        talk: talksByRkey.get(score.rkey)!,
         score,
       }));
     }, [talks, mentions, followCount]);

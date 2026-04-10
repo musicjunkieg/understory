@@ -35,14 +35,23 @@ export function useCrawlData(): CrawlData {
       try {
         const res = await fetch("/api/crawl");
         if (!res.ok) {
-          // 401 = not authenticated, 504 = timeout — treat as "no data"
           if (!cancelled) {
-            setData({
-              mentions: null,
-              followCount: 0,
-              loading: false,
-              error: null,
-            });
+            if (res.status === 401 || res.status === 504) {
+              // Not authenticated or timeout — treat as "no data"
+              setData({
+                mentions: null,
+                followCount: 0,
+                loading: false,
+                error: null,
+              });
+            } else {
+              setData({
+                mentions: null,
+                followCount: 0,
+                loading: false,
+                error: `Crawl failed: ${res.status} ${res.statusText}`,
+              });
+            }
           }
           return;
         }
