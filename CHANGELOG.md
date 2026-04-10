@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Fix talk-to-schedule matching for ATScience VODs without vodAtUri (#34)
 
 ### Changed
+- Deploy to Railway (#31)
 - Scoring algorithm (#19)
 - Post-to-talk matching (#17)
 - Social graph crawler (#16)
