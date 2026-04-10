@@ -1,13 +1,69 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useCallback } from "react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
+
+interface TypeaheadActor {
+  handle: string;
+  displayName?: string;
+  avatar?: string;
+}
+
+const TYPEAHEAD_URL =
+  "https://typeahead.waow.tech/xrpc/app.bsky.actor.searchActorsTypeahead";
+const DEBOUNCE_MS = 200;
+const MIN_QUERY_LENGTH = 2;
 
 export function LoginForm() {
   const [handle, setHandle] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
+  const [suggestions, setSuggestions] = useState<TypeaheadActor[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const abortRef = useRef<AbortController | null>(null);
+
+  const fetchSuggestions = useCallback((query: string) => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    if (abortRef.current) abortRef.current.abort();
+
+    if (query.trim().length < MIN_QUERY_LENGTH) {
+      setSuggestions([]);
+      setShowSuggestions(false);
+      return;
+    }
+
+    debounceRef.current = setTimeout(async () => {
+      const controller = new AbortController();
+      abortRef.current = controller;
+      try {
+        const url = `${TYPEAHEAD_URL}?q=${encodeURIComponent(query.trim())}&limit=6`;
+        const res = await fetch(url, { signal: controller.signal });
+        if (!res.ok) return;
+        const data = await res.json();
+        // Only apply results if this request wasn't aborted by a newer one
+        if (!controller.signal.aborted) {
+          setSuggestions(data.actors ?? []);
+          setShowSuggestions(true);
+        }
+      } catch {
+        // Typeahead failure (including abort) is non-fatal
+      }
+    }, DEBOUNCE_MS);
+  }, []);
+
+  function handleInputChange(value: string) {
+    setHandle(value);
+    fetchSuggestions(value);
+  }
+
+  function selectSuggestion(actor: TypeaheadActor) {
+    setHandle(actor.handle);
+    setSuggestions([]);
+    setShowSuggestions(false);
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -15,6 +71,7 @@ export function LoginForm() {
 
     setLoading(true);
     setError(null);
+    setShowSuggestions(false);
 
     try {
       const res = await fetch("/oauth/login", {
@@ -52,16 +109,58 @@ export function LoginForm() {
           onSubmit={handleSubmit}
           className="absolute right-0 top-full mt-2 flex flex-col gap-3 rounded-lg bg-surface-container-high p-4 shadow-lg min-w-72 z-50"
         >
-          <input
-            type="text"
-            value={handle}
-            onChange={(e) => setHandle(e.target.value)}
-            placeholder="handle.bsky.social"
-            aria-label="Your Atmosphere handle"
-            className="rounded-lg bg-surface-container-highest px-3 py-2 text-body-md text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary-fixed"
-            autoFocus
-            disabled={loading}
-          />
+          <div className="relative">
+            <input
+              type="text"
+              value={handle}
+              onChange={(e) => handleInputChange(e.target.value)}
+              onFocus={() => {
+                if (suggestions.length > 0) setShowSuggestions(true);
+              }}
+              placeholder="handle.bsky.social"
+              aria-label="Your Atmosphere handle"
+              className="w-full rounded-lg bg-surface-container-highest px-3 py-2 text-body-md text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary-fixed"
+              autoFocus
+              disabled={loading}
+              autoComplete="off"
+            />
+            {showSuggestions && suggestions.length > 0 && (
+              <ul className="absolute left-0 right-0 top-full mt-1 max-h-64 overflow-y-auto rounded-lg bg-surface-container-highest shadow-lg z-50">
+                {suggestions.map((actor) => (
+                  <li key={actor.handle}>
+                    <button
+                      type="button"
+                      onClick={() => selectSuggestion(actor)}
+                      className="flex w-full items-center gap-3 px-3 py-2 text-left hover:bg-surface-container-high transition-colors cursor-pointer"
+                    >
+                      {actor.avatar ? (
+                        <Image
+                          src={actor.avatar}
+                          alt=""
+                          width={24}
+                          height={24}
+                          className="h-6 w-6 rounded-full flex-shrink-0"
+                          unoptimized
+                        />
+                      ) : (
+                        <div className="h-6 w-6 rounded-full bg-surface-container flex-shrink-0" />
+                      )}
+                      <div className="min-w-0 flex-1">
+                        {actor.displayName && (
+                          <div className="text-label-sm text-on-surface truncate">
+                            {actor.displayName}
+                          </div>
+                        )}
+                        <div className="text-label-sm text-on-surface-variant truncate">
+                          @{actor.handle}
+                        </div>
+                      </div>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
           {error && (
             <span className="text-label-sm text-error">{error}</span>
           )}
@@ -74,6 +173,8 @@ export function LoginForm() {
               onClick={() => {
                 setOpen(false);
                 setError(null);
+                setSuggestions([]);
+                setShowSuggestions(false);
               }}
               className="text-label-sm text-on-surface-variant hover:text-on-surface cursor-pointer"
             >

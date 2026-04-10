@@ -23,8 +23,11 @@ export async function getSession(): Promise<{
     const agent = new Agent(session);
     return { agent, did };
   } catch {
-    // Session expired or revoked — clear cookie
-    await clearSessionCookie();
+    // Session expired or revoked. Don't try to clear the cookie here —
+    // Next.js only allows cookie modification in Route Handlers and Server
+    // Actions, not during page renders. A stale cookie is harmless: the
+    // user sees the login form, and logging in again overwrites it.
+    // The cookie expires in 7 days anyway (COOKIE_MAX_AGE).
     return null;
   }
 }

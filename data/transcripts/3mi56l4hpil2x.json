@@ -1,0 +1,83 @@
+{
+  "uri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/place.stream.video/3mi56l4hpil2x",
+  "cid": "bafyreidpzvbdmhvp2747qiegaoynmb4xv3pn4jol3pp6tpwnilnyfjlrwm",
+  "title": "ho owns the group chat? Building collaborative spaces on ATProto",
+  "creator": "did:plc:7tattzlorncahxgtdiuci7x7",
+  "duration": 55984983333,
+  "createdAt": "2026-03-28T17:41:54Z",
+  "transcription": {
+    "id": "c38428a1-5a21-4739-b94d-bb490cad952f",
+    "status": "completed",
+    "text": "Brittany, come on up.",
+    "utterances": [
+      {
+        "speaker": "A",
+        "text": "Brittany, come on up.",
+        "confidence": 0.87438846,
+        "start": 0,
+        "end": 2761,
+        "words": [
+          {
+            "text": "Brittany,",
+            "start": 0,
+            "end": 1605,
+            "confidence": 0.62234914,
+            "speaker": "A"
+          },
+          {
+            "text": "come",
+            "start": 1702,
+            "end": 2360,
+            "confidence": 0.9997564,
+            "speaker": "A"
+          },
+          {
+            "text": "on",
+            "start": 2360,
+            "end": 2440,
+            "confidence": 0.9995426,
+            "speaker": "A"
+          },
+          {
+            "text": "up.",
+            "start": 2440,
+            "end": 2761,
+            "confidence": 0.87590575,
+            "speaker": "A"
+          }
+        ]
+      }
+    ],
+    "words": [
+      {
+        "text": "Brittany,",
+        "start": 0,
+        "end": 1605,
+        "confidence": 0.62234914,
+        "speaker": "A"
+      },
+      {
+        "text": "come",
+        "start": 1702,
+        "end": 2360,
+        "confidence": 0.9997564,
+        "speaker": "A"
+      },
+      {
+        "text": "on",
+        "start": 2360,
+        "end": 2440,
+        "confidence": 0.9995426,
+        "speaker": "A"
+      },
+      {
+        "text": "up.",
+        "start": 2440,
+        "end": 2761,
+        "confidence": 0.87590575,
+        "speaker": "A"
+      }
+    ],
+    "audio_duration": 57
+  }
+}

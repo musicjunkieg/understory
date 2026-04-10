@@ -3,34 +3,23 @@ import type {
   NodeSavedState,
   NodeSavedSession,
 } from "@atproto/oauth-client-node";
+import { buildClientMetadata } from "./metadata";
 
 const stateStore = new Map<string, NodeSavedState>();
 const sessionStore = new Map<string, NodeSavedSession>();
 
 function createClient(): NodeOAuthClient {
-  const clientId = process.env.OAUTH_CLIENT_ID;
   const appUrl = process.env.APP_URL;
 
-  if (!clientId || !appUrl) {
+  if (!appUrl) {
     throw new Error(
-      "Missing OAUTH_CLIENT_ID or APP_URL environment variables. " +
-        "See docs/superpowers/specs/2026-04-06-oauth.md for setup instructions.",
+      "Missing APP_URL environment variable. " +
+        "Set to your app's public URL (e.g., https://understory.watch).",
     );
   }
 
   return new NodeOAuthClient({
-    clientMetadata: {
-      client_id: clientId,
-      client_name: "Understory (Development)",
-      client_uri: appUrl,
-      redirect_uris: [`${appUrl}/oauth/callback`],
-      grant_types: ["authorization_code", "refresh_token"],
-      response_types: ["code"],
-      scope: "atproto transition:generic",
-      application_type: "web",
-      dpop_bound_access_tokens: true,
-      token_endpoint_auth_method: "none",
-    },
+    clientMetadata: buildClientMetadata(appUrl),
     stateStore: {
       async get(key: string) {
         return stateStore.get(key);
