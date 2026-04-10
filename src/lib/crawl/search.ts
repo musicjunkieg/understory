@@ -17,7 +17,8 @@ const SEARCH_SINCE = "2026-03-26T00:00:00.000Z";
 const SEARCH_UNTIL = "2026-04-27T00:00:00.000Z";
 
 /**
- * Search Bluesky for conference-related posts within the conference window.
+ * Search Bluesky for conference-related posts during the conference period
+ * and the post-conference aftermath (see SEARCH_SINCE / SEARCH_UNTIL above).
  * Returns deduplicated posts from all search queries.
  */
 export async function searchConferencePosts(
