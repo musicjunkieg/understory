@@ -193,10 +193,10 @@ Where:
 **Why no percentage for "missed":** The `missed` state means `uniqueFollows === 0`, so `attentionInverse` is always exactly `1.0` — the percentage would always read "100%". A static message is clearer and avoids pointless math. For `engaged` talks, the percentage IS meaningful: "83% of your network missed this" conveys the gradient between "almost nobody talked about it" and "most of your follows discussed it."
 
 **Interaction:**
-- Desktop: detail appears on `:hover` via CSS transition (opacity 0 → 1, translateY(4px) → 0). No JavaScript state needed.
-- Mobile: detail is always visible when `score` is present (since there's no hover). This is acceptable because mobile cards are larger (single column) and the detail text is small.
+- Desktop (`sm:` and above): detail is hidden by default, revealed on `:hover` via CSS transition (`max-height` + `opacity`). Uses Tailwind `group`/`group-hover:` — no JavaScript state needed.
+- Mobile (below `sm:`): detail is always visible when `score` is present (since there's no hover). Acceptable because mobile cards are full-width and the detail text is small.
 
-**Implementation note:** The detail strip is inside the card but below the existing content. It uses `absolute` positioning at the bottom, with a subtle gradient fade from transparent to `surface-container-low` so it doesn't clip the card content.
+**Implementation note:** The detail strip uses flow-based expansion (`max-h-0`/`max-h-12` + `overflow-hidden`) rather than absolute positioning. This avoids layout complexity and works naturally with the card's existing padding. The `transition-all duration-300` on `sm:` breakpoint smoothly animates the reveal on desktop hover.
 
 ---
 

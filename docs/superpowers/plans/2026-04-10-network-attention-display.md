@@ -150,9 +150,7 @@ Read `src/components/ui/lume-card.tsx` and confirm the current interface:
 Replace the entire file with:
 
 ```tsx
-"use client";
-
-import { useState, type HTMLAttributes } from "react";
+import { type HTMLAttributes } from "react";
 import type { TalkScore } from "@/lib/scoring";
 
 interface LumeCardProps extends HTMLAttributes<HTMLDivElement> {
@@ -202,7 +200,6 @@ function LumeCard({
   ...props
 }: LumeCardProps) {
   const isUnderstory = glowIntensity > 0.3;
-  const [tapped, setTapped] = useState(false);
   const hasDetail = score && score.state !== "unknown";
 
   return (
@@ -228,9 +225,6 @@ function LumeCard({
           ? ({ "--tile-index": tileIndex } as React.CSSProperties)
           : undefined
       }
-      onClick={() => {
-        if (hasDetail) setTapped((t) => !t);
-      }}
       {...props}
     >
       {interestMatch && (
@@ -244,17 +238,14 @@ function LumeCard({
       {hasDetail && (
         <div
           className={[
-            "px-5 pb-3 pt-0 transition-all duration-300",
-            // Desktop: show on hover via group-hover
-            "max-h-0 overflow-hidden opacity-0",
-            "group-hover:max-h-12 group-hover:opacity-100",
-            // Mobile: show on tap via state
-            tapped ? "max-h-12 opacity-100" : "",
-            // Always visible on small screens (no hover available)
-            "sm:max-h-0 sm:opacity-0 sm:group-hover:max-h-12 sm:group-hover:opacity-100",
-          ]
-            .filter(Boolean)
-            .join(" ")}
+            "px-5 pb-3 pt-0",
+            // Mobile: always visible (no hover capability)
+            "max-h-12 opacity-100",
+            // Desktop (sm+): hidden by default, revealed on hover via group-hover
+            "sm:max-h-0 sm:overflow-hidden sm:opacity-0",
+            "sm:transition-all sm:duration-300",
+            "sm:group-hover:max-h-12 sm:group-hover:opacity-100",
+          ].join(" ")}
         >
           <div className="border-t border-primary-fixed-dim/20 pt-2">
             <ScoreDetail score={score} />
@@ -269,16 +260,13 @@ export { LumeCard, type LumeCardProps };
 ```
 
 **Key changes from the original:**
-- Added `"use client"` directive (needed for `useState` — the tap toggle for mobile)
 - Added `score?: TalkScore | null` prop
 - Added `ScoreDetail` component (renders "Your network missed this" or "X% of your network missed this")
-- Added the detail strip at the bottom: hidden by default, shown on `group-hover` (desktop) or tap (mobile)
+- Added detail strip: **always visible on mobile** (where there's no hover), **hidden → revealed on hover on desktop** (`sm:group-hover:`). No JavaScript state needed — pure CSS.
 - Changed `transition-shadow` to `transition-all duration-500` for smoother glow transitions
 - Added `group` class for group-hover targeting
 - Border top opacity now varies with glow intensity for more visual gradient
-- The `onClick` handler only sets tap state (for mobile detail toggle); the parent `Link` still handles navigation because the `Link` wraps the entire card
-
-**Important interaction note:** The card is wrapped in a Next.js `Link` in the grid. The `onClick` on the card div fires before the `Link` navigation. On desktop, the detail shows on hover without clicking, so the click navigates. On mobile, the first tap shows the detail AND navigates (since the detail is just a visual overlay, not a blocking interaction). If the user wants to read the detail before navigating, they can long-press or use the back button. This is acceptable for V1.
+- No `"use client"` needed — no `useState`, no event handlers. The component is rendered inside the client `ScoredTalksGrid` but doesn't need its own client boundary.
 
 - [ ] **Step 3: Verify tsc and eslint are clean**
 
