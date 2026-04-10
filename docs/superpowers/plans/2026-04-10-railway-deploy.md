@@ -195,7 +195,7 @@ export function buildClientMetadata(appUrl: string) {
 }
 ```
 
-The `as const` assertions on `application_type` and `token_endpoint_auth_method` are needed because the `@atproto/oauth-client-node` SDK expects literal string types for these fields, not `string`. The other array fields (`redirect_uris`, `grant_types`, `response_types`) must remain mutable (no top-level `as const`) because the SDK's Zod input types expect mutable tuples.
+The `as const` assertions on `application_type` and `token_endpoint_auth_method` are needed because the metadata is now built in a separate function (not inline in the `NodeOAuthClient` constructor). Without contextual typing from the call site, TypeScript widens `"web"` and `"none"` to `string`, which won't match the SDK's union-of-literal types (`"web" | "native"`, `"none" | "client_secret_post" | ...`). The `as const` keeps them as string literals. The other array fields (`redirect_uris`, `grant_types`, `response_types`) must remain mutable (no top-level `as const`) because the SDK's Zod input types expect mutable tuples. If `tsc --noEmit` passes without the `as const` assertions, they can be safely removed — the verification step will tell you.
 
 - [ ] **Step 2: Verify tsc is clean**
 
@@ -300,11 +300,15 @@ function createClient(): NodeOAuthClient {
       dpop_bound_access_tokens: true,
       token_endpoint_auth_method: "none",
     },
-    stateStore: { ... },
-    sessionStore: { ... },
+    stateStore: { ... },   // full Map-backed implementation — preserved in Step 2
+    sessionStore: { ... }, // full Map-backed implementation — preserved in Step 2
   });
 }
+
+// globalThis.__oauthClient caching pattern also present — preserved in Step 2
 ```
+
+> **Note:** The snippet above truncates the stateStore, sessionStore, and globalThis caching pattern for brevity. Step 2's "After" code includes the complete implementations of all three. They are preserved unchanged.
 
 - [ ] **Step 2: Rewrite `createClient` to use `buildClientMetadata`**
 
@@ -383,7 +387,7 @@ Edit `.env` to remove `OAUTH_CLIENT_ID`:
 
 ```
 APP_URL=http://127.0.0.1:3000
-ASSEMBLYAI_API_KEY=aa551c5e26674976a3103e6a4bfa7674
+ASSEMBLYAI_API_KEY=<your-key-here>
 ```
 
 > **Note:** `.env` is gitignored — this change is local only.
@@ -497,21 +501,25 @@ git checkout feat/railway-deploy
 
 This creates the `staging` branch (initially identical to `main`) so Railway's staging environment has a branch to track.
 
-- [ ] **Step 5: Set environment variables — staging**
+- [ ] **Step 5: Generate a domain for the staging environment**
 
-Switch Railway context to staging, then set env vars:
+Use the MCP tool `generate-domain` for the staging environment, or check the Railway dashboard for the auto-generated domain.
+
+Note the domain (e.g., `understory-staging-abc123.up.railway.app`) — it's needed for the `APP_URL` env var in the next step.
+
+- [ ] **Step 6: Set environment variables — staging**
+
+Switch Railway context to staging, then set env vars using the domain from Step 5:
 
 Use the MCP tool `set-variables` for the staging environment, or:
 
 ```bash
 railway link --environment staging
-railway variables set APP_URL=https://<staging-domain>.up.railway.app
+railway variables set APP_URL=https://<staging-domain-from-step-5>.up.railway.app
 railway variables set HOSTNAME=0.0.0.0
 ```
 
-> **Note:** You'll get the staging domain after the first deploy. Set `APP_URL` to a placeholder initially, deploy, read the generated domain from Railway's dashboard, then update `APP_URL` with the real domain and redeploy.
-
-- [ ] **Step 6: Set environment variables — production**
+- [ ] **Step 7: Set environment variables — production**
 
 Switch Railway context to production:
 
@@ -520,12 +528,6 @@ railway link --environment production
 railway variables set APP_URL=https://understory.watch
 railway variables set HOSTNAME=0.0.0.0
 ```
-
-- [ ] **Step 7: Generate a domain for the staging environment**
-
-Use the MCP tool `generate-domain` for the staging environment, or check the Railway dashboard for the auto-generated domain.
-
-Note the domain — it will be needed to update `APP_URL` in Step 5.
 
 ---
 

@@ -30,7 +30,7 @@ Understory is currently dev-only behind Tailscale Funnel. The conference ended M
 - Live at `https://understory.watch`
 - Self-hosted OAuth client metadata (no cimd-service dependency)
 - Railway auto-deploys on push to `main`
-- One environment variable: `APP_URL`
+- Two environment variables: `APP_URL` and `HOSTNAME=0.0.0.0`
 
 ---
 
