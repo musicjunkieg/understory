@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getOAuthClient } from "@/lib/auth/client";
+import { OAUTH_SCOPE } from "@/lib/auth/metadata";
 
 export async function POST(request: NextRequest) {
   try {
@@ -15,7 +16,7 @@ export async function POST(request: NextRequest) {
 
     const client = getOAuthClient();
     const url = await client.authorize(handle, {
-      scope: "atproto transition:generic",
+      scope: OAUTH_SCOPE,
     });
 
     return NextResponse.json({ redirect: url.toString() });
