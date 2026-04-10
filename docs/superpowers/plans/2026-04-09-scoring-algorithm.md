@@ -59,20 +59,14 @@ Expected: `package.json` and `package-lock.json` updated. New `node_modules/vite
 
 - [ ] **Step 3: Add test scripts to package.json**
 
-In `package.json`, replace the `"scripts"` block with:
+Use npm's tooling to insert the scripts non-destructively (preserves any other scripts that might have been added since this plan was written):
 
-```json
-"scripts": {
-  "dev": "next dev",
-  "build": "next build",
-  "start": "next start",
-  "lint": "eslint",
-  "test": "vitest run",
-  "test:watch": "vitest",
-  "transcribe": "tsx scripts/transcribe.ts",
-  "build-talk-index": "tsx scripts/build-talk-index.ts"
-},
+```bash
+npm pkg set scripts.test="vitest run"
+npm pkg set scripts.test:watch="vitest"
 ```
+
+Verify with: `cat package.json | grep -A 10 '"scripts"'` — should show `test` and `test:watch` alongside the existing `dev`, `build`, `start`, `lint`, `transcribe`, `build-talk-index` scripts.
 
 - [ ] **Step 4: Create `vitest.config.ts` at the repo root**
 
@@ -124,11 +118,12 @@ Create `src/lib/scoring/types.ts`:
 ```ts
 import type { TalkEntry } from "@/lib/types";
 import type { TalkMention, TalkMentions } from "@/lib/crawl/types";
-
-// Re-export ActiveLayers from combine.ts so callers don't need to know
-// which file declares it. Combine.ts doesn't exist yet — this import will
-// resolve once Task 7 lands.
-export type { ActiveLayers } from "./combine";
+// Local-import-then-re-export so we get a usable local binding for ScoringInputs
+// AND re-export the type so callers can `import { ActiveLayers } from "@/lib/scoring/types"`
+// without needing to know combine.ts owns it. combine.ts doesn't exist yet
+// — this import will resolve once Task 6 lands.
+import type { ActiveLayers } from "./combine";
+export type { ActiveLayers };
 
 export type TalkScoreState = "engaged" | "missed" | "unknown";
 
@@ -163,7 +158,7 @@ export interface ScoringInputs {
   mentions: TalkMentions | null;  // null = crawl not yet completed
   followCount: number;            // from CrawlResult.followCount
   weights?: ScoringWeights;
-  active?: import("./combine").ActiveLayers;
+  active?: ActiveLayers;          // omitted = layer 1 only (today's deployment)
 }
 
 // Re-export TalkMention for downstream consumers that import only from
@@ -197,10 +192,13 @@ import { describe, it, expect } from "vitest";
 import { computeLayer1 } from "./networkAttention";
 import type { TalkMention } from "@/lib/crawl/types";
 
-function makeMention(followCount: number): TalkMention {
-  const follows = Array.from({ length: followCount }, (_, i) => `did:plc:f${i}`);
+// Build a TalkMention with `n` distinct follow DIDs.
+// Note: this is "follows engaged with this talk", NOT the user's total
+// follow count — that's passed separately as the second arg to computeLayer1.
+function makeMention(n: number): TalkMention {
+  const follows = Array.from({ length: n }, (_, i) => `did:plc:f${i}`);
   return {
-    count: followCount,
+    count: n,
     follows,
     posts: [],
     rsvps: [],
@@ -299,6 +297,8 @@ export function computeLayer1(
 Run: `npm test -- networkAttention`
 Expected: PASS — 6 tests passing in `networkAttention.test.ts`.
 
+> **Note:** This works because Vitest/esbuild elides the `import type ... from "./combine"` and `export type { ActiveLayers }` lines in `types.ts` at transpile time (they're type-only constructs, erased before runtime resolution). If the test run instead fails with `Cannot find module './combine'`, that means esbuild is *not* erasing the type re-export. Workaround: temporarily comment out both the `import type { ActiveLayers } from "./combine";` and `export type { ActiveLayers };` lines in `types.ts`, plus change `active?: ActiveLayers;` to `active?: unknown;` in `ScoringInputs`. Re-run the test, then restore all three before Task 6 commits.
+
 > **Do NOT commit yet.** This file imports from `./types`, which itself imports from `./combine`. Both will land together at the end of Chunk 2 once `combine.ts` exists.
 
 ---
@@ -329,13 +329,20 @@ export interface InterestStubResult {
  * When implemented, this should return cosine similarity in [0, 1] between
  * the user's recent-post embedding and the talk's topicIndex embedding.
  *
- * The leading underscore on `_talk` is the project convention for unused
- * parameters; ESLint allows it.
+ * The leading underscore on `_talk` follows the `@typescript-eslint/no-unused-vars`
+ * `argsIgnorePattern: "^_"` convention configured by `eslint-config-next/typescript`.
  */
 export function computeInterestStub(_talk: TalkEntry): InterestStubResult {
   return { interestScore: 0 };
 }
 ```
+
+- [ ] **Step 2: Verify ESLint accepts the `_talk` parameter convention**
+
+Run: `npx eslint src/lib/scoring/interestStub.ts`
+Expected: clean. If ESLint emits `@typescript-eslint/no-unused-vars` for `_talk`, the project's Next.js preset isn't configuring `argsIgnorePattern: "^_"`. Two recovery options:
+1. Rewrite the body to consume the param: change to `export function computeInterestStub(talk: TalkEntry): InterestStubResult { void talk; return { interestScore: 0 }; }`
+2. Add the rule override to `eslint.config.mjs`.
 
 > **No test file.** A stub that returns a literal constant doesn't need its own test — its behavior is exercised end-to-end by the `combineLayers` and `scoreTalk` tests in later tasks.
 
@@ -762,10 +769,12 @@ function makeTalk(rkey: string, overrides: Partial<TalkEntry> = {}): TalkEntry {
   };
 }
 
-function makeMention(followCount: number): TalkMention {
-  const follows = Array.from({ length: followCount }, (_, i) => `did:plc:f${i}`);
+// Build a TalkMention with `n` distinct follow DIDs (engaged follows for
+// this talk, NOT the user's total follow count — that's a separate arg).
+function makeMention(n: number): TalkMention {
+  const follows = Array.from({ length: n }, (_, i) => `did:plc:f${i}`);
   return {
-    count: followCount,
+    count: n,
     follows,
     posts: [],
     rsvps: [],
@@ -808,16 +817,29 @@ describe("scoreTalk — defaults", () => {
   const talk = makeTalk("a");
   const mentions: TalkMentions = { a: makeMention(0) };
 
-  it("uses DEFAULT_WEIGHTS when weights argument omitted", () => {
+  it("uses both DEFAULT_WEIGHTS and DEFAULT_ACTIVE_LAYERS when both omitted", () => {
     const score = scoreTalk(talk, mentions, 100);
     expect(score.intensity).toBeCloseTo(1.0, 6);
   });
 
-  it("uses DEFAULT_ACTIVE_LAYERS when active argument omitted (Layer 1 only)", () => {
-    // Even with stubs technically returning 0, the `active` default keeps
-    // us in the L1-only branch and intensity == attentionInverse exactly.
-    const score = scoreTalk(talk, mentions, 100);
+  it("uses DEFAULT_ACTIVE_LAYERS when active omitted but explicit weights supplied", () => {
+    const score = scoreTalk(talk, mentions, 100, {
+      surpriseSlider: 0.25,
+      friendsSlider: 0.75,
+    });
+    // active defaults to both-off → L1-only branch → weights don't enter
+    // the math at all → intensity == layer1.attentionInverse == 1.0
     expect(score.intensity).toBeCloseTo(1.0, 6);
+  });
+
+  it("uses DEFAULT_WEIGHTS when weights omitted but explicit active supplied", () => {
+    const score = scoreTalk(talk, mentions, 100, undefined, {
+      layer2: true,
+      layer3: false,
+    });
+    // L1+L2 active, L2 stub returns 0, default surprise=0.5
+    // (1.0*0.5 + 0*0.5*0.3) / 0.8 = 0.625
+    expect(score.intensity).toBeCloseTo(0.625, 6);
   });
 });
 
@@ -1080,50 +1102,17 @@ export { scoreTalk, rankTalks } from "./rank";
 - [ ] **Step 2: Verify tsc and eslint are clean**
 
 Run in parallel:
-- `npx tsc --noEmit` — Expected: clean
-- `npx eslint src/` — Expected: clean
+- `npx tsc --noEmit` — Expected: clean. This compiles the whole project including `index.ts`, which type-checks every public re-export and would catch any name typos or missing exports.
+- `npx eslint src/` — Expected: clean.
 
-- [ ] **Step 3: Verify the public surface is reachable from outside**
-
-Run a one-shot type check by creating a temporary file at `/tmp/scoring_smoke.ts`:
-
-```ts
-import {
-  rankTalks,
-  scoreTalk,
-  DEFAULT_WEIGHTS,
-  DEFAULT_ACTIVE_LAYERS,
-  type TalkScore,
-  type ScoringInputs,
-  type ActiveLayers,
-} from "/Users/bryan.guffey/Code/Understory/src/lib/scoring";
-
-const _check: TalkScore[] = rankTalks({
-  talks: [],
-  mentions: null,
-  followCount: 0,
-});
-void _check;
-void scoreTalk;
-void DEFAULT_WEIGHTS;
-void DEFAULT_ACTIVE_LAYERS;
-const _active: ActiveLayers = { layer2: false, layer3: false };
-void _active;
-const _inputs: ScoringInputs = { talks: [], mentions: null, followCount: 0 };
-void _inputs;
-```
-
-Run: `npx tsc --noEmit /tmp/scoring_smoke.ts`
-Expected: clean. (We don't commit this file — it's a one-shot smoke check that all the public exports actually resolve through `index.ts`.)
-
-Then delete it: `rm /tmp/scoring_smoke.ts`
-
-- [ ] **Step 4: Commit**
+- [ ] **Step 3: Commit**
 
 ```bash
 git add src/lib/scoring/index.ts
 git commit -m "feat(scoring): add public index re-exports"
 ```
+
+Note: the renumbering above is intentional — Step 3 is the commit because the smoke check that was previously here turned out to be unworkable in a sandboxed environment AND would have disabled `tsconfig.json` path-alias resolution if it had run. The Task 9 full-project `npx tsc --noEmit` already exercises every re-export through `index.ts`.
 
 ---
 
@@ -1149,15 +1138,15 @@ Expected: clean. Fix any errors.
 - [ ] **Step 4: Run the production build**
 
 Run: `npm run build`
-Expected: succeeds; no new bundle warnings; existing routes (`/api/crawl`, `/talks`, `/talk/[rkey]`, etc.) all still listed.
+Expected: build succeeds with no new bundle warnings. Confirm in the route listing that `/api/crawl` still appears with the dynamic route indicator (`ƒ`), not the static one (`○`). The set of listed routes should be unchanged from before this PR — if a previously dynamic route flipped to static (or vice versa), investigate before proceeding.
 
-- [ ] **Step 5: Smoke check that scoring isn't accidentally bundled into the server**
+- [ ] **Step 5: Smoke check that scoring isn't accidentally imported by a server route**
 
-The scoring module is intended to be client-side only. Search for any accidental imports from a server route:
+The scoring module is intended for client-side use. Use the Grep tool (NOT raw `grep` and NOT `npx grep`, neither of which match this project's tooling conventions) to search for any imports of `@/lib/scoring` under `src/app/api/`:
 
-Run: `npx grep -rn 'from "@/lib/scoring"' /Users/bryan.guffey/Code/Understory/src/app/api/`
-(Or use your editor's search.)
-Expected: no matches. If there are matches, that's fine in principle — scoring is pure functions and works on the server too — but for this issue we expect no API routes to import it yet.
+- Pattern: `from ["']@/lib/scoring`
+- Path: `src/app/api/`
+- Expected: zero matches. If you find any, double-check whether the API route actually needs scoring (it shouldn't for this issue) — scoring is pure functions so it would technically work server-side, but no consumer in scope for #19 should import it.
 
 - [ ] **Step 6: Commit any fixes from this task**
 
