@@ -72,31 +72,51 @@ const nextConfig: NextConfig = {
 };
 ```
 
-### 3.2 `src/app/oauth/client-metadata.json/route.ts` — self-hosted client metadata
+### 3.1b `package.json` — postbuild script + standalone start command
 
-The AT Protocol OAuth spec requires that `client_id` is a URL that resolves to a JSON document containing the client metadata. PDS servers fetch this URL during the authorization flow to validate the client.
+Next.js standalone mode fundamentally changes how the app is served:
 
-Previously, this metadata was hosted on `cimd-service.fly.dev` (a shared dev-only service). For production, Understory self-hosts its metadata at `https://understory.watch/oauth/client-metadata.json`.
+1. **Static assets excluded.** `.next/static/` (CSS/JS bundles) and `public/` are deliberately excluded from the standalone output. Without them, pages load with no styles and no client-side JavaScript (no hydration, no HLS player, no interactivity).
 
-**Route path:** `src/app/oauth/client-metadata.json/route.ts`
+2. **Data directory not at `process.cwd()/data`.** The standalone server runs from `.next/standalone/`, so `process.cwd()` resolves there — not the project root. The `outputFileTracingIncludes` config puts traced files under `.next/standalone/.next/server/`, but `path.resolve(process.cwd(), "data")` still looks for `.next/standalone/data/`.
 
-This creates a Next.js route handler at `/oauth/client-metadata.json`. The route reads `APP_URL` from the environment and returns the metadata JSON with the correct `client_id` (self-referencing URL) and `redirect_uris`.
+3. **Start command changes.** The standalone server is `node .next/standalone/server.js`, not `next start`. Using `next start` would bypass the standalone output entirely, defeating the optimization.
+
+**Fix:** Add a `postbuild` script that copies the three missing pieces into the standalone directory, and change the `start` script:
+
+```json
+"scripts": {
+  "dev": "next dev",
+  "build": "next build",
+  "postbuild": "cp -r .next/static .next/standalone/.next/static && cp -r public .next/standalone/public && cp -r data .next/standalone/data",
+  "start": "node .next/standalone/server.js",
+  ...
+}
+```
+
+The `postbuild` script runs automatically after `npm run build` (npm lifecycle hook). It copies:
+- `.next/static/` → `.next/standalone/.next/static/` (CSS/JS bundles)
+- `public/` → `.next/standalone/public/` (currently empty, but correct for future static assets)
+- `data/` → `.next/standalone/data/` (talk + transcript JSON files)
+
+The `start` script changes from `next start` to `node .next/standalone/server.js` so Railway (and local `npm start`) use the standalone server.
+
+**Note:** The standalone server reads `PORT` and `HOSTNAME` environment variables. Railway sets `$PORT` automatically, but `HOSTNAME` defaults to `localhost` which won't work on Railway — it needs `HOSTNAME=0.0.0.0` to bind on all interfaces. This is set as a Railway env var in §4.2.
+
+### 3.2 `src/lib/auth/metadata.ts` — shared client metadata builder
+
+The AT Protocol OAuth spec requires that `client_id` is a URL that resolves to a JSON document containing the client metadata. PDS servers fetch this URL during the auth flow and compare it against what the client claims locally. If they don't match, the flow fails with a cryptic mismatch error.
+
+To prevent drift, the metadata object is defined **once** in a shared module and imported by both the HTTP route (§3.3) and the OAuth client (§3.4).
+
+**Create:** `src/lib/auth/metadata.ts`
 
 ```ts
-import { NextResponse } from "next/server";
+export const CLIENT_METADATA_PATH = "/oauth/client-metadata.json";
 
-export async function GET() {
-  const appUrl = process.env.APP_URL;
-  if (!appUrl) {
-    return NextResponse.json(
-      { error: "APP_URL not configured" },
-      { status: 500 },
-    );
-  }
-
-  const clientId = `${appUrl}/oauth/client-metadata.json`;
-
-  return NextResponse.json({
+export function buildClientMetadata(appUrl: string) {
+  const clientId = `${appUrl}${CLIENT_METADATA_PATH}`;
+  return {
     client_id: clientId,
     client_name: "Understory",
     client_uri: appUrl,
@@ -107,7 +127,31 @@ export async function GET() {
     application_type: "web",
     dpop_bound_access_tokens: true,
     token_endpoint_auth_method: "none",
-  });
+  } as const;
+}
+```
+
+`buildClientMetadata` is a pure function: given `APP_URL`, it returns the exact metadata object. Both the route handler and `NodeOAuthClient` call it with the same `APP_URL`, making drift structurally impossible.
+
+### 3.3 `src/app/oauth/client-metadata.json/route.ts` — self-hosted metadata endpoint
+
+**Route path:** `src/app/oauth/client-metadata.json/route.ts`
+
+This creates a Next.js App Router route handler at `/oauth/client-metadata.json`. The folder name contains a literal dot — Next.js App Router supports this (directories are just filesystem names), but if any tooling issue arises during testing, the fallback is to rename the folder to `client-metadata` (serving at `/oauth/client-metadata`) and update `CLIENT_METADATA_PATH` in `metadata.ts` accordingly. The AT Protocol spec does not mandate a specific path — only that `client_id` resolves to valid metadata.
+
+```ts
+import { NextResponse } from "next/server";
+import { buildClientMetadata } from "@/lib/auth/metadata";
+
+export async function GET() {
+  const appUrl = process.env.APP_URL;
+  if (!appUrl) {
+    return NextResponse.json(
+      { error: "APP_URL not configured" },
+      { status: 500 },
+    );
+  }
+  return NextResponse.json(buildClientMetadata(appUrl));
 }
 ```
 
@@ -115,22 +159,20 @@ export async function GET() {
 
 **Content-Type:** `NextResponse.json()` automatically sets `Content-Type: application/json`, which is what PDS servers expect.
 
-### 3.3 `src/lib/auth/client.ts` — derive `client_id` from `APP_URL`
+### 3.4 `src/lib/auth/client.ts` — derive `client_id` from `APP_URL`
 
-Replace the `OAUTH_CLIENT_ID` environment variable with a derived value. Since the client metadata is now self-hosted at `${APP_URL}/oauth/client-metadata.json`, the `client_id` is always predictable from `APP_URL`.
+Replace the `OAUTH_CLIENT_ID` environment variable with metadata derived from `APP_URL` via the shared `buildClientMetadata` function.
 
 **Changes:**
 
 1. Remove the `OAUTH_CLIENT_ID` env var check — it's no longer needed.
-2. Derive `clientId` from `appUrl`:
-   ```ts
-   const clientId = `${appUrl}/oauth/client-metadata.json`;
-   ```
-3. Update `client_name` from `"Understory (Development)"` to `"Understory"`.
-4. The `clientMetadata` object passed to `NodeOAuthClient` must exactly match what the route in §3.2 serves, because PDS servers compare the fetched metadata against what the client claims during the auth flow. Both read from the same `APP_URL` value, so they'll always agree.
+2. Import and call `buildClientMetadata(appUrl)` for the `clientMetadata` field.
+3. Update `client_name` from `"Understory (Development)"` to `"Understory"` (handled by the shared builder).
 
 **After:**
 ```ts
+import { buildClientMetadata } from "./metadata";
+
 function createClient(): NodeOAuthClient {
   const appUrl = process.env.APP_URL;
 
@@ -141,27 +183,14 @@ function createClient(): NodeOAuthClient {
     );
   }
 
-  const clientId = `${appUrl}/oauth/client-metadata.json`;
-
   return new NodeOAuthClient({
-    clientMetadata: {
-      client_id: clientId,
-      client_name: "Understory",
-      client_uri: appUrl,
-      redirect_uris: [`${appUrl}/oauth/callback`],
-      grant_types: ["authorization_code", "refresh_token"],
-      response_types: ["code"],
-      scope: "atproto transition:generic",
-      application_type: "web",
-      dpop_bound_access_tokens: true,
-      token_endpoint_auth_method: "none",
-    },
+    clientMetadata: buildClientMetadata(appUrl),
     // ... stateStore and sessionStore unchanged
   });
 }
 ```
 
-### 3.4 `.env` update for local development
+### 3.5 `.env` update for local development
 
 Update the local `.env` to remove `OAUTH_CLIENT_ID` (no longer used) and ensure `APP_URL` is set:
 
@@ -191,9 +220,10 @@ Set in Railway's service environment:
 
 | Variable | Value | Notes |
 |---|---|---|
-| `APP_URL` | `https://understory.watch` | The only required env var. Initially use the Railway-generated `*.up.railway.app` domain for smoke testing, then switch to the custom domain. |
+| `APP_URL` | `https://understory.watch` | Required. Initially use the Railway-generated `*.up.railway.app` URL for smoke testing, then switch to the custom domain. |
+| `HOSTNAME` | `0.0.0.0` | Required. The standalone server defaults to `localhost`, which won't accept connections on Railway. `0.0.0.0` binds on all interfaces. |
 
-`NODE_ENV=production` is set automatically by Railway. `ASSEMBLYAI_API_KEY` is not needed at runtime (only for offline build scripts).
+`NODE_ENV=production` is set automatically by Railway. `PORT` is set automatically by Railway (the standalone server reads it). `ASSEMBLYAI_API_KEY` is not needed at runtime (only for offline build scripts).
 
 ### 4.3 Domain configuration
 
@@ -233,13 +263,17 @@ The OAuth flow works as follows after deployment:
 
 ## 6. Data Bundling
 
-The `data/` directory (125MB) is included in every deploy via `outputFileTracingIncludes`. The files are:
+The `data/` directory (125MB) is included in every deploy via `outputFileTracingIncludes` AND the `postbuild` copy script (§3.1b). Both mechanisms work together: `outputFileTracingIncludes` ensures Next.js traces the files for its file system, and `postbuild` copies them to `.next/standalone/data/` so `process.cwd()/data` resolves correctly in the standalone server.
+
+The files are:
 
 - `data/talks.json` — master index (~180 talks), read by:
-  - `src/app/talks/page.tsx` (SSG at build time)
-  - `src/app/talk/[rkey]/page.tsx` (`generateStaticParams` at build time)
+  - `src/app/talks/page.tsx` (SSR at request time — uses `cookies()` for auth check, so cannot be statically generated)
+  - `src/app/talk/[rkey]/page.tsx` (`generateStaticParams` provides the rkey list at build time, but pages are SSR'd at request time due to `cookies()`)
   - `src/lib/crawl/crawler.ts` (runtime, cached once per server lifecycle)
-- `data/transcripts/*.json` — 128 transcript files, read at runtime by `src/app/talk/[rkey]/page.tsx`
+- `data/transcripts/*.json` — 128 transcript files, read at request time by `src/app/talk/[rkey]/page.tsx`
+
+**Note:** Despite using `generateStaticParams`, both talk pages call `getAuthUser()` → `cookies()`, which is a dynamic API. This forces Next.js to server-render them on every request rather than statically generating them at build time. The `generateStaticParams` function only provides the list of valid rkeys for routing — it does not enable static generation when dynamic APIs are present.
 
 **To update data:** Run `npm run build-talk-index` and/or `npm run transcribe` locally, commit the updated JSON files, push to `main`. Railway redeploys with the new data.
 
@@ -296,10 +330,12 @@ After pointing `understory.watch` to Railway:
 | File | Action | Responsibility |
 |------|--------|----------------|
 | `next.config.ts` | Modify | Add `output: "standalone"`, `outputFileTracingIncludes`, remove Tailscale dev origin |
+| `package.json` | Modify | Add `postbuild` script (copy static/public/data into standalone); change `start` to `node .next/standalone/server.js` |
+| `src/lib/auth/metadata.ts` | Create | Shared `buildClientMetadata(appUrl)` function, single source of truth for OAuth metadata |
 | `src/app/oauth/client-metadata.json/route.ts` | Create | Self-hosted AT Protocol OAuth client metadata endpoint |
-| `src/lib/auth/client.ts` | Modify | Derive `client_id` from `APP_URL`, remove `OAUTH_CLIENT_ID` dependency, update `client_name` |
+| `src/lib/auth/client.ts` | Modify | Import `buildClientMetadata`, remove `OAUTH_CLIENT_ID` dependency |
 
-3 files touched in the codebase. The rest is Railway CLI/MCP configuration (not committed to git).
+5 files touched in the codebase. The rest is Railway CLI/MCP configuration (not committed to git).
 
 ---
 
@@ -318,13 +354,17 @@ After pointing `understory.watch` to Railway:
 ## 11. Acceptance Criteria
 
 - [ ] Railway project "understory" exists with a service linked to `musicjunkieg/understory`
-- [ ] `APP_URL` environment variable set in Railway
+- [ ] `APP_URL` and `HOSTNAME=0.0.0.0` environment variables set in Railway
 - [ ] `next.config.ts` has `output: "standalone"` and `outputFileTracingIncludes` for `data/`
+- [ ] `package.json` has `postbuild` script copying `.next/static`, `public`, `data` into standalone directory
+- [ ] `package.json` `start` script is `node .next/standalone/server.js`
+- [ ] `src/lib/auth/metadata.ts` exports `buildClientMetadata`, imported by both route handler and `client.ts`
 - [ ] `/oauth/client-metadata.json` route exists and returns valid metadata
-- [ ] `src/lib/auth/client.ts` derives `client_id` from `APP_URL` (no `OAUTH_CLIENT_ID` env var)
-- [ ] `npm run build` produces a working standalone output
-- [ ] Railway deploy succeeds automatically on push
+- [ ] `src/lib/auth/client.ts` uses `buildClientMetadata(appUrl)` (no `OAUTH_CLIENT_ID` env var)
+- [ ] `npm run build` produces a working standalone output with `data/`, `.next/static/`, and `public/` present in `.next/standalone/`
+- [ ] Railway deploy succeeds automatically on push; build logs are clean
 - [ ] Landing page, `/talks`, `/talk/[rkey]`, and OAuth flow all work on the Railway domain
+- [ ] `/api/crawl` returns valid crawl data when authenticated
 - [ ] Custom domain `understory.watch` configured with valid SSL
 - [ ] Full OAuth flow works on `https://understory.watch`
 - [ ] `npx tsc --noEmit` clean, `npx eslint src/` clean, `npm test` passes
