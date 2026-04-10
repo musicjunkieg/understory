@@ -115,6 +115,16 @@ To prevent drift, the metadata object is defined **once** in a shared module and
 ```ts
 export const CLIENT_METADATA_PATH = "/oauth/client-metadata.json";
 
+/**
+ * Granular OAuth scopes — replaces the overpermissioned `transition:generic`.
+ * Understory only reads follows and searches posts; it never writes records.
+ */
+export const OAUTH_SCOPE = [
+  "atproto",
+  "rpc:app.bsky.graph.getFollows?aud=*",
+  "rpc:app.bsky.feed.searchPosts?aud=*",
+].join(" ");
+
 export function buildClientMetadata(appUrl: string) {
   const clientId = `${appUrl}${CLIENT_METADATA_PATH}`;
   return {
@@ -124,7 +134,7 @@ export function buildClientMetadata(appUrl: string) {
     redirect_uris: [`${appUrl}/oauth/callback`],
     grant_types: ["authorization_code", "refresh_token"],
     response_types: ["code"],
-    scope: "atproto transition:generic",
+    scope: OAUTH_SCOPE,
     application_type: "web",
     dpop_bound_access_tokens: true,
     token_endpoint_auth_method: "none",
@@ -133,6 +143,8 @@ export function buildClientMetadata(appUrl: string) {
 ```
 
 `buildClientMetadata` is a pure function: given `APP_URL`, it returns the exact metadata object. Both the route handler and `NodeOAuthClient` call it with the same `APP_URL`, making drift structurally impossible.
+
+`OAUTH_SCOPE` is also exported and used by `src/app/oauth/login/route.ts` in the `client.authorize()` call, so the scope requested at authorization time always matches the scope declared in the client metadata.
 
 ### 3.3 `src/app/oauth/client-metadata.json/route.ts` — self-hosted metadata endpoint
 
@@ -376,6 +388,7 @@ After pointing `understory.watch` to Railway's production CNAME and DNS propagat
 | `src/lib/auth/metadata.ts` | Create | Shared `buildClientMetadata(appUrl)` function, single source of truth for OAuth metadata |
 | `src/app/oauth/client-metadata.json/route.ts` | Create | Self-hosted AT Protocol OAuth client metadata endpoint |
 | `src/lib/auth/client.ts` | Modify | Import `buildClientMetadata`, remove `OAUTH_CLIENT_ID` dependency |
+| `src/app/oauth/login/route.ts` | Modify | Update `client.authorize()` scope from `transition:generic` to granular scopes |
 
 5 files touched in the codebase. The rest is Railway CLI/MCP configuration (not committed to git).
 

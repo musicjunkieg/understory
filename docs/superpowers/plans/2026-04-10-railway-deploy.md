@@ -23,6 +23,7 @@
 | `src/lib/auth/metadata.ts` | Create | Shared `buildClientMetadata(appUrl)` — single source of truth for OAuth metadata |
 | `src/app/oauth/client-metadata.json/route.ts` | Create | Self-hosted AT Protocol OAuth client metadata endpoint |
 | `src/lib/auth/client.ts` | Modify | Import `buildClientMetadata`, remove `OAUTH_CLIENT_ID` dependency |
+| `src/app/oauth/login/route.ts` | Modify | Update `client.authorize()` scope from `transition:generic` to granular scopes via `OAUTH_SCOPE` constant |
 
 ---
 
@@ -178,6 +179,24 @@ Create `src/lib/auth/metadata.ts`:
 
 export const CLIENT_METADATA_PATH = "/oauth/client-metadata.json";
 
+/**
+ * Granular OAuth scopes for Understory. Replaces the overpermissioned
+ * `transition:generic` transitional scope with the minimum permissions
+ * the app actually needs:
+ *
+ * - `atproto` — required for all AT Protocol OAuth sessions (identity)
+ * - `rpc:app.bsky.graph.getFollows?aud=*` — read the user's follows
+ * - `rpc:app.bsky.feed.searchPosts?aud=*` — search for conference posts
+ *
+ * Understory never writes records, so no write scopes are requested.
+ * The `?aud=*` suffix allows the call to be proxied to any AppView service.
+ */
+export const OAUTH_SCOPE = [
+  "atproto",
+  "rpc:app.bsky.graph.getFollows?aud=*",
+  "rpc:app.bsky.feed.searchPosts?aud=*",
+].join(" ");
+
 export function buildClientMetadata(appUrl: string) {
   const clientId = `${appUrl}${CLIENT_METADATA_PATH}`;
   return {
@@ -187,7 +206,7 @@ export function buildClientMetadata(appUrl: string) {
     redirect_uris: [`${appUrl}/oauth/callback`],
     grant_types: ["authorization_code", "refresh_token"],
     response_types: ["code"],
-    scope: "atproto transition:generic",
+    scope: OAUTH_SCOPE,
     application_type: "web" as const,
     dpop_bound_access_tokens: true,
     token_endpoint_auth_method: "none" as const,
@@ -295,7 +314,7 @@ function createClient(): NodeOAuthClient {
       redirect_uris: [`${appUrl}/oauth/callback`],
       grant_types: ["authorization_code", "refresh_token"],
       response_types: ["code"],
-      scope: "atproto transition:generic",
+      scope: "atproto rpc:app.bsky.graph.getFollows?aud=* rpc:app.bsky.feed.searchPosts?aud=*",
       application_type: "web",
       dpop_bound_access_tokens: true,
       token_endpoint_auth_method: "none",
@@ -381,7 +400,51 @@ Key changes:
 - Updated error message to reference only `APP_URL`
 - `client_name` is now `"Understory"` (via the builder, not `"Understory (Development)"`)
 
-- [ ] **Step 3: Update local `.env`**
+- [ ] **Step 3: Update the login route to use the shared scope constant**
+
+Read `src/app/oauth/login/route.ts`. Line 18 has `scope: "atproto transition:generic"` hardcoded in the `client.authorize()` call. Replace it with the `OAUTH_SCOPE` constant from `metadata.ts`:
+
+```ts
+import { NextRequest, NextResponse } from "next/server";
+import { getOAuthClient } from "@/lib/auth/client";
+import { OAUTH_SCOPE } from "@/lib/auth/metadata";
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const handle = body.handle?.trim();
+
+    if (!handle) {
+      return NextResponse.json(
+        { error: "Handle is required" },
+        { status: 400 },
+      );
+    }
+
+    const client = getOAuthClient();
+    const url = await client.authorize(handle, {
+      scope: OAUTH_SCOPE,
+    });
+
+    return NextResponse.json({ redirect: url.toString() });
+  } catch (error) {
+    console.error("OAuth login error:", error);
+    return NextResponse.json(
+      {
+        error:
+          error instanceof Error
+            ? error.message
+            : "Failed to start authentication",
+      },
+      { status: 400 },
+    );
+  }
+}
+```
+
+This ensures the scope requested at authorization time matches the scope declared in the client metadata (both read from the same `OAUTH_SCOPE` constant).
+
+- [ ] **Step 4: Update local `.env`**
 
 Edit `.env` to remove `OAUTH_CLIENT_ID`:
 
@@ -392,7 +455,7 @@ ASSEMBLYAI_API_KEY=<your-key-here>
 
 > **Note:** `.env` is gitignored — this change is local only.
 
-- [ ] **Step 4: Verify the full OAuth flow locally**
+- [ ] **Step 5: Verify the full OAuth flow locally**
 
 Start the dev server: `npm run dev`
 
@@ -410,14 +473,14 @@ If the OAuth flow fails, check:
 
 Stop the dev server after verification.
 
-- [ ] **Step 5: Verify tsc, eslint, and tests**
+- [ ] **Step 6: Verify tsc, eslint, and tests**
 
 Run in parallel:
 - `npx tsc --noEmit` — Expected: clean
 - `npx eslint src/` — Expected: clean
 - `npm test` — Expected: 40/40 pass
 
-- [ ] **Step 6: Run a full production build and verify**
+- [ ] **Step 7: Run a full production build and verify**
 
 Run: `npm run build`
 
@@ -432,20 +495,22 @@ Route (app)
 ...
 ```
 
-- [ ] **Step 7: Commit all OAuth changes together**
+- [ ] **Step 8: Commit all OAuth changes together**
 
 ```bash
 git add src/lib/auth/metadata.ts \
         src/app/oauth/client-metadata.json/route.ts \
-        src/lib/auth/client.ts
-git commit -m "feat: self-hosted OAuth client metadata, drop OAUTH_CLIENT_ID
+        src/lib/auth/client.ts \
+        src/app/oauth/login/route.ts
+git commit -m "feat: self-hosted OAuth metadata + granular scopes, drop OAUTH_CLIENT_ID
 
-- metadata.ts: shared buildClientMetadata(appUrl) function, single source
-  of truth imported by both the metadata route and NodeOAuthClient.
-- /oauth/client-metadata.json route: serves metadata JSON to PDS servers
-  during the OAuth authorization flow.
-- client.ts: derives client_id from APP_URL instead of reading a separate
-  OAUTH_CLIENT_ID env var. client_name updated to 'Understory'.
+- metadata.ts: shared buildClientMetadata(appUrl) + OAUTH_SCOPE constant.
+  Single source of truth for both the metadata route and NodeOAuthClient.
+- OAUTH_SCOPE: replace transition:generic with granular read-only scopes
+  (atproto + rpc:getFollows + rpc:searchPosts). Understory never writes.
+- /oauth/client-metadata.json route: serves metadata to PDS servers.
+- client.ts: derives client_id from APP_URL (no OAUTH_CLIENT_ID env var).
+- login/route.ts: uses OAUTH_SCOPE constant instead of hardcoded scope.
 - Eliminates the cimd-service.fly.dev dependency for auth."
 ```
 
