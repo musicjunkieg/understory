@@ -1,0 +1,48 @@
+import type { TalkEntry } from "@/lib/types";
+import type { TalkMention, TalkMentions } from "@/lib/crawl/types";
+// Local-import-then-re-export so we get a usable local binding for ScoringInputs
+// AND re-export the type so callers can `import { ActiveLayers } from "@/lib/scoring/types"`
+// without needing to know combine.ts owns it. combine.ts doesn't exist yet
+// — this import will resolve once Task 6 lands.
+import type { ActiveLayers } from "./combine";
+export type { ActiveLayers };
+
+export type TalkScoreState = "engaged" | "missed" | "unknown";
+
+export interface Layer1Result {
+  uniqueFollows: number;
+  totalFollows: number;
+  reachRatio: number;        // uniqueFollows / totalFollows, clamped to [0, 1]
+  attentionInverse: number;  // 1 - reachRatio, clamped to [0, 1]
+}
+
+export interface TalkScore {
+  rkey: string;
+  intensity: number;         // 0–1; UI uses for glow + ordering
+  state: TalkScoreState;
+  layer1: Layer1Result;
+  layer2?: { interestScore: number };
+  layer3?: { friendBoost: number; recommenders: string[] };
+}
+
+export interface ScoringWeights {
+  surpriseSlider: number;    // 0–1; controls Layer 2 contribution (high = serendipity)
+  friendsSlider: number;     // 0–1; controls Layer 3 contribution (high = friends override)
+}
+
+export const DEFAULT_WEIGHTS: ScoringWeights = {
+  surpriseSlider: 0.5,
+  friendsSlider: 0.5,
+};
+
+export interface ScoringInputs {
+  talks: TalkEntry[];
+  mentions: TalkMentions | null;  // null = crawl not yet completed
+  followCount: number;            // from CrawlResult.followCount
+  weights?: ScoringWeights;
+  active?: ActiveLayers;          // omitted = layer 1 only (today's deployment)
+}
+
+// Re-export TalkMention for downstream consumers that import only from
+// scoring/types — saves them having to know about the crawl module.
+export type { TalkMention, TalkMentions };
