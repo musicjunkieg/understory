@@ -29,11 +29,13 @@ function ScoreDetail({ score }: { score: TalkScore }) {
     );
   }
 
-  // engaged — show percentage
-  const pct = Math.min(99, Math.round(score.layer1.attentionInverse * 100));
+  // engaged — show coverage among conference-active follows
+  const covered = score.normalizedCoverage != null
+    ? Math.round(score.normalizedCoverage * 100)
+    : 0;
   return (
     <div className="text-label-sm text-on-surface-variant">
-      {pct}% of your network missed this
+      Covered by {covered}% of active follows
     </div>
   );
 }

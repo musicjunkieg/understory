@@ -156,9 +156,9 @@ describe("rankTalks — sort order", () => {
 
   it("sorts missed first, then engaged (intensity desc), then unknown", () => {
     const mentions: TalkMentions = {
-      aaa: makeMention(1),   // engaged, intensity 0.99
+      aaa: makeMention(1),   // engaged, normalized intensity 0.98 (1/50 engaged)
       bbb: makeMention(0),   // missed,  intensity 1.0
-      ccc: makeMention(50),  // engaged, intensity 0.5
+      ccc: makeMention(50),  // engaged, normalized intensity 0.0 (50/50 engaged)
       // D, E: no mentions → unknown
     };
     const result = rankTalks({
@@ -199,6 +199,51 @@ describe("rankTalks — sort order", () => {
     });
     // L1 only contributes; L2 stub returns 0; rescale: 0.5/0.8 = 0.625
     expect(result[0].intensity).toBeCloseTo(0.625, 6);
+  });
+});
+
+describe("rankTalks — engaged-follow normalization", () => {
+  it("normalizes intensity against engaged follows, not total follows", () => {
+    // 200 total follows, but only 10 unique follows engaged with any talk.
+    // Without normalization, all talks cluster near intensity 1.0.
+    // With normalization, the spread covers the full 0–1 range.
+    const mentions: TalkMentions = {
+      aaa: makeMention(0),   // missed: 0/10 → intensity 1.0
+      bbb: makeMention(2),   // engaged: 2/10 → intensity 0.8
+      ccc: makeMention(10),  // engaged: 10/10 → intensity 0.0
+    };
+    const result = rankTalks({
+      talks: [makeTalk("aaa"), makeTalk("bbb"), makeTalk("ccc")],
+      mentions,
+      followCount: 200,
+    });
+
+    const byRkey = Object.fromEntries(result.map((s) => [s.rkey, s]));
+    expect(byRkey.aaa.intensity).toBeCloseTo(1.0, 6);
+    expect(byRkey.bbb.intensity).toBeCloseTo(0.8, 6);
+    expect(byRkey.ccc.intensity).toBeCloseTo(0.0, 6);
+    // Raw layer1 values are preserved (totalFollows stays as original followCount)
+    expect(byRkey.bbb.layer1.totalFollows).toBe(200);
+    // normalizedCoverage set for non-unknown talks (fraction who discussed it)
+    expect(byRkey.aaa.normalizedCoverage).toBe(0);    // missed: 0/10
+    expect(byRkey.bbb.normalizedCoverage).toBeCloseTo(0.2, 6); // 2/10
+    expect(byRkey.ccc.normalizedCoverage).toBeCloseTo(1.0, 6); // 10/10
+  });
+
+  it("skips normalization when no follows engaged (all missed)", () => {
+    const mentions: TalkMentions = {
+      aaa: makeMention(0),
+      bbb: makeMention(0),
+    };
+    const result = rankTalks({
+      talks: [makeTalk("aaa"), makeTalk("bbb")],
+      mentions,
+      followCount: 100,
+    });
+
+    // No engaged follows → no normalization → original totalFollows preserved
+    expect(result[0].layer1.totalFollows).toBe(100);
+    expect(result[0].intensity).toBeCloseTo(1.0, 6);
   });
 });
 
