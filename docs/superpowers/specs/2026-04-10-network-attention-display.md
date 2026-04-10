@@ -140,11 +140,14 @@ export function ScoredTalksGrid({ talks }: ScoredTalksGridProps) {
       {scoredTalks.map(({ talk, score }, index) => (
         <Link key={talk.rkey} href={`/talk/${talk.rkey}`}>
           <LumeCard
+            className="h-full"
             glowIntensity={score?.intensity ?? 0}
             tileIndex={index}
             score={score}
           >
-            {/* Card content: speakers, title, chips — same as current */}
+            {/* Card content: speakers, title, room chip, duration chip.
+                Copy the existing JSX from talks/page.tsx (the <div className="p-5">
+                block with speakers, h2 title, and metadata chips). */}
           </LumeCard>
         </Link>
       ))}
@@ -179,15 +182,15 @@ Add an optional `score: TalkScore | null` prop. When present and the card is hov
 
 | `score.state` | Text | Color |
 |---|---|---|
-| `"missed"` | `"{X}% of your network missed this"` | `text-primary-fixed` (mint) |
-| `"engaged"` | `"Discussed by {N} of {T} follows"` | `text-on-surface-variant` (muted) |
+| `"missed"` | `"Your network missed this"` | `text-primary-fixed` (mint) |
+| `"engaged"` | `"{X}% of your network missed this"` | `text-on-surface-variant` (muted) |
 | `"unknown"` | (no detail strip) | — |
 | `null` | (no detail strip) | — |
 
 Where:
-- `X` = `Math.round(score.layer1.attentionInverse * 100)` — e.g., 97
-- `N` = `score.layer1.uniqueFollows` — e.g., 3
-- `T` = `score.layer1.totalFollows` — e.g., 423
+- `X` = `Math.round(score.layer1.attentionInverse * 100)` — e.g., 83
+
+**Why no percentage for "missed":** The `missed` state means `uniqueFollows === 0`, so `attentionInverse` is always exactly `1.0` — the percentage would always read "100%". A static message is clearer and avoids pointless math. For `engaged` talks, the percentage IS meaningful: "83% of your network missed this" conveys the gradient between "almost nobody talked about it" and "most of your follows discussed it."
 
 **Interaction:**
 - Desktop: detail appears on `:hover` via CSS transition (opacity 0 → 1, translateY(4px) → 0). No JavaScript state needed.
@@ -242,7 +245,7 @@ The re-sort happens when crawl data arrives. Cards shift positions as glow appea
 
 ## 8. Edge Cases
 
-- **Not authenticated:** Grid renders without scores. No `/api/crawl` call is made (the hook fetches, gets 401, sets `mentions=null`). Same as today.
+- **Not authenticated:** Grid renders without scores. The hook fires `fetch("/api/crawl")` which returns 401; the hook treats this as "no data" and sets `mentions=null`. Same visual as today.
 - **Zero follows:** `/api/crawl` returns `followCount: 0`. `rankTalks` produces all `unknown` states. Grid renders without glow. Acceptable — the user needs follows for the scoring to be meaningful.
 - **Crawl timeout (30s):** `/api/crawl` returns 504. Hook receives error. Grid stays in Phase 1.
 - **Partial crawl data:** Some talks have mentions, some don't (out-of-scope talks). `rankTalks` classifies absent talks as `unknown`. They sort to the bottom.
