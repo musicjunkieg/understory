@@ -1,0 +1,58 @@
+[
+  {
+    "hash": "549dff02906291887b63f2aa79e6a637e89b44c7",
+    "short_hash": "549dff0",
+    "author": "Bryan Guffey",
+    "date": "2026-04-09T20:04:07-07:00",
+    "message": "docs: add social graph crawler spec and implementation plan\n\nHistorical reference for the work that landed in PR #5 (closes #16, #17).",
+    "files_changed": 2
+  },
+  {
+    "hash": "3cbb4ee4b490ef307ca645568644738c2d093302",
+    "short_hash": "3cbb4ee",
+    "author": "Bryan Guffey",
+    "date": "2026-04-09T16:04:32-07:00",
+    "message": "fix(crawl): review round 2 - 504, unhandled rejection, perf, search window\n\n- route.ts: return 504 Gateway Timeout for timeout errors instead of a generic\n  500. Detects both AbortSignal.timeout's DOMException (name === \"TimeoutError\")\n  and the withTimeout() helper's Error(\"Crawl timeout\").\n\n- cache.ts: fix a latent unhandled rejection. promise.finally() returns a new\n  derived promise whose rejection would be orphaned (since nothing awaited it).\n  Now we store the derived \"settled\" promise in the inFlight map and return it,\n  so the caller's await observes the rejection. Identity check compares against\n  the derived promise for the same reason.\n\n- crawler.ts: replace O(n²) includes/push aggregation with per-talk Set-backed\n  tracking (followSets, rsvpSets, postLists). Projected to TalkMention arrays\n  via buildResult() at the end, so the exported shape is unchanged.\n\n- search.ts: extend SEARCH_UNTIL to 2026-04-27T00:00:00.000Z (exclusive upper\n  bound = through end of April 26, 2026). Intentionally beyond the spec's\n  conference window so Understory keeps surfacing post-conference aftermath\n  discussion after the event ends.",
+    "files_changed": 4
+  },
+  {
+    "hash": "282fcc9ecdae5a21a68944ad35d3da6044243533",
+    "short_hash": "282fcc9",
+    "author": "Bryan Guffey",
+    "date": "2026-04-09T15:49:35-07:00",
+    "message": "fix(crawl): review fixes - abort signal, atomic in-flight, nested embeds\n\n- route.ts: atomically register/join crawls via registerCrawl so concurrent\n  requests can't overwrite each other's in-flight promise. New crawls own an\n  AbortSignal.timeout(30s) so a timeout actually cancels outbound fetches\n  rather than just detaching the handler. Joined requests wrap their wait in a\n  separate Promise.race timeout (can't cancel another caller's work).\n  withTimeout helper clears the timer on settlement so it doesn't leak.\n\n- cache.ts: replace getInFlightCrawl/setInFlightCrawl with atomic\n  registerCrawl(did, factory) -> { promise, isNew }. Cleanup only deletes the\n  entry when the map still references this exact promise (identity check), so\n  a stale finally from an overwritten promise can't erase a newer one.\n\n- crawler.ts / constellation.ts / search.ts: thread an optional AbortSignal\n  through fetchFollows, fetchRsvps, searchConferencePosts and into every\n  fetch() / agent.* call via CallOptions. Check signal.aborted at loop\n  boundaries and rethrow abort errors from search.ts catch so a timeout\n  actually unwinds the crawl instead of being swallowed.\n\n- matcher.ts: extract collectRecordUris() and handle the nested\n  app.bsky.embed.recordWithMedia shape where embed.record is itself a\n  record#view with its own .record.uri. Applied to both view-level (post.embed)\n  and record-level (post.record.embed) containers.\n\nSEARCH_UNTIL intentionally not changed: spec §3 and CLAUDE.md both pin the\nwindow at since:2026-03-26 / until:2026-04-06, and searchPosts treats until\nas exclusive, so the current value correctly covers all of April 5 (the last\nconference day).",
+    "files_changed": 6
+  },
+  {
+    "hash": "535526ba59da9f08a6992989d323a54ed6052782",
+    "short_hash": "535526b",
+    "author": "chaos gremlin",
+    "date": "2026-04-07T21:42:02-07:00",
+    "message": "Merge pull request #4 from musicjunkieg/feat/oauth\n\nfeat: AT Protocol OAuth with login form and auth-aware Nav",
+    "files_changed": 0
+  },
+  {
+    "hash": "56073eac69fe911e93ab79ccef20efe73cc465a6",
+    "short_hash": "56073ea",
+    "author": "chaos gremlin",
+    "date": "2026-04-06T17:28:12-07:00",
+    "message": "Merge pull request #3 from musicjunkieg/feat/landing-page\n\nfeat: landing page and talks index",
+    "files_changed": 0
+  },
+  {
+    "hash": "511a6e00533c71b409a5325ca57c060a9b2a5069",
+    "short_hash": "511a6e0",
+    "author": "chaos gremlin",
+    "date": "2026-04-06T16:52:49-07:00",
+    "message": "Merge pull request #2 from musicjunkieg/feat/talk-page\n\nfeat: talk page with HLS video, transcript, and search",
+    "files_changed": 0
+  },
+  {
+    "hash": "79f70643a2241be699072d19291ccce244779fee",
+    "short_hash": "79f7064",
+    "author": "chaos gremlin",
+    "date": "2026-04-06T16:06:07-07:00",
+    "message": "Merge pull request #1 from musicjunkieg/feat/design-system\n\nfeat: bioluminescent design system + project foundation",
+    "files_changed": 0
+  }
+]
