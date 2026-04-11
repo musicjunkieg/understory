@@ -27,6 +27,7 @@ function unknownScore(rkey: string, followCount: number): TalkScore {
     rkey,
     intensity: 0,
     state: "unknown",
+    normalizedCoverage: null,
     layer1: {
       uniqueFollows: 0,
       totalFollows: safeTotalFollows,
@@ -77,7 +78,7 @@ export function scoreTalk(
   const state: TalkScoreState =
     layer1.uniqueFollows === 0 ? "missed" : "engaged";
 
-  return { rkey: talk.rkey, intensity, state, layer1 };
+  return { rkey: talk.rkey, intensity, state, layer1, normalizedCoverage: null };
 }
 
 const STATE_ORDER: Record<TalkScoreState, number> = {
@@ -98,6 +99,23 @@ function compareTalkScores(a: TalkScore, b: TalkScore): number {
   return a.rkey.localeCompare(b.rkey);
 }
 
+/**
+ * Count the unique follows who engaged with *any* talk. Used as the
+ * denominator for normalized intensity so the glow spread reflects the
+ * actual conference-engaged subset of the user's network, not the full
+ * follow list (which dilutes differences to near-zero).
+ */
+function engagedFollowCount(mentions: TalkMentions | null): number {
+  if (!mentions) return 0;
+  const seen = new Set<string>();
+  for (const rkey in mentions) {
+    for (const did of mentions[rkey].follows) {
+      seen.add(did);
+    }
+  }
+  return seen.size;
+}
+
 export function rankTalks(inputs: ScoringInputs): TalkScore[] {
   const {
     talks,
@@ -106,7 +124,41 @@ export function rankTalks(inputs: ScoringInputs): TalkScore[] {
     weights = DEFAULT_WEIGHTS,
     active = DEFAULT_ACTIVE_LAYERS,
   } = inputs;
-  return talks
-    .map((talk) => scoreTalk(talk, mentions, followCount, weights, active))
-    .sort(compareTalkScores);
+
+  const scores = talks
+    .map((talk) => scoreTalk(talk, mentions, followCount, weights, active));
+
+  // Normalize intensity: use "follows who discussed any talk" as the
+  // denominator instead of total follows. This spreads glow across the
+  // actual data range rather than clustering everything near 1.0.
+  // Raw layer1 values are preserved for the UI detail strip; only
+  // intensity (used for glow + sort) is recomputed via combineLayers.
+  const engaged = engagedFollowCount(mentions);
+  if (engaged > 0) {
+    const talksByRkey = new Map(talks.map((t) => [t.rkey, t]));
+    for (const score of scores) {
+      if (score.state === "unknown") continue;
+      const normalizedReach = Math.min(
+        1,
+        score.layer1.uniqueFollows / engaged,
+      );
+      const normalizedLayer1 = {
+        ...score.layer1,
+        reachRatio: normalizedReach,
+        attentionInverse: 1 - normalizedReach,
+        totalFollows: engaged,
+      };
+      score.normalizedCoverage = normalizedReach;
+      const talk = talksByRkey.get(score.rkey)!;
+      score.intensity = combineLayers(
+        normalizedLayer1,
+        computeInterestStub(talk),
+        computeFriendStub(talk),
+        weights,
+        active,
+      );
+    }
+  }
+
+  return scores.sort(compareTalkScores);
 }

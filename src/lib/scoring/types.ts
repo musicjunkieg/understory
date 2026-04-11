@@ -23,6 +23,10 @@ export interface TalkScore {
   intensity: number;         // 0–1; UI uses for glow + ordering
   state: TalkScoreState;
   layer1: Layer1Result;
+  /** Normalized L1 coverage: fraction of conference-active follows who
+   *  discussed this talk (0–1). Set by rankTalks; null before normalization
+   *  or for unknown-state talks. Use for detail strip display. */
+  normalizedCoverage: number | null;
   layer2?: { interestScore: number };
   layer3?: { friendBoost: number; recommenders: string[] };
 }
