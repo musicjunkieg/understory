@@ -121,6 +121,12 @@
   font-size: 1rem;
   line-height: 1.6;
 }
+.text-label-lg {
+  font-family: var(--font-label);
+  font-size: 1rem;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+}
 .text-label-md {
   font-family: var(--font-label);
   font-size: 0.875rem;
@@ -154,11 +160,27 @@
     radial-gradient(circle at 90% 80%, rgba(255, 223, 144, 0.03) 0%, transparent 40%);
 }
 
+/* Continuous glow driven by --glow custom property (0–1).
+   Cards scale smoothly from no glow to full bioluminescence. */
 .biolume-glow {
   box-shadow: 0 0 20px rgba(108, 252, 178, 0.15);
 }
 .biolume-glow-strong {
-  box-shadow: 0 0 40px rgba(108, 252, 178, 0.3);
+  box-shadow:
+    0 0 12px rgba(255, 255, 255, 0.15),
+    0 0 30px rgba(180, 255, 215, 0.25),
+    0 0 60px rgba(108, 252, 178, 0.3),
+    0 0 100px rgba(108, 252, 178, 0.15);
+}
+
+/* Continuous glow for LumeCards — scales with --glow (0–1).
+   Applied via [style*="--glow"] so it only hits elements with the prop. */
+[style*="--glow"] {
+  box-shadow:
+    0 0 calc(16px * var(--glow)) rgba(255, 255, 255, calc(0.25 * var(--glow))),
+    0 0 calc(40px * var(--glow)) rgba(180, 255, 215, calc(0.35 * var(--glow))),
+    0 0 calc(80px * var(--glow)) rgba(108, 252, 178, calc(0.4 * var(--glow))),
+    0 0 calc(120px * var(--glow)) rgba(108, 252, 178, calc(0.2 * var(--glow)));
 }
 
 .ghost-border {

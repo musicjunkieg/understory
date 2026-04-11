@@ -25,11 +25,15 @@ function withTimeout<T>(p: Promise<T>, ms: number): Promise<T> {
 
 export async function GET(request: NextRequest) {
   // Dev-only: serve mock crawl data without authentication
-  if (MOCK_CRAWL) {
-    const mockPath = path.resolve(process.cwd(), "data", "mock-crawl.json");
-    if (fs.existsSync(mockPath)) {
-      const mock = JSON.parse(fs.readFileSync(mockPath, "utf-8"));
-      return NextResponse.json({ ...mock, cached: true });
+  if (MOCK_CRAWL && process.env.NODE_ENV !== "production") {
+    try {
+      const mockPath = path.resolve(process.cwd(), "data", "mock-crawl.json");
+      if (fs.existsSync(mockPath)) {
+        const mock = JSON.parse(fs.readFileSync(mockPath, "utf-8"));
+        return NextResponse.json({ ...mock, cached: true });
+      }
+    } catch (err) {
+      console.warn("Mock crawl data failed to load, falling through:", err);
     }
   }
 
