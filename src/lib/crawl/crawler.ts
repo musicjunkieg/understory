@@ -115,7 +115,7 @@ export async function crawl(
       console.error("Constellation fetch failed, skipping RSVPs:", err);
       return new Map<string, Set<string>>();
     }),
-    searchConferencePosts(signal),
+    searchConferencePosts(agent, signal),
   ]);
 
   throwIfAborted(signal);

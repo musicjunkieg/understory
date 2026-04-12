@@ -1,9 +1,6 @@
-import type { AppBskyFeedDefs } from "@atproto/api";
+import type { Agent, AppBskyFeedDefs } from "@atproto/api";
 
 type PostView = AppBskyFeedDefs.PostView;
-
-const APPVIEW_URL =
-  "https://api.bsky.app/xrpc/app.bsky.feed.searchPosts";
 
 const SEARCH_QUERIES = [
   "atmosphereconf",
@@ -21,13 +18,18 @@ const SEARCH_UNTIL = "2026-04-27T00:00:00.000Z";
 const MAX_ATTEMPTS = 3;
 const BASE_BACKOFF_MS = 200;
 
-interface SearchResponse {
+interface SearchPageResult {
   posts: PostView[];
-  cursor?: string;
+  cursor: string | undefined;
 }
 
-function isRetryableStatus(status: number): boolean {
-  return status === 429 || (status >= 500 && status < 600);
+interface SearchPageParams {
+  q: string;
+  sort: "latest";
+  since: string;
+  until: string;
+  limit: number;
+  cursor?: string;
 }
 
 /**
@@ -53,43 +55,66 @@ function abortableDelay(ms: number, signal?: AbortSignal): Promise<void> {
 }
 
 /**
- * Fetch a single search page with bounded retries on transient failures.
+ * Inspect an arbitrary thrown value and decide whether to retry.
  *
- * Retries on HTTP 429, 5xx, and network errors with exponential backoff
- * (200ms → 400ms → 800ms) plus uniform jitter up to the same delay.
- * Non-retryable HTTP errors (4xx other than 429) and abort errors are
- * thrown immediately. The crawl has a 30s overall budget enforced upstream,
- * so retry counts and base delay are deliberately kept small.
+ * Retryable: HTTP `429`, any `5xx`, and network errors (fetch / DNS / TCP
+ * failures that surface without a status). Non-retryable: other HTTP 4xx
+ * and anything with a non-retryable status shape.
+ *
+ * `@atproto/api` throws `XRPCError` with a numeric `status` on HTTP errors,
+ * so that's what we look at first. We fall back to `error.status` on plain
+ * objects for defensive parity.
+ */
+function isRetryableError(err: unknown): boolean {
+  if (!err || typeof err !== "object") return true; // unknown — retry once
+  const status = (err as { status?: number }).status;
+  if (typeof status === "number") {
+    return status === 429 || (status >= 500 && status < 600);
+  }
+  // No status → network / abort-ish error. Retry unless it's an AbortError
+  // (abort handling is done by the caller; we just signal retryable=true).
+  return true;
+}
+
+/**
+ * Fetch a single search page via the user's authenticated agent with
+ * bounded retries on transient failures.
+ *
+ * Why authenticated: the public Bluesky AppView (`public.api.bsky.app`)
+ * returns `403 Forbidden` on paginated `searchPosts` requests to prevent
+ * unauthenticated scraping — documented behavior per bluesky-social/atproto
+ * issue #3583 and others. The alternate host `api.bsky.app` IP-blocks
+ * Railway egress. Authenticated-through-PDS is the only reliable path.
+ *
+ * The original PDS path was returning 500 because `@atproto/oauth-client-node`
+ * was running without a `requestLock`, letting concurrent crawl operations
+ * race on token refresh and get credentials revoked. That lock is now
+ * installed in `src/lib/auth/client.ts`.
+ *
+ * Retries: 3 attempts, exponential backoff (200ms → 400ms → 800ms) with
+ * uniform jitter, retry only on 429/5xx/network. Abort always propagates
+ * immediately so a cancelled crawl never burns retries. Retry counts and
+ * delays are deliberately small because the overall crawl has a 30s budget
+ * enforced upstream in `src/app/api/crawl/route.ts`.
  */
 async function fetchSearchPage(
-  params: URLSearchParams,
+  agent: Agent,
+  params: SearchPageParams,
   signal?: AbortSignal,
-): Promise<SearchResponse> {
+): Promise<SearchPageResult> {
   let lastError: unknown;
 
   for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
     if (signal?.aborted) throw signal.reason ?? new Error("Aborted");
 
     try {
-      const res = await fetch(`${APPVIEW_URL}?${params.toString()}`, {
-        signal,
-        headers: { accept: "application/json" },
-      });
-      if (res.ok) {
-        return (await res.json()) as SearchResponse;
-      }
-      if (!isRetryableStatus(res.status)) {
-        throw new Error(
-          `AppView searchPosts returned ${res.status} ${res.statusText}`,
-        );
-      }
-      lastError = new Error(
-        `AppView searchPosts returned ${res.status} ${res.statusText}`,
-      );
+      const res = await agent.app.bsky.feed.searchPosts(params, { signal });
+      return { posts: res.data.posts, cursor: res.data.cursor };
     } catch (err) {
       // Abort always propagates immediately — never burn retries on a
       // cancelled crawl.
       if (signal?.aborted) throw err;
+      if (!isRetryableError(err)) throw err;
       lastError = err;
     }
 
@@ -101,20 +126,16 @@ async function fetchSearchPage(
     }
   }
 
-  throw lastError ?? new Error("AppView searchPosts failed after retries");
+  throw lastError ?? new Error("searchPosts failed after retries");
 }
 
 /**
  * Search Bluesky for conference-related posts during the conference period
- * and the post-conference aftermath.
- *
- * Calls the public AppView (`api.bsky.app`) directly via `fetch` instead of
- * routing through the user's PDS via `agent.app.bsky.feed.searchPosts`. The
- * search is a public read — there is no benefit to authenticating it, and
- * the OAuth/DPoP path through the PDS has been observed returning 5xx in
- * production while the public AppView returns 200 for the same query.
+ * and the post-conference aftermath. Returns deduplicated posts from all
+ * search queries.
  */
 export async function searchConferencePosts(
+  agent: Agent,
   signal?: AbortSignal,
 ): Promise<PostView[]> {
   const seenUris = new Set<string>();
@@ -125,26 +146,28 @@ export async function searchConferencePosts(
 
     do {
       if (signal?.aborted) throw signal.reason ?? new Error("Aborted");
-      const params = new URLSearchParams({
-        q: query,
-        sort: "latest",
-        since: SEARCH_SINCE,
-        until: SEARCH_UNTIL,
-        limit: "100",
-      });
-      if (cursor) params.set("cursor", cursor);
-
       try {
-        const data = await fetchSearchPage(params, signal);
+        const page = await fetchSearchPage(
+          agent,
+          {
+            q: query,
+            sort: "latest",
+            since: SEARCH_SINCE,
+            until: SEARCH_UNTIL,
+            limit: 100,
+            cursor,
+          },
+          signal,
+        );
 
-        for (const post of data.posts) {
+        for (const post of page.posts) {
           if (!seenUris.has(post.uri)) {
             seenUris.add(post.uri);
             posts.push(post);
           }
         }
 
-        cursor = data.cursor;
+        cursor = page.cursor;
       } catch (error) {
         // Propagate abort errors so the whole crawl cancels cleanly.
         if (signal?.aborted) throw error;
