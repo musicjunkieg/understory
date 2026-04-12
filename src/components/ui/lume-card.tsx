@@ -54,15 +54,15 @@ function LumeCard({
   return (
     <div
       className={[
-        "group relative rounded-lg",
-        "bg-surface-container-low/60 backdrop-blur-[20px]",
+        "group relative rounded-lg lume-card-contain",
+        "bg-surface-container-low",
         "border-t-2",
         glow > 0.3
           ? "border-primary-fixed-dim"
           : glow > 0
             ? "border-primary-fixed-dim/50"
             : "border-primary-fixed-dim/20",
-        "transition-all duration-500",
+        "transition-[box-shadow,border-color,opacity] duration-500",
         "hover:biolume-glow-strong hover:!opacity-100",
         "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-fixed",
         isUnderstory ? "animate-breathe" : "",
