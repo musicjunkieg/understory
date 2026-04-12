@@ -18,9 +18,90 @@ const SEARCH_SINCE = "2026-03-26T00:00:00.000Z";
 // includes every post through the end of April 26, 2026.
 const SEARCH_UNTIL = "2026-04-27T00:00:00.000Z";
 
+const MAX_ATTEMPTS = 3;
+const BASE_BACKOFF_MS = 200;
+
 interface SearchResponse {
   posts: PostView[];
   cursor?: string;
+}
+
+function isRetryableStatus(status: number): boolean {
+  return status === 429 || (status >= 500 && status < 600);
+}
+
+/**
+ * Sleep that aborts cleanly when the crawl signal aborts. Uses a one-shot
+ * listener so the timer is cancelled instead of leaking past the abort.
+ */
+function abortableDelay(ms: number, signal?: AbortSignal): Promise<void> {
+  return new Promise((resolve, reject) => {
+    if (signal?.aborted) {
+      reject(signal.reason ?? new Error("Aborted"));
+      return;
+    }
+    const timer = setTimeout(() => {
+      signal?.removeEventListener("abort", onAbort);
+      resolve();
+    }, ms);
+    function onAbort() {
+      clearTimeout(timer);
+      reject(signal!.reason ?? new Error("Aborted"));
+    }
+    signal?.addEventListener("abort", onAbort, { once: true });
+  });
+}
+
+/**
+ * Fetch a single search page with bounded retries on transient failures.
+ *
+ * Retries on HTTP 429, 5xx, and network errors with exponential backoff
+ * (200ms → 400ms → 800ms) plus uniform jitter up to the same delay.
+ * Non-retryable HTTP errors (4xx other than 429) and abort errors are
+ * thrown immediately. The crawl has a 30s overall budget enforced upstream,
+ * so retry counts and base delay are deliberately kept small.
+ */
+async function fetchSearchPage(
+  params: URLSearchParams,
+  signal?: AbortSignal,
+): Promise<SearchResponse> {
+  let lastError: unknown;
+
+  for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
+    if (signal?.aborted) throw signal.reason ?? new Error("Aborted");
+
+    try {
+      const res = await fetch(`${APPVIEW_URL}?${params.toString()}`, {
+        signal,
+        headers: { accept: "application/json" },
+      });
+      if (res.ok) {
+        return (await res.json()) as SearchResponse;
+      }
+      if (!isRetryableStatus(res.status)) {
+        throw new Error(
+          `AppView searchPosts returned ${res.status} ${res.statusText}`,
+        );
+      }
+      lastError = new Error(
+        `AppView searchPosts returned ${res.status} ${res.statusText}`,
+      );
+    } catch (err) {
+      // Abort always propagates immediately — never burn retries on a
+      // cancelled crawl.
+      if (signal?.aborted) throw err;
+      lastError = err;
+    }
+
+    // No sleep after the final attempt — we're about to give up.
+    if (attempt < MAX_ATTEMPTS - 1) {
+      const backoff = BASE_BACKOFF_MS * 2 ** attempt;
+      const jitter = Math.random() * backoff;
+      await abortableDelay(backoff + jitter, signal);
+    }
+  }
+
+  throw lastError ?? new Error("AppView searchPosts failed after retries");
 }
 
 /**
@@ -54,16 +135,7 @@ export async function searchConferencePosts(
       if (cursor) params.set("cursor", cursor);
 
       try {
-        const res = await fetch(`${APPVIEW_URL}?${params.toString()}`, {
-          signal,
-          headers: { accept: "application/json" },
-        });
-        if (!res.ok) {
-          throw new Error(
-            `AppView searchPosts returned ${res.status} ${res.statusText}`,
-          );
-        }
-        const data = (await res.json()) as SearchResponse;
+        const data = await fetchSearchPage(params, signal);
 
         for (const post of data.posts) {
           if (!seenUris.has(post.uri)) {
@@ -76,7 +148,10 @@ export async function searchConferencePosts(
       } catch (error) {
         // Propagate abort errors so the whole crawl cancels cleanly.
         if (signal?.aborted) throw error;
-        console.error(`Search query "${query}" failed:`, error);
+        console.error(
+          `Search query "${query}" failed after ${MAX_ATTEMPTS} attempts:`,
+          error,
+        );
         break;
       }
     } while (cursor);
