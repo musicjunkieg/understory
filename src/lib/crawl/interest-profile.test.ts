@@ -1,6 +1,14 @@
-import { describe, expect, it } from "vitest";
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
 import type { AppBskyFeedDefs } from "@atproto/api";
 import {
+  buildInterestVector,
   filterFeedItems,
   MAX_AGE_MS,
   meanPool,
@@ -160,5 +168,103 @@ describe("validateVoyageResponse", () => {
     expect(() =>
       validateVoyageResponse(noData as VoyageEmbedResponse, 1),
     ).toThrow(/data/i);
+  });
+});
+
+describe("buildInterestVector", () => {
+  // Minimal mock Agent surface: only getAuthorFeed is consulted.
+  // Returns a queue of pages the test can preload.
+  function makeAgent(pages: Array<{ feed: unknown[]; cursor?: string }>) {
+    let page = 0;
+    return {
+      getAuthorFeed: async () => ({
+        data: pages[Math.min(page++, pages.length - 1)] ?? { feed: [] },
+      }),
+    } as unknown as Parameters<typeof buildInterestVector>[0];
+  }
+
+  function makeVoyageOk(n: number): VoyageEmbedResponse {
+    return {
+      data: Array.from({ length: n }, (_, i) => ({
+        embedding: new Array(1024).fill(1), // each post is the vector [1,1,...]
+        index: i,
+      })),
+      model: "voyage-3.5-lite",
+      usage: { total_tokens: 100 },
+    };
+  }
+
+  beforeEach(() => {
+    vi.stubEnv("VOYAGE_API_KEY", "test-key");
+  });
+  afterEach(() => {
+    vi.unstubAllEnvs();
+    vi.restoreAllMocks();
+  });
+
+  it("returns no-posts status without hitting Voyage when feed is empty", async () => {
+    const fetchSpy = vi.spyOn(globalThis, "fetch");
+    const agent = makeAgent([{ feed: [] }]);
+
+    const result = await buildInterestVector(agent, "did:plc:self");
+
+    expect(result.status).toBe("no-posts");
+    expect(result.vector).toBeNull();
+    expect(result.postCount).toBe(0);
+    expect(fetchSpy).not.toHaveBeenCalled();
+  });
+
+  it("batch-embeds filtered posts and returns the mean-pooled vector", async () => {
+    const now = new Date().toISOString();
+    const feedPage = {
+      feed: [
+        { post: { uri: "at://a", cid: "c", author: { did: "did:plc:self" }, record: { text: "post one", createdAt: now }, indexedAt: now } },
+        { post: { uri: "at://b", cid: "c", author: { did: "did:plc:self" }, record: { text: "post two", createdAt: now }, indexedAt: now } },
+      ],
+    };
+    const agent = makeAgent([feedPage]);
+
+    const fetchSpy = vi
+      .spyOn(globalThis, "fetch")
+      .mockResolvedValue(
+        new Response(JSON.stringify(makeVoyageOk(2)), { status: 200 }),
+      );
+
+    const result = await buildInterestVector(agent, "did:plc:self");
+
+    expect(result.status).toBe("ok");
+    expect(result.postCount).toBe(2);
+    expect(result.vector).not.toBeNull();
+    expect(result.vector!.length).toBe(1024);
+    // Both input vectors were [1,1,...,1], so mean is also [1,1,...,1].
+    expect(result.vector![0]).toBeCloseTo(1, 10);
+    expect(fetchSpy).toHaveBeenCalledOnce();
+    const [, init] = fetchSpy.mock.calls[0];
+    const body = JSON.parse((init as RequestInit).body as string);
+    expect(body.model).toBe("voyage-3.5-lite");
+    expect(body.input_type).toBe("query");
+    expect(body.input).toEqual(["post one", "post two"]);
+  });
+
+  it("returns error status on Voyage failure without throwing", async () => {
+    const now = new Date().toISOString();
+    const agent = makeAgent([
+      {
+        feed: [
+          { post: { uri: "at://a", cid: "c", author: { did: "did:plc:self" }, record: { text: "post one", createdAt: now }, indexedAt: now } },
+        ],
+      },
+    ]);
+
+    vi.spyOn(globalThis, "fetch").mockResolvedValue(
+      new Response("upstream 500", { status: 500 }),
+    );
+
+    const result = await buildInterestVector(agent, "did:plc:self");
+
+    expect(result.status).toBe("error");
+    expect(result.vector).toBeNull();
+    // postCount reflects the count we attempted to embed — useful for logs.
+    expect(result.postCount).toBe(1);
   });
 });
