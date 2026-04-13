@@ -121,11 +121,17 @@ export function ScoredTalksGrid({ talks }: ScoredTalksGridProps) {
       }));
     }, [talks, mentions, followCount, interestVector, embeddings]);
 
-  // Hold the grid behind a loader until the crawl resolves so users don't
-  // see a flash of unscored cards re-sort into the scored layout. Once
-  // loading is false the grid renders, regardless of whether mentions came
-  // back populated (auth) or null (unauthenticated / 504).
-  if (crawlLoading || embeddingsLoading) {
+  // Unauth visitors resolve the crawl quickly (401 → mentions: null) and
+  // the memo body short-circuits on !mentions without touching embeddings.
+  // Only block on embeddingsLoading when we actually need the data (i.e.,
+  // the crawl succeeded and we're about to run the full layer-1 + layer-2
+  // scoring pass). This preserves the "no flash of unscored then re-sort"
+  // guarantee on the auth path while letting the unauth path render
+  // immediately.
+  if (crawlLoading) {
+    return <CrawlLoadingState />;
+  }
+  if (mentions && embeddingsLoading) {
     return <CrawlLoadingState />;
   }
 
