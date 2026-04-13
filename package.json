@@ -9,6 +9,8 @@
     "lint": "eslint",
     "transcribe": "tsx scripts/transcribe.ts",
     "build-talk-index": "tsx scripts/build-talk-index.ts",
+    "embed": "tsx scripts/embed.ts",
+    "embed:check": "tsx scripts/embed-smoke.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "postbuild": "cp -r .next/static .next/standalone/.next/static && cp -r public .next/standalone/public && cp -r data .next/standalone/data"
