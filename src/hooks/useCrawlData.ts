@@ -8,6 +8,15 @@ export interface CrawlData {
   followCount: number;
   loading: boolean;
   error: string | null;
+  /** User interest profile vector from /api/crawl. Null while loading,
+   *  on auth failure, on network failure, or when the profile build
+   *  returned status: no-posts / error. #24 consumes this for layer-2
+   *  cosine matching. */
+  interestVector: number[] | null;
+  /** Diagnostic state for the profile build. Null in the initial load
+   *  and non-happy-path states (401/504/network error). Only populated
+   *  with the server's status on a successful /api/crawl response. */
+  interestProfileStatus: "ok" | "no-posts" | "error" | null;
 }
 
 /**
@@ -26,6 +35,8 @@ export function useCrawlData(): CrawlData {
     followCount: 0,
     loading: true,
     error: null,
+    interestVector: null,
+    interestProfileStatus: null,
   });
 
   useEffect(() => {
@@ -43,6 +54,8 @@ export function useCrawlData(): CrawlData {
                 followCount: 0,
                 loading: false,
                 error: null,
+                interestVector: null,
+                interestProfileStatus: null,
               });
             } else {
               setData({
@@ -50,6 +63,8 @@ export function useCrawlData(): CrawlData {
                 followCount: 0,
                 loading: false,
                 error: `Crawl failed: ${res.status} ${res.statusText}`,
+                interestVector: null,
+                interestProfileStatus: null,
               });
             }
           }
@@ -62,6 +77,8 @@ export function useCrawlData(): CrawlData {
             followCount: json.followCount,
             loading: false,
             error: null,
+            interestVector: json.interestVector ?? null,
+            interestProfileStatus: json.interestProfileStatus ?? null,
           });
         }
       } catch (err) {
@@ -71,6 +88,8 @@ export function useCrawlData(): CrawlData {
             followCount: 0,
             loading: false,
             error: err instanceof Error ? err.message : "Crawl failed",
+            interestVector: null,
+            interestProfileStatus: null,
           });
         }
       }
