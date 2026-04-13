@@ -289,9 +289,10 @@ Embedding batch 1 of 1 (17 talks)...
   ...
 
 === Summary ===
-Skipped: 91
+Skipped: 91 (hash matched)
 Embedded: 17
-Failed: 0
+Skipped: 0 (empty transcripts)
+Failed: 0 batches (0 talks)
 Truncated: 0
 
 Done. data/embeddings/ now contains 108 files.
