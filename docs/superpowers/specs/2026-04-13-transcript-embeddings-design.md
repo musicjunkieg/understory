@@ -216,18 +216,24 @@ const MODEL = "voyage-3.5-lite";
 const DIMENSIONS = 1024;
 const BATCH_SIZE = 32;
 const SAFE_CHAR_LIMIT = 120_000; // ~30k tokens, leaves headroom under voyage's 32k cap
+const EMBEDDINGS_DIR = path.resolve(__dirname, "../data/embeddings");
+const TRANSCRIPTS_DIR = path.resolve(__dirname, "../data/transcripts");
+const TALKS_PATH = path.resolve(__dirname, "../data/talks.json");
 ```
 
 `SAFE_CHAR_LIMIT` is deliberately conservative. Voyage will reject inputs over its real token limit; we truncate to a character count well below the boundary so we never round-trip a rejection in normal operation.
 
+`BATCH_SIZE = 32` is well under Voyage's 1000-input / 1M-token request cap. The small batch size keeps each request body tiny, makes per-batch failures cheap to recover from (at most 32 talks need re-embedding on a transient error), and gives finer-grained progress output.
+
 ### 6.2 Flow
 
-1. **Discover talks.** Read `data/talks.json`. Filter to entries with `transcriptFile != null` (currently 108).
+1. **Setup.** Call `fs.mkdirSync(EMBEDDINGS_DIR, { recursive: true })` to ensure the output directory exists on a fresh checkout. (Mirrors `transcribe.ts:168`'s pattern for `TRANSCRIPT_DIR`.) Read `data/talks.json` into memory. Iterate every entry — currently every talk in `talks.json` has a non-null `transcriptFile`, but defensively skip any entry where `transcriptFile == null` so the script stays correct if upstream data ever changes.
 
 2. **Build the work queue.** For each candidate rkey:
    - Read `data/transcripts/{rkey}.json`. Extract the `transcription.text` field — the full clean transcript string from AssemblyAI.
+   - **Skip with a warning** if `transcription.text` is missing, `null`, or empty (AssemblyAI occasionally returns empty strings on very short clips). Increment a `noText` counter and continue. These talks cannot be embedded.
    - If the text length exceeds `SAFE_CHAR_LIMIT`, truncate to that limit and remember `truncated = true`. Otherwise `truncated = false`.
-   - Compute the SHA-256 hash of the (possibly truncated) text, prefixed with `"sha256-"`.
+   - Compute the SHA-256 hash of the (possibly truncated) text, prefixed with `"sha256-"`. **The hash is always computed over the bytes that will be sent to Voyage** — never over the raw pre-truncation text, or re-runs would re-embed forever.
    - Read the existing `data/embeddings/{rkey}.json` if present.
    - **Skip** if `existing.transcriptHash === computed_hash` AND `existing.model === MODEL`. Increment a `skipped` counter.
    - Otherwise queue the talk with `{rkey, text, transcriptHash, truncated}`.
@@ -236,24 +242,30 @@ const SAFE_CHAR_LIMIT = 120_000; // ~30k tokens, leaves headroom under voyage's 
    - Build a `VoyageEmbedRequest` with `input: chunk.map(t => t.text)`, `model: MODEL`, `input_type: "document"`.
    - `POST` to `VOYAGE_API_URL` with `Authorization: Bearer ${process.env.VOYAGE_API_KEY}`.
    - Validate the response shape against `VoyageEmbedResponse`. Reject with a clear error on shape mismatch.
-   - Validate that `data.length === chunk.length` and each vector has exactly `DIMENSIONS` elements.
-   - For each result, write `data/embeddings/{rkey}.json` with the file shape from §5.1. Use `data[i].index` to associate the result with its input talk (Voyage may not preserve order — always trust `index`).
+   - **Validate batch integrity.** All three of these must hold or the entire batch is failed (no partial writes from a partial batch):
+     - `data.length === chunk.length`
+     - Every `data[i].index` is an integer in the range `[0, chunk.length)`
+     - The set of returned indices covers `[0, chunk.length)` exactly once each
+     - Each `data[i].embedding` has exactly `DIMENSIONS` elements and all elements are finite numbers
+   - On batch integrity failure: throw an error captured by the per-batch `try/catch` (step 4). The batch is counted as failed, no files are written, and the next run will retry the same talks (idempotent because nothing was committed to disk).
+   - On batch integrity success: for each result, write `data/embeddings/{rkey}.json` with the file shape from §5.1. Use `data[i].index` to associate the result with its input talk (Voyage may not preserve order — always trust `index`).
    - Print `[done] "{title}"` per talk.
 
-4. **Per-batch error handling.** Wrap the batch fetch + write in `try/catch`. On any exception:
+4. **Per-batch error handling.** Wrap the batch fetch + integrity check + writes in `try/catch`. On any exception:
    - Log the error message and the rkeys in the failed batch.
    - Continue with the next batch. **Do not abort the whole run.**
-   - Increment a `failed` counter.
+   - Increment `failedBatches` by 1 and `failedTalks` by `chunk.length`.
 
 5. **Final summary.** Print:
    ```
    Found N talks with transcripts
    Skipped X already embedded (hash matched)
    Embedded Y new talks
-   Failed Z batches (see above for details)
+   Skipped W with empty transcripts
+   Failed Z batches (Q talks total)
    Truncated T talks (logged)
    ```
-   Exit code 0 if `failed === 0`, exit code 1 otherwise — so CI / wrapping shells can detect partial failures.
+   `failedBatches` counts batches; `failedTalks` counts the total talks across those batches (one batch = up to `BATCH_SIZE` talks). Exit code 0 if `failedBatches === 0`, exit code 1 otherwise — so CI / wrapping shells can detect partial failures.
 
 ### 6.3 Environment
 
@@ -308,6 +320,14 @@ export function cosineSimilarity(
 
 Accepts both `number[]` and `Float32Array` via `ArrayLike<number>` so callers don't have to convert.
 
+**Length mismatch error contract:** On length mismatch, throw exactly:
+
+```ts
+throw new Error(`cosine: length mismatch ${a.length} vs ${b.length}`);
+```
+
+This exact message is asserted in the unit tests so changes are intentional.
+
 ### 7.2 Tests — `src/lib/scoring/cosine.test.ts`
 
 Vitest, mirroring the existing `rank.test.ts` pattern:
@@ -330,7 +350,9 @@ A single-shot validation that runs after `npm run embed` and proves the embeddin
 
 ### 8.1 Flow
 
-1. **Load embeddings.** Read every file in `data/embeddings/` into a `Map<rkey, Float32Array>`. Read `data/talks.json` for the title lookup so output is human-readable. Validate that every file has `model === MODEL` and `dimensions === DIMENSIONS`; abort with a clear error if any file is from a different model (corrupt local state).
+1. **Load embeddings.** Read every file in `data/embeddings/` into a `Map<rkey, Float32Array>`. The on-disk vectors are stored as plain JSON `number[]` (see §5.1); the loader converts each to `Float32Array` via `new Float32Array(file.vector)` at read time so downstream cosine math is uniform regardless of source. Read `data/talks.json` for the title lookup so output is human-readable. Validate that every file has `model === MODEL` and `dimensions === DIMENSIONS`; abort with a clear error if any file is from a different model (corrupt local state).
+
+   **Empty directory case:** if `data/embeddings/` does not exist, contains zero `.json` files, or the resulting Map is empty, exit with code 1 and a clear message: `"No embeddings found. Run 'npm run embed' first."` This avoids a confusing failure where the sanity gates in step 5 trip with "no match ≥ 0.50" simply because there were no candidates.
 
 2. **Embed three test queries** via Voyage with `input_type: "query"`:
    - `"decentralized identity and personal data sovereignty"`
@@ -416,7 +438,7 @@ Three additional Voyage `query`-type embed calls, ~50 input tokens each. Effecti
 | Embedding file disk footprint | ~1.3 MB total |
 | Re-run cost (no transcript changes) | $0.00 (all skipped via hash) |
 | Smoke check cost per run | ≈ $0.000003 (3 query embeddings) |
-| Wall-clock time, full run, 1 batch of 108 | ~5–15 seconds typical |
+| Wall-clock time, full run | ~4 batches of up to 32 talks each, ~5–15 seconds typical |
 
 The script is cheap enough to run on every PR that touches transcripts without thinking about cost.
 
@@ -428,13 +450,13 @@ The script is cheap enough to run on every PR that touches transcripts without t
 
 - New script: `scripts/embed.ts`
 - New script: `scripts/embed-smoke.ts`
-- New shared types: `scripts/lib/embedding-types.ts`
-- New runtime helper: `src/lib/scoring/cosine.ts` + tests
-- New unit tests: `scripts/__tests__/embed.test.ts`
-- New data directory: `data/embeddings/{rkey}.json` × 108 (via running the script)
-- New `package.json` scripts: `embed`, `embed:check`
-- New `.env` requirement: `VOYAGE_API_KEY`
-- README update: the "Local development" section gains the new env var and the data pipeline section gains the two new scripts
+- New directory: `scripts/lib/` (does not currently exist) containing `embedding-types.ts`
+- New directory: `scripts/__tests__/` (does not currently exist) containing `embed.test.ts`
+- New runtime helper: `src/lib/scoring/cosine.ts` + co-located `cosine.test.ts`
+- New data directory: `data/embeddings/` containing one `{rkey}.json` per talk (108 files initially), populated by running the script. Created at script-run time, not committed empty.
+- New `package.json` scripts: `embed` (`tsx scripts/embed.ts`) and `embed:check` (`tsx scripts/embed-smoke.ts`)
+- New `.env` requirement: `VOYAGE_API_KEY`. `.env.example` does not currently exist in the repo (verified) — implementer should create it if introducing one is desirable, otherwise the README env var documentation is the canonical reference.
+- README update: the "Local development" section currently documents `APP_URL` and `ASSEMBLYAI_API_KEY`. Add `VOYAGE_API_KEY` to the same block, and add `npm run embed` / `npm run embed:check` to the "Data pipeline" section alongside `build-talk-index` and `transcribe`.
 
 ### 11.2 What this issue does NOT do (filed or already-filed followups)
 
