@@ -377,10 +377,9 @@ Expected: tests fail to import — `embed.ts` doesn't export `decideWork` or `MO
 
 - [ ] **Step 4: Write the minimal `embed.ts` exports**
 
-Create `scripts/embed.ts`:
+Create `scripts/embed.ts`. Note: `dotenv/config` is loaded inside `main()` later (Task 6), not at the top level, so vitest unit tests that import `embed.ts` don't touch the filesystem on import.
 
 ```ts
-import "dotenv/config";
 import { createHash } from "node:crypto";
 import type { EmbeddingFile } from "./lib/embedding-types";
 
@@ -552,12 +551,18 @@ Three regression tests pinning the truncation contract:
 
 - [ ] **Step 1: Write the failing tests**
 
-Append to `scripts/__tests__/embed.test.ts`:
+Two updates to `scripts/__tests__/embed.test.ts`:
+
+**(a) Add to the existing top-of-file imports** (alongside the existing `decideWork`/`MODEL` import — eslint's `import/first` rule requires imports to live at the top of the file, not appended below other code):
 
 ```ts
 import { validateBatchResponse } from "../embed";
 import type { VoyageEmbedResponse } from "../lib/embedding-types";
+```
 
+**(b) Append the new `describe` block** at the bottom of the file:
+
+```ts
 describe("validateBatchResponse", () => {
   function makeResponse(items: number): VoyageEmbedResponse {
     return {
@@ -726,20 +731,32 @@ validator runs before every per-talk file write."
 
 - [ ] **Step 1: Read the existing transcribe.ts to mirror its style**
 
-Run: `cat scripts/transcribe.ts | head -80`
+Use the Read tool on `scripts/transcribe.ts` (lines 1–80) to confirm the existing offline-pipeline conventions: the `dotenv/config` import, the constant block, the `main()` function, and the `main().catch(console.error)` top-level invocation.
 
-Expected: see the dotenv import, the constant block, the `fetchPaginatedRecords` pattern, the `main()` function, the `main().catch(console.error)` invocation.
+- [ ] **Step 2: Update embed.ts**
 
-- [ ] **Step 2: Append the orchestration to embed.ts**
+Two updates to `scripts/embed.ts`:
 
-Append the following to `scripts/embed.ts` after the existing exports:
+**(a) Merge new top-of-file imports** with the existing imports from Task 3 / Task 5. The final import block should look like:
 
 ```ts
+import "dotenv/config";
+import { createHash } from "node:crypto";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import type { TalkEntry } from "@/lib/types";
-import type { EmbeddingFile, VoyageEmbedRequest } from "./lib/embedding-types";
+import type {
+  EmbeddingFile,
+  VoyageEmbedRequest,
+  VoyageEmbedResponse,
+} from "./lib/embedding-types";
+```
 
+`EmbeddingFile` was already imported in Task 3; `VoyageEmbedResponse` was added in Task 5. Do not duplicate them. `dotenv/config` is added here (deferred from Task 3) because the orchestration is the only consumer of `process.env.VOYAGE_API_KEY`.
+
+**(b) Append the orchestration code** after the existing exports. `require.main === module` is the correct pattern for tsx-run scripts under this project's CommonJS-compatible config — do not change it to `import.meta.url`.
+
+```ts
 const VOYAGE_API_URL = "https://api.voyageai.com/v1/embeddings";
 const BATCH_SIZE = 32;
 const EMBEDDINGS_DIR = path.resolve(__dirname, "../data/embeddings");
@@ -837,14 +854,16 @@ async function main(): Promise<void> {
   fs.mkdirSync(EMBEDDINGS_DIR, { recursive: true });
 
   const talks = loadTalks();
-  console.log(`Found ${talks.length} talks in talks.json`);
+  const withTranscripts = talks.filter((t) => t.transcriptFile);
+  console.log(`Found ${withTranscripts.length} talks with transcripts`);
 
   const queue: QueuedTalk[] = [];
   let skipped = 0;
   let noText = 0;
+  let queuedMissing = 0;
+  let queuedStale = 0;
 
-  for (const talk of talks) {
-    if (!talk.transcriptFile) continue; // defensive: data may grow nullable
+  for (const talk of withTranscripts) {
 
     const text = readTranscriptText(talk.rkey);
     if (text == null) {
@@ -853,10 +872,11 @@ async function main(): Promise<void> {
       continue;
     }
 
+    const existing = loadExistingEmbedding(talk.rkey);
     const decision = decideWork({
       rkey: talk.rkey,
       transcriptText: text,
-      existing: loadExistingEmbedding(talk.rkey),
+      existing,
     });
 
     if (decision.action === "skip") {
@@ -865,6 +885,8 @@ async function main(): Promise<void> {
       console.warn(`  [warn] empty transcript for ${talk.rkey}`);
       noText++;
     } else {
+      if (existing == null) queuedMissing++;
+      else queuedStale++;
       queue.push({
         rkey: talk.rkey,
         text: decision.text,
@@ -876,7 +898,9 @@ async function main(): Promise<void> {
   }
 
   console.log(`Loaded ${skipped} existing embeddings`);
-  console.log(`${queue.length} talks queued for embedding`);
+  console.log(
+    `${queue.length} talks queued for embedding (${queuedMissing} missing, ${queuedStale} stale hash)`,
+  );
   console.log(`${noText} skipped with empty/missing transcripts\n`);
 
   let truncatedCount = 0;
@@ -926,7 +950,7 @@ if (require.main === module) {
 
 Run: `npx tsc --noEmit`
 
-Expected: no errors. Note: `require.main === module` works under tsx; if eslint flags it, replace with `import.meta.url === ...` or accept the lint warning.
+Expected: no errors. The `require.main === module` pattern is correct for tsx-run scripts under this project's CommonJS-compatible config and the existing offline scripts do not need it because they're invoked unconditionally; we use it here so vitest can `import` `embed.ts` for unit tests without triggering the orchestration.
 
 - [ ] **Step 4: Run the test suite**
 
@@ -1244,13 +1268,16 @@ git commit -m "chore(embed): add npm scripts + README pipeline docs (#21)
 **Files:**
 - Generated: `data/embeddings/{rkey}.json` × 108
 
-This task uses the real Voyage API. It requires `VOYAGE_API_KEY` to be set in `.env`. Cost: ~$0.03.
+This task uses the real Voyage API. It requires `VOYAGE_API_KEY` to be set, either via a `.env` file in the project root (which `dotenv/config` will auto-load) or exported in the shell environment. Cost: ~$0.03.
 
-- [ ] **Step 1: Confirm VOYAGE_API_KEY is set**
+- [ ] **Step 1: Confirm VOYAGE_API_KEY is available to the script**
 
-Run: `grep -q VOYAGE_API_KEY .env && echo "key present" || echo "MISSING"`
+The project does not currently ship a `.env` file (verified) — `.env` is gitignored and added per-developer. Confirm one of:
 
-Expected: `key present`. If missing, stop and ask the user to add it.
+- A `.env` file exists at the project root containing `VOYAGE_API_KEY=...` — verify with the Read tool, NOT with `cat`/`grep`/`head`/`tail`. If you can't read it (permissions), assume it's there and proceed; the script will exit 1 with a clear message if the key is missing.
+- Or the variable is already exported in the current shell — check via `printenv VOYAGE_API_KEY` (a Bash-allowed read-only command).
+
+If neither is available, stop and ask the user to add `VOYAGE_API_KEY=...` to `.env` before continuing.
 
 - [ ] **Step 2: Run the embed pipeline**
 
