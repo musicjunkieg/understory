@@ -167,12 +167,12 @@ export function rankTalks(inputs: ScoringInputs): TalkScore[] {
       score.intensity = combineLayers(
         normalizedLayer1,
         score.layer2,
-        // TODO(#59): when #18 lands the real friendStub, swap this
-        // cast for a stashed score.layer3 on TalkScore, mirroring the
-        // layer2 stash pattern above. The cast works today only
-        // because the stub does `void talk;` and never reads any
-        // TalkEntry field — a real implementation would crash on the
-        // undefined fields.
+        // TODO(chainlink #59): when chainlink #18 lands the real
+        // friendStub, swap this cast for a stashed score.layer3 on
+        // TalkScore, mirroring the layer2 stash pattern above. The
+        // cast works today only because the stub does `void talk;`
+        // and never reads any TalkEntry field — a real implementation
+        // would crash on the undefined fields.
         computeFriendStub({ rkey: score.rkey } as TalkEntry),
         weights,
         active,
