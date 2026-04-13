@@ -8,7 +8,7 @@ import {
   DEFAULT_WEIGHTS,
 } from "./types";
 import { computeLayer1 } from "./networkAttention";
-import { computeInterestStub } from "./interestStub";
+import { computeLayer2 } from "./interest";
 import { computeFriendStub } from "./friendStub";
 import {
   type ActiveLayers,
@@ -34,6 +34,7 @@ function unknownScore(rkey: string, followCount: number): TalkScore {
       reachRatio: 0,
       attentionInverse: 0,
     },
+    layer2: { interestScore: 0 },
   };
 }
 
@@ -48,37 +49,42 @@ function unknownScore(rkey: string, followCount: number): TalkScore {
  *     value snuck through — reach is undefined either way)
  *   - mention is absent (talk is out of crawl scope, e.g. no eventUri)
  *
- * Otherwise runs Layer 1 + the two stubs through `combineLayers` with the
- * given weights and active layer flags.
+ * Otherwise runs Layer 1 + computeLayer2 + the friend stub through
+ * `combineLayers` with the given weights and active layer flags.
  */
 export function scoreTalk(
   talk: TalkEntry,
   mentions: TalkMentions | null,
   followCount: number,
+  interestVector: number[] | null,
+  embeddings: Record<string, number[]>,
   weights: ScoringWeights = DEFAULT_WEIGHTS,
   active: ActiveLayers = DEFAULT_ACTIVE_LAYERS,
 ): TalkScore {
-  // Robust guard: catches null mentions, zero/negative followCount, NaN, and
-  // ±Infinity in a single check. Anything that isn't a finite positive integer
-  // routes to `unknown` rather than silently producing a wrong "missed".
   if (mentions === null || !Number.isFinite(followCount) || followCount <= 0) {
     return unknownScore(talk.rkey, followCount);
   }
   const mention = mentions[talk.rkey];
   if (!mention) {
-    // Talk is not in crawl scope (e.g. no eventUri so the crawler skipped it).
     return unknownScore(talk.rkey, followCount);
   }
 
   const layer1 = computeLayer1(mention, followCount);
-  const layer2 = computeInterestStub(talk);
+  const layer2 = computeLayer2(talk, interestVector, embeddings);
   const layer3 = computeFriendStub(talk);
   const intensity = combineLayers(layer1, layer2, layer3, weights, active);
 
   const state: TalkScoreState =
     layer1.uniqueFollows === 0 ? "missed" : "engaged";
 
-  return { rkey: talk.rkey, intensity, state, layer1, normalizedCoverage: null };
+  return {
+    rkey: talk.rkey,
+    intensity,
+    state,
+    layer1,
+    layer2,
+    normalizedCoverage: null,
+  };
 }
 
 const STATE_ORDER: Record<TalkScoreState, number> = {
@@ -88,14 +94,10 @@ const STATE_ORDER: Record<TalkScoreState, number> = {
 };
 
 function compareTalkScores(a: TalkScore, b: TalkScore): number {
-  // Primary: state group (missed first, then engaged, then unknown)
   const stateDelta = STATE_ORDER[a.state] - STATE_ORDER[b.state];
   if (stateDelta !== 0) return stateDelta;
-  // Secondary: intensity descending (highest glow first within each state)
   const intensityDelta = b.intensity - a.intensity;
   if (intensityDelta !== 0) return intensityDelta;
-  // Tertiary: rkey ascending — deterministic tiebreak so the order is stable
-  // across renders (matters for React reconciliation).
   return a.rkey.localeCompare(b.rkey);
 }
 
@@ -121,21 +123,34 @@ export function rankTalks(inputs: ScoringInputs): TalkScore[] {
     talks,
     mentions,
     followCount,
+    interestVector = null,
+    embeddings = {},
     weights = DEFAULT_WEIGHTS,
     active = DEFAULT_ACTIVE_LAYERS,
   } = inputs;
 
-  const scores = talks
-    .map((talk) => scoreTalk(talk, mentions, followCount, weights, active));
+  const scores = talks.map((talk) =>
+    scoreTalk(
+      talk,
+      mentions,
+      followCount,
+      interestVector,
+      embeddings,
+      weights,
+      active,
+    ),
+  );
 
   // Normalize intensity: use "follows who discussed any talk" as the
   // denominator instead of total follows. This spreads glow across the
   // actual data range rather than clustering everything near 1.0.
   // Raw layer1 values are preserved for the UI detail strip; only
   // intensity (used for glow + sort) is recomputed via combineLayers.
+  //
+  // The stashed score.layer2 is reused here to avoid computing the same
+  // cosine twice per talk (once above, once in this normalization pass).
   const engaged = engagedFollowCount(mentions);
   if (engaged > 0) {
-    const talksByRkey = new Map(talks.map((t) => [t.rkey, t]));
     for (const score of scores) {
       if (score.state === "unknown") continue;
       const normalizedReach = Math.min(
@@ -149,11 +164,10 @@ export function rankTalks(inputs: ScoringInputs): TalkScore[] {
         totalFollows: engaged,
       };
       score.normalizedCoverage = normalizedReach;
-      const talk = talksByRkey.get(score.rkey)!;
       score.intensity = combineLayers(
         normalizedLayer1,
-        computeInterestStub(talk),
-        computeFriendStub(talk),
+        score.layer2,
+        computeFriendStub({ rkey: score.rkey } as TalkEntry),
         weights,
         active,
       );

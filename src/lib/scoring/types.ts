@@ -1,5 +1,6 @@
 import type { TalkEntry } from "@/lib/types";
 import type { TalkMention, TalkMentions } from "@/lib/crawl/types";
+import type { Layer2Result } from "./interest";
 // Local-import-then-re-export so `ScoringInputs` gets a usable local binding
 // for `ActiveLayers` AND callers can `import { ActiveLayers } from "@/lib/scoring/types"`
 // without needing to know `combine.ts` owns it.
@@ -27,7 +28,7 @@ export interface TalkScore {
    *  discussed this talk (0–1). Set by rankTalks; null before normalization
    *  or for unknown-state talks. Use for detail strip display. */
   normalizedCoverage: number | null;
-  layer2?: { interestScore: number };
+  layer2: Layer2Result;
   layer3?: { friendBoost: number; recommenders: string[] };
 }
 
@@ -48,6 +49,17 @@ export interface ScoringInputs {
   talks: TalkEntry[];
   mentions: TalkMentions | null;  // null = crawl not yet completed
   followCount: number;            // from CrawlResult.followCount
+  /** User interest vector from /api/crawl (#23). Null when the profile
+   *  build returned "no-posts" or "error" — computeLayer2 returns
+   *  interestScore: 0 for every talk in that case. Optional with null
+   *  default so this task can land without breaking existing call sites;
+   *  tightened to required in Task 10. */
+  interestVector?: number[] | null;
+  /** Talk embeddings from /api/embeddings (#24). Keyed by rkey. Talks
+   *  not present in this record fall back to interestScore: 0 — a
+   *  data-drift hedge for rkeys added after the last npm run embed.
+   *  Optional default `{}` for the same TDD-green reason as interestVector. */
+  embeddings?: Record<string, number[]>;
   weights?: ScoringWeights;
   active?: ActiveLayers;          // omitted = layer 1 only (today's deployment)
 }

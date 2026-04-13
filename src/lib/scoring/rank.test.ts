@@ -43,35 +43,35 @@ describe("scoreTalk — state derivation", () => {
   const talk = makeTalk("a");
 
   it("returns unknown when mentions is null", () => {
-    const score = scoreTalk(talk, null, 100);
+    const score = scoreTalk(talk, null, 100, null, {});
     expect(score.state).toBe("unknown");
     expect(score.intensity).toBe(0);
   });
 
   it("returns unknown when followCount is 0", () => {
-    const score = scoreTalk(talk, { a: makeMention(5) }, 0);
+    const score = scoreTalk(talk, { a: makeMention(5) }, 0, null, {});
     expect(score.state).toBe("unknown");
   });
 
   it("returns unknown when the talk has no mention entry (out of crawl scope)", () => {
-    const score = scoreTalk(talk, {}, 100);
+    const score = scoreTalk(talk, {}, 100, null, {});
     expect(score.state).toBe("unknown");
   });
 
   it("returns missed when uniqueFollows is 0 but talk is in scope", () => {
-    const score = scoreTalk(talk, { a: makeMention(0) }, 100);
+    const score = scoreTalk(talk, { a: makeMention(0) }, 100, null, {});
     expect(score.state).toBe("missed");
     expect(score.intensity).toBeCloseTo(1.0, 6);
   });
 
   it("returns engaged when at least one follow engaged", () => {
-    const score = scoreTalk(talk, { a: makeMention(3) }, 100);
+    const score = scoreTalk(talk, { a: makeMention(3) }, 100, null, {});
     expect(score.state).toBe("engaged");
     expect(score.intensity).toBeCloseTo(0.97, 6);
   });
 
   it("returns unknown when followCount is negative", () => {
-    const score = scoreTalk(talk, { a: makeMention(5) }, -3);
+    const score = scoreTalk(talk, { a: makeMention(5) }, -3, null, {});
     expect(score.state).toBe("unknown");
     // totalFollows is sanitized to 0, not the bogus -3, so JSON serialization
     // and downstream consumers see a stable shape.
@@ -79,7 +79,7 @@ describe("scoreTalk — state derivation", () => {
   });
 
   it("returns unknown when followCount is NaN", () => {
-    const score = scoreTalk(talk, { a: makeMention(5) }, Number.NaN);
+    const score = scoreTalk(talk, { a: makeMention(5) }, Number.NaN, null, {});
     expect(score.state).toBe("unknown");
     expect(score.layer1.totalFollows).toBe(0);
   });
@@ -89,6 +89,8 @@ describe("scoreTalk — state derivation", () => {
       talk,
       { a: makeMention(5) },
       Number.POSITIVE_INFINITY,
+      null,
+      {},
     );
     expect(score.state).toBe("unknown");
     expect(score.layer1.totalFollows).toBe(0);
@@ -99,6 +101,8 @@ describe("scoreTalk — state derivation", () => {
       talk,
       { a: makeMention(5) },
       Number.NEGATIVE_INFINITY,
+      null,
+      {},
     );
     expect(score.state).toBe("unknown");
     expect(score.layer1.totalFollows).toBe(0);
@@ -122,12 +126,12 @@ describe("scoreTalk — defaults", () => {
   const mentions: TalkMentions = { a: makeMention(0) };
 
   it("uses both DEFAULT_WEIGHTS and DEFAULT_ACTIVE_LAYERS when both omitted", () => {
-    const score = scoreTalk(talk, mentions, 100);
+    const score = scoreTalk(talk, mentions, 100, null, {});
     expect(score.intensity).toBeCloseTo(1.0, 6);
   });
 
   it("uses DEFAULT_ACTIVE_LAYERS when active omitted but explicit weights supplied", () => {
-    const score = scoreTalk(talk, mentions, 100, {
+    const score = scoreTalk(talk, mentions, 100, null, {}, {
       surpriseSlider: 0.25,
       friendsSlider: 0.75,
     });
@@ -137,7 +141,7 @@ describe("scoreTalk — defaults", () => {
   });
 
   it("uses DEFAULT_WEIGHTS when weights omitted but explicit active supplied", () => {
-    const score = scoreTalk(talk, mentions, 100, undefined, {
+    const score = scoreTalk(talk, mentions, 100, null, {}, undefined, {
       layer2: true,
       layer3: false,
     });
