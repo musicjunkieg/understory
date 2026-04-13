@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import type { EmbeddingFile } from "./lib/embedding-types";
+import type { EmbeddingFile, VoyageEmbedResponse } from "./lib/embedding-types";
 
 export const MODEL = "voyage-3.5-lite";
 export const DIMENSIONS = 1024;
@@ -58,4 +58,62 @@ export function decideWork(input: DecideWorkInput): WorkDecision {
   }
 
   return { action: "queue", text, transcriptHash, truncated };
+}
+
+/**
+ * Defensive validation of a Voyage batch response before any results
+ * touch disk. All four checks must pass or we throw — partial writes
+ * from a malformed batch would leave the on-disk state confused, and
+ * idempotency relies on knowing the file always represents a complete
+ * Voyage round-trip.
+ *
+ * - data is a non-null array with the expected length
+ * - every index is in [0, expected) and the set covers exactly that range
+ * - every vector has exactly DIMENSIONS elements
+ * - every element is a finite number (no NaN, no Infinity)
+ */
+export function validateBatchResponse(
+  response: VoyageEmbedResponse,
+  expectedBatchSize: number,
+): void {
+  if (!response || !Array.isArray(response.data)) {
+    throw new Error(
+      "Voyage response: missing or non-array `data` field",
+    );
+  }
+  if (response.data.length !== expectedBatchSize) {
+    throw new Error(
+      `Voyage response: length mismatch — expected ${expectedBatchSize}, got ${response.data.length}`,
+    );
+  }
+  const seenIndices = new Set<number>();
+  for (const item of response.data) {
+    if (
+      !Number.isInteger(item.index) ||
+      item.index < 0 ||
+      item.index >= expectedBatchSize
+    ) {
+      throw new Error(
+        `Voyage response: index ${item.index} out of range [0, ${expectedBatchSize})`,
+      );
+    }
+    if (seenIndices.has(item.index)) {
+      throw new Error(
+        `Voyage response: duplicate index ${item.index}`,
+      );
+    }
+    seenIndices.add(item.index);
+    if (!Array.isArray(item.embedding) || item.embedding.length !== DIMENSIONS) {
+      throw new Error(
+        `Voyage response: wrong dimension count for index ${item.index} — expected ${DIMENSIONS}, got ${item.embedding?.length ?? "missing"}`,
+      );
+    }
+    for (const v of item.embedding) {
+      if (typeof v !== "number" || !Number.isFinite(v)) {
+        throw new Error(
+          `Voyage response: non-finite number in vector at index ${item.index}`,
+        );
+      }
+    }
+  }
 }

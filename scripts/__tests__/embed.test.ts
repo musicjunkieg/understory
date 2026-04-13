@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { createHash } from "node:crypto";
 import { decideWork, MODEL } from "../embed";
+import { validateBatchResponse } from "../embed";
+import type { VoyageEmbedResponse } from "../lib/embedding-types";
 
 function hashOf(text: string): string {
   return "sha256-" + createHash("sha256").update(text).digest("hex");
@@ -126,5 +128,60 @@ describe("decideWork", () => {
     });
     if (result.action !== "queue") return;
     expect(result.truncated).toBe(false);
+  });
+});
+
+describe("validateBatchResponse", () => {
+  function makeResponse(items: number): VoyageEmbedResponse {
+    return {
+      data: Array.from({ length: items }, (_, i) => ({
+        embedding: new Array(1024).fill(0.1),
+        index: i,
+      })),
+      model: "voyage-3.5-lite",
+      usage: { total_tokens: 1000 },
+    };
+  }
+
+  it("accepts a well-formed response that matches the expected batch size", () => {
+    expect(() => validateBatchResponse(makeResponse(3), 3)).not.toThrow();
+  });
+
+  it("throws when data length does not match expected batch size", () => {
+    expect(() => validateBatchResponse(makeResponse(2), 3)).toThrow(
+      /length mismatch/i,
+    );
+  });
+
+  it("throws when an index is out of range", () => {
+    const response = makeResponse(3);
+    response.data[0].index = 99;
+    expect(() => validateBatchResponse(response, 3)).toThrow(/index/i);
+  });
+
+  it("throws when index coverage has duplicates", () => {
+    const response = makeResponse(3);
+    response.data[0].index = 1;
+    response.data[1].index = 1;
+    expect(() => validateBatchResponse(response, 3)).toThrow(/duplicate/i);
+  });
+
+  it("throws when a vector has wrong dimension count", () => {
+    const response = makeResponse(2);
+    response.data[0].embedding = new Array(512).fill(0.1);
+    expect(() => validateBatchResponse(response, 2)).toThrow(/dimension/i);
+  });
+
+  it("throws when a vector contains a non-finite number", () => {
+    const response = makeResponse(1);
+    response.data[0].embedding[0] = NaN;
+    expect(() => validateBatchResponse(response, 1)).toThrow(/finite/i);
+  });
+
+  it("throws when data is missing entirely", () => {
+    const malformed = { model: "voyage-3.5-lite", usage: { total_tokens: 0 } };
+    expect(() =>
+      validateBatchResponse(malformed as VoyageEmbedResponse, 1),
+    ).toThrow(/data/i);
   });
 });
