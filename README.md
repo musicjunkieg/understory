@@ -71,6 +71,7 @@ Create `.env` with at least:
 ```
 APP_URL=http://localhost:3000
 ASSEMBLYAI_API_KEY=your-key-here   # only needed for `npm run transcribe`
+VOYAGE_API_KEY=your-key-here       # only needed for `npm run embed`
 ```
 
 `APP_URL` must be your app's public URL — it's used to generate the AT
@@ -124,12 +125,14 @@ npm run lint
 
 ## Data pipeline
 
-Two scripts in `scripts/` populate `data/`. Both write to `data/` directly
+Three scripts in `scripts/` populate `data/`. All write to `data/` directly
 and are intended to be run offline, not at request time.
 
 ```bash
 npm run build-talk-index   # fetches VODs + schedule from AT Protocol → data/talks.json
 npm run transcribe         # extracts audio via ffmpeg → AssemblyAI → data/transcripts/{rkey}.json
+npm run embed              # voyage-3.5-lite embeddings → data/embeddings/{rkey}.json
+npm run embed:check        # smoke check: 3 test queries → top/bottom 5 per query
 ```
 
 `build-talk-index` matches `place.stream.video` records on `iameli.com`
@@ -140,6 +143,13 @@ unmatched VODs (timestamp + title similarity).
 `transcribe` is idempotent — it skips any rkey that already has a
 transcript on disk, so re-running it after deleting specific files only
 regenerates those.
+
+`npm run embed` is idempotent — it skips talks whose transcript hash and
+configured model haven't changed, so re-runs only re-embed the deltas.
+`npm run embed:check` is the post-embed sanity validation: it runs three
+test queries through Voyage and prints the top/bottom 5 matches per query
+so you can eyeball whether the embeddings carry the semantic signal you
+expect.
 
 ## Deployment
 
