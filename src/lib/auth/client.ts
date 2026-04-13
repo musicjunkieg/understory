@@ -28,15 +28,12 @@ async function requestLock<T>(
 ): Promise<T> {
   const prevLock = locks.get(key) ?? Promise.resolve();
   let releaseLock!: () => void;
-  const currentLock = prevLock.then(
-    () =>
-      new Promise<void>((resolve) => {
-        releaseLock = resolve;
-      }),
-  );
+  const currentLock = new Promise<void>((resolve) => {
+    releaseLock = resolve;
+  });
   locks.set(key, currentLock);
   try {
-    await currentLock;
+    await prevLock;
     return await fn();
   } finally {
     releaseLock();
