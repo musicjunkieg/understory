@@ -110,6 +110,11 @@ export async function crawl(
   };
 
   if (followDids.size === 0) {
+    // A zero-follows user has no layer-1 signal worth scoring against.
+    // We skip buildInterestVector entirely (no Voyage cost, no latency),
+    // and synthesize status: "no-posts" so the client treats this
+    // uniformly with the "we tried and found zero usable posts" case —
+    // both mean "no layer-2 vector available," which is what #24 needs.
     return buildResult(0, {
       vector: null,
       postCount: 0,
