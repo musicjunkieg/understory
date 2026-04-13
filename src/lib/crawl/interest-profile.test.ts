@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { AppBskyFeedDefs } from "@atproto/api";
-import { filterFeedItems, MAX_AGE_MS } from "./interest-profile";
+import { filterFeedItems, MAX_AGE_MS, meanPool } from "./interest-profile";
 
 type FeedViewPost = AppBskyFeedDefs.FeedViewPost;
 
@@ -100,5 +100,19 @@ describe("filterFeedItems", () => {
       "fresh",
       "exactly at 90 days",
     ]);
+  });
+});
+
+describe("meanPool", () => {
+  it("returns the element-wise average of N equal-length vectors", () => {
+    const result = meanPool([
+      [1, 0, 0],
+      [0, 1, 0],
+      [0, 0, 1],
+    ]);
+    expect(result.length).toBe(3);
+    expect(result[0]).toBeCloseTo(1 / 3, 10);
+    expect(result[1]).toBeCloseTo(1 / 3, 10);
+    expect(result[2]).toBeCloseTo(1 / 3, 10);
   });
 });

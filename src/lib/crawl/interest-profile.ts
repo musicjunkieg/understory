@@ -110,3 +110,38 @@ export function filterFeedItems(
 
   return out;
 }
+
+/**
+ * Element-wise mean of N equal-length numeric vectors. Returns a plain
+ * `number[]` (not Float32Array) so the result serializes cleanly through
+ * JSON in the /api/crawl response — #24's client consumer reads it back
+ * as `number[]` and passes it directly to `cosineSimilarity`, which
+ * accepts `ArrayLike<number>`.
+ *
+ * Throws if `vectors` is empty (callers must check upstream) or if the
+ * vectors have mismatched lengths (defensive guard — Voyage should
+ * return uniform dimensions, but catching a mismatch here surfaces a
+ * protocol drift as a clear error rather than silently corrupt math).
+ */
+export function meanPool(vectors: number[][]): number[] {
+  if (vectors.length === 0) {
+    throw new Error("meanPool: cannot average zero vectors");
+  }
+  const dim = vectors[0].length;
+  const sum = new Array<number>(dim).fill(0);
+  for (const v of vectors) {
+    if (v.length !== dim) {
+      throw new Error(
+        `meanPool: length mismatch — expected ${dim}, got ${v.length}`,
+      );
+    }
+    for (let i = 0; i < dim; i++) {
+      sum[i] += v[i];
+    }
+  }
+  const n = vectors.length;
+  for (let i = 0; i < dim; i++) {
+    sum[i] /= n;
+  }
+  return sum;
+}
