@@ -33,7 +33,11 @@ export function ScoredTalksGrid({ talks }: ScoredTalksGridProps) {
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {scoredTalks.map(({ talk, score }, index) => (
-        <Link key={talk.rkey} href={`/talk/${talk.rkey}`}>
+        <Link
+          key={talk.rkey}
+          href={`/talk/${talk.rkey}`}
+          className="group/card block rounded-lg focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-fixed"
+        >
           <LumeCard
             className="h-full"
             glowIntensity={score?.intensity ?? 0}

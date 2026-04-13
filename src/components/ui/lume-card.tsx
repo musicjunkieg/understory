@@ -48,14 +48,13 @@ function LumeCard({
   const hasDetail = score && score.state !== "unknown";
 
   // Opacity fades covered talks into the background.
-  // Range: 1.0 at intensity 1 → 0.2 at intensity 0, with a quadratic curve so
-  // low-glow (heavily covered) talks fall off fast — at glow 0.3 the card is
-  // already near 0.27 opacity, at glow 0.7 it's at 0.59. Combined with the
-  // translucent bg below, this lets covered cards visually recede into the
-  // page background while missed talks stay vivid. The wider range and steeper
-  // curve are deliberate: the previous linear 0.5–1.0 range left even fully
-  // covered cards too solid to read as "faded."
-  const opacity = 0.2 + glow * glow * 0.8;
+  // Range: 1.0 at intensity 1 → 0.1 at intensity 0, with a cubic curve so the
+  // covered zone (low glow) crashes hard while missed talks stay near full
+  // opacity. Sample points: glow 0.3 → 0.12, glow 0.5 → 0.21, glow 0.7 → 0.41,
+  // glow 0.9 → 0.76, glow 1.0 → 1.0. The cubic is deliberate — the previous
+  // quadratic at floor 0.2 still left mid-coverage cards too readable to feel
+  // like they had visually receded.
+  const opacity = 0.1 + glow * glow * glow * 0.9;
 
   return (
     <div
@@ -73,8 +72,21 @@ function LumeCard({
             ? "border-primary-fixed-dim/50"
             : "border-primary-fixed-dim/20",
         "transition-[box-shadow,border-color,opacity] duration-500",
+        // Direct hover/focus/active recovery for when LumeCard is used
+        // standalone (no wrapping focusable ancestor).
         "hover:biolume-glow-strong hover:!opacity-100",
-        "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-fixed",
+        // Recover via a `group/card` ancestor — typically the wrapping
+        // <Link> in ScoredTalksGrid. Keyboard focus lands on the Link
+        // (not on this div), so without the named-group plumbing covered
+        // cards at the cubic floor (~0.10 opacity) would be unreadable
+        // for keyboard and touch users. group-hover/card duplicates the
+        // pointer hover path (since hovering the Link also hovers this
+        // div in practice, but explicit is clearer); group-focus-visible
+        // /card handles Tab navigation; group-active/card handles touch
+        // taps where :hover doesn't apply.
+        "group-hover/card:biolume-glow-strong group-hover/card:!opacity-100",
+        "group-focus-visible/card:biolume-glow-strong group-focus-visible/card:!opacity-100",
+        "group-active/card:!opacity-100",
         isUnderstory ? "animate-breathe" : "",
         className,
       ].join(" ")}
@@ -107,10 +119,15 @@ function LumeCard({
             "px-5 pb-3 pt-0",
             // Mobile: always visible (no hover capability)
             "max-h-12 opacity-100",
-            // Desktop (sm+): hidden by default, revealed on hover via group-hover
+            // Desktop (sm+): hidden by default, revealed on hover/focus.
+            // group-hover targets this LumeCard (the unnamed group);
+            // group-hover/card and group-focus-visible/card target the
+            // wrapping Link so keyboard tab also reveals the strip.
             "sm:max-h-0 sm:overflow-hidden sm:opacity-0",
             "sm:transition-all sm:duration-300",
             "sm:group-hover:max-h-12 sm:group-hover:opacity-100",
+            "sm:group-hover/card:max-h-12 sm:group-hover/card:opacity-100",
+            "sm:group-focus-visible/card:max-h-12 sm:group-focus-visible/card:opacity-100",
           ].join(" ")}
         >
           <div className="border-t border-primary-fixed-dim/20 pt-2">
