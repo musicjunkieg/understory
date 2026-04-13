@@ -72,8 +72,21 @@ function LumeCard({
             ? "border-primary-fixed-dim/50"
             : "border-primary-fixed-dim/20",
         "transition-[box-shadow,border-color,opacity] duration-500",
+        // Direct hover/focus/active recovery for when LumeCard is used
+        // standalone (no wrapping focusable ancestor).
         "hover:biolume-glow-strong hover:!opacity-100",
-        "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-fixed",
+        // Recover via a `group/card` ancestor — typically the wrapping
+        // <Link> in ScoredTalksGrid. Keyboard focus lands on the Link
+        // (not on this div), so without the named-group plumbing covered
+        // cards at the cubic floor (~0.10 opacity) would be unreadable
+        // for keyboard and touch users. group-hover/card duplicates the
+        // pointer hover path (since hovering the Link also hovers this
+        // div in practice, but explicit is clearer); group-focus-visible
+        // /card handles Tab navigation; group-active/card handles touch
+        // taps where :hover doesn't apply.
+        "group-hover/card:biolume-glow-strong group-hover/card:!opacity-100",
+        "group-focus-visible/card:biolume-glow-strong group-focus-visible/card:!opacity-100",
+        "group-active/card:!opacity-100",
         isUnderstory ? "animate-breathe" : "",
         className,
       ].join(" ")}
@@ -106,10 +119,15 @@ function LumeCard({
             "px-5 pb-3 pt-0",
             // Mobile: always visible (no hover capability)
             "max-h-12 opacity-100",
-            // Desktop (sm+): hidden by default, revealed on hover via group-hover
+            // Desktop (sm+): hidden by default, revealed on hover/focus.
+            // group-hover targets this LumeCard (the unnamed group);
+            // group-hover/card and group-focus-visible/card target the
+            // wrapping Link so keyboard tab also reveals the strip.
             "sm:max-h-0 sm:overflow-hidden sm:opacity-0",
             "sm:transition-all sm:duration-300",
             "sm:group-hover:max-h-12 sm:group-hover:opacity-100",
+            "sm:group-hover/card:max-h-12 sm:group-hover/card:opacity-100",
+            "sm:group-focus-visible/card:max-h-12 sm:group-focus-visible/card:opacity-100",
           ].join(" ")}
         >
           <div className="border-t border-primary-fixed-dim/20 pt-2">
