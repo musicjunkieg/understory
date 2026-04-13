@@ -63,7 +63,17 @@ Cosine similarity returns `[-1, 1]`. `combineLayers` expects `[0, 1]`. Three nor
 2. **Clamp-at-zero `max(0, cos)`** — aggressive contrast but Voyage query-document cosines are almost always positive in practice, so the normalization gives effectively the same compressed band.
 3. **Rank-then-spread across the corpus** — maximum visual contrast but rank-based scoring doesn't compose cleanly with layer 1's absolute ratio.
 
-**Chose shift-and-scale.** The typical Voyage cosine spread for conference-query vs. talk-document lands in `0.2–0.7`, which shift-and-scale maps to `0.6–0.85`. That's a narrow band, but it's OK because `combineLayers` handles the relative weighting: layer 2's contribution is `interestScore × (1 - surpriseSlider) × 0.375` (weight `0.3 / 0.8` after rescale without layer 3). A typical 0.75 interestScore contributes ~0.28 to the final intensity, which is a meaningful but not dominant lift on top of layer 1.
+**Chose shift-and-scale.** The typical Voyage cosine spread for conference-query vs. talk-document lands in `0.2–0.7`, which shift-and-scale maps to `0.6–0.85`. That's a narrow band, but it's OK because `combineLayers` handles the relative weighting.
+
+The layer 2 contribution to the final intensity is:
+
+```
+contribution = interestScore × (1 - surpriseSlider) × w2
+             = interestScore × (1 - surpriseSlider) × (0.3 / 0.8)
+             = interestScore × (1 - surpriseSlider) × 0.375
+```
+
+At the default `surpriseSlider = 0.5`, this becomes `interestScore × 0.5 × 0.375 = interestScore × 0.1875`. So a typical 0.75 interestScore produces a `+0.14` lift in the final intensity — meaningful (enough to reshuffle talks with similar layer-1 scores) but not dominant (layer 1 still drives most of the signal, weighted at `0.625`).
 
 If post-launch data shows layer 2 is too compressed to differentiate talks, **rank-then-spread (option 3) is a drop-in replacement** — it requires no schema change, only a tuning swap inside `computeLayer2`. Deferring that decision until we have real user behavior.
 
@@ -210,7 +220,16 @@ Tempting to keep the stub around as a conditional fallback ("use real layer 2 wh
 
 ### 5.1 New files
 
-**`src/app/api/embeddings/route.ts`** — Next.js route handler. Reads `data/embeddings/*.json` into a module-level cache on first request; subsequent requests hit the cache with no I/O. Returns `Record<rkey, number[]>` with `Cache-Control: public, max-age=31536000, immutable`. ~50 lines.
+**`src/app/api/embeddings/route.ts`** — Next.js route handler. Reads `data/embeddings/*.json` into a module-level cache on first request; subsequent requests hit the cache with no I/O. Each file has the shape `{rkey, model, dimensions, vector, transcriptHash, truncated, generatedAt}` (from #21's persistence format) — the route projects each file down to just `.vector` and aggregates into `Record<rkey, number[]>`.
+
+**Next.js caching semantics (critical):** App Router route handlers that read from `fs` at request time are classified as dynamic by default, which means any `Cache-Control` header you set may be overridden by Next's default `no-store` behavior. To make the route serve with the intended immutable cache:
+
+1. Export `dynamic = 'force-static'` at the top of the route file to explicitly opt into static-with-explicit-headers classification.
+2. Return headers via `new Response(JSON.stringify(body), { headers: { ... } })` rather than `Response.json()`. The explicit `Response` constructor preserves `Cache-Control` headers verbatim; `Response.json()` can let the framework's defaults intercede.
+
+Both are belt-and-braces. Skipping either risks the `immutable` header silently not reaching the browser, at which point `useTalkEmbeddings` would refetch on every mount instead of hitting the HTTP cache.
+
+~60 lines total.
 
 **`src/hooks/useTalkEmbeddings.ts`** — Client hook mirroring `useCrawlData`. Fetches `/api/embeddings` once on mount via `useEffect`, caches the result in `useState`, returns `{embeddings: Record<string, number[]> | null, loading: boolean, error: string | null}`. Uses the same cancellation pattern as `useCrawlData` to handle unmount during fetch. ~60 lines.
 
@@ -244,9 +263,26 @@ export interface ScoringInputs {
 
 The `Layer2Result` type (currently `InterestStubResult`) stays `{interestScore: number}` but gets renamed for honesty. `combine.ts` imports it from the new location.
 
-**`src/lib/scoring/rank.ts`** — `scoreTalk`'s signature gains two parameters (or destructures them from inputs). The `computeInterestStub(talk)` call becomes `computeLayer2(talk, interestVector, embeddings)`. `rankTalks` threads the new fields from `inputs` into each `scoreTalk` call. The normalization pass at the bottom (lines 131–161) also threads them through when it recomputes intensity via `combineLayers`.
+**`src/lib/scoring/rank.ts`** — Three changes to wire `computeLayer2` into both call sites that currently consult the stub:
 
-**`src/lib/scoring/combine.ts`** — **No code changes.** The rescale math already handles any combination of active layers. Update the type import from `InterestStubResult` to `Layer2Result` (both in the import and in the function signature).
+1. **`scoreTalk` signature gains two parameters** — `interestVector: number[] | null` and `embeddings: Record<string, number[]>` — and replaces `computeInterestStub(talk)` with `computeLayer2(talk, interestVector, embeddings)`.
+
+2. **`rankTalks` threads the new fields** from `inputs` into every `scoreTalk` call and into the normalization pass.
+
+3. **The normalization pass at lines 131–161 also calls `combineLayers` (line ~153)**, which currently re-computes `computeInterestStub(talk)` separately. That second call site must also swap to `computeLayer2` with the same inputs. To avoid computing the same cosine twice per talk, **stash the `Layer2Result` on `TalkScore` during the first pass and reuse it in the normalization loop**. Add a `layer2: Layer2Result` field to the internal `TalkScore` shape if it isn't already there (check `src/lib/scoring/types.ts::TalkScore` during implementation — it may already carry `layer1`, and we'd add `layer2` alongside it), or store it in a local `Map<rkey, Layer2Result>` inside `rankTalks` if adding a field to `TalkScore` breaks other consumers.
+
+   The reuse is important: without it, a user with 108 talks would compute 216 cosines (108 per pass × 2 passes). With reuse, it's 108 total — and since cosines are pure, deterministic, and have no side effects, caching them within a single `rankTalks` call is free correctness.
+
+**`src/lib/scoring/combine.ts`** — Update the type import: the current file imports `InterestStubResult` from `"./interestStub"` (line 2). After this spec, that import changes to `Layer2Result` from `"./interest"`. No logic changes to `combineLayers` — the rescale math already handles any combination of active layers.
+
+```ts
+// Before:
+import type { InterestStubResult } from "./interestStub";
+// After:
+import type { Layer2Result } from "./interest";
+```
+
+The function parameter type in `combineLayers` also changes from `InterestStubResult` → `Layer2Result`, but since the shape is `{interestScore: number}` in both, this is a pure rename.
 
 **`src/lib/scoring/index.ts`** — Barrel exports. Remove `computeInterestStub` / `InterestStubResult` re-exports, add `computeLayer2` / `Layer2Result`.
 
@@ -254,7 +290,22 @@ The `Layer2Result` type (currently `InterestStubResult`) stays `{interestScore: 
 
 1. Add `useTalkEmbeddings` hook call alongside `useCrawlData`.
 2. Update the loader gate: `if (loading || embeddingsLoading) return <CrawlLoadingState />`.
-3. Update the `rankTalks` call: pass `interestVector` from `useCrawlData`, `embeddings` from `useTalkEmbeddings`, set `active: { layer2: true, layer3: false }`.
+3. **Update the `rankTalks` call site** from the current `rankTalks({ talks, mentions, followCount })` (which is what it looks like today) to include the two new required fields and flip the layer-2 active flag:
+
+   ```ts
+   const scores = rankTalks({
+     talks,
+     mentions,
+     followCount,
+     interestVector,    // from useCrawlData
+     embeddings,        // from useTalkEmbeddings
+     active: { layer2: true, layer3: false },
+   });
+   ```
+
+   **Critical:** making `interestVector` and `embeddings` *required* fields on `ScoringInputs` (§5.2) means every existing caller of `rankTalks` must update. `scored-talks-grid.tsx` is the only caller in the tree (verify during implementation with a quick grep for `rankTalks(` in `src/` — there should be exactly one call site plus the test files). Not updating it is a TypeScript compile error, which is how we want it — we want the compiler to block any forgotten call site.
+
+4. **Update existing tests** in `src/lib/scoring/rank.test.ts` to pass the two new fields. The existing tests should pass `interestVector: null` and `embeddings: {}` to preserve their layer-1-only behavior. Only the new integration test from §7.3 passes meaningful values for them.
 
 ### 5.3 Deleted files
 
@@ -363,21 +414,26 @@ The existing rank tests continue to pass. One new test verifies the end-to-end i
 
 ```ts
 it("blends layer 2 into the final intensity when active.layer2 is true", () => {
-  const talks: TalkEntry[] = [ /* two talks with known rkeys */ ];
+  // Use real AT Protocol rkey format to match production data shape.
+  const RKEY_A = "3mi54oonum62b";
+  const RKEY_B = "3mi56m3hnrq2z";
+  const talks: TalkEntry[] = [
+    /* TalkEntry fixtures with these two rkeys */
+  ];
   const result = rankTalks({
     talks,
-    mentions: { /* layer-1 fixture */ },
+    mentions: { /* layer-1 fixture with both rkeys, identical counts */ },
     followCount: 10,
     interestVector: [1, 0, 0],
     embeddings: {
-      "talk-a": [1, 0, 0],     // perfect match
-      "talk-b": [-1, 0, 0],    // opposite
+      [RKEY_A]: [1, 0, 0],     // perfect match
+      [RKEY_B]: [-1, 0, 0],    // opposite
     },
     active: { layer2: true, layer3: false },
   });
-  // talk-a should score higher than talk-b even if their layer-1
-  // scores are identical, because layer 2 now contributes.
-  expect(result[0].rkey).toBe("talk-a");
+  // RKEY_A should rank first because layer 2 lifts it above RKEY_B
+  // even though their layer-1 scores are identical.
+  expect(result[0].rkey).toBe(RKEY_A);
 });
 ```
 
@@ -390,7 +446,11 @@ it("blends layer 2 into the final intensity when active.layer2 is true", () => {
 ### 7.5 Test count progression
 
 - Before #24: 79 tests (from #23 final state)
-- After #24: 86 tests — 7 new interest tests + 1 route test + 1 rank integration test − 1 stub test (`interestStub.test.ts` if it exists today; verified during implementation)
+- After #24: depends on whether `interestStub.test.ts` exists.
+  - **If no stub test exists** (most likely — `cosine.test.ts` is the only scoring test file today): 79 + 9 = **88 tests** (7 new interest tests + 1 route test + 1 rank integration test).
+  - **If a stub test exists**: 88 − N (where N is the number of `it()` blocks in `interestStub.test.ts`).
+
+The implementer should verify during Task 1 by running `find src/lib/scoring -name '*.test.ts'` and adjust the final commit message accordingly.
 
 ---
 
