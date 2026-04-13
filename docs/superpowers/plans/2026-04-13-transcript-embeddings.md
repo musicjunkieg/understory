@@ -377,7 +377,7 @@ Expected: tests fail to import — `embed.ts` doesn't export `decideWork` or `MO
 
 - [ ] **Step 4: Write the minimal `embed.ts` exports**
 
-Create `scripts/embed.ts`. Note: `dotenv/config` is loaded inside `main()` later (Task 6), not at the top level, so vitest unit tests that import `embed.ts` don't touch the filesystem on import.
+Create `scripts/embed.ts`. Note: `dotenv/config` is deliberately omitted from this initial scaffold — the unit tests in Tasks 3/4/5 import `embed.ts` but only exercise pure helpers (`decideWork`, `validateBatchResponse`), so adding the dotenv side-effect here would couple the test suite to filesystem state for no reason. Task 6 adds `dotenv/config` as a top-level import at the same time it adds `main()`. By that point the tests already exist and don't care, and `dotenv/config` is a no-op when `.env` is absent.
 
 ```ts
 import { createHash } from "node:crypto";
