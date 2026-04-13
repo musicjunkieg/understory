@@ -57,6 +57,7 @@ The visual metaphor is a forest floor at night. Undiscovered talks glow biolumin
 - Lexicon NSID authority: `watch.understory` (reversed domain)
 - GitHub org: `musicjunkieg`
 - Deploy target: Railway
+- **Branch workflow:** Feature PRs target `staging` for Railway validation, then promote `staging → main` via separate PR. Never PR directly to `main`.
 
 <!-- deciduous:start -->
 ## Decision Graph Workflow

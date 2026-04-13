@@ -1,10 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
-import Link from "next/link";
 import { Nav } from "@/components/ui/nav";
-import { Chip } from "@/components/ui/chip";
-import { LumeCard } from "@/components/ui/lume-card";
-import { formatDuration } from "@/lib/format";
+import { ScoredTalksGrid } from "@/components/scored-talks-grid";
 import { getAuthUser } from "@/lib/auth/user";
 import type { TalkEntry } from "@/lib/types";
 
@@ -43,28 +40,7 @@ export default async function TalksPage() {
           </p>
         </header>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {talks.map((talk) => (
-            <Link key={talk.rkey} href={`/talk/${talk.rkey}`}>
-              <LumeCard className="h-full">
-                <div className="p-5">
-                  {talk.speakers.length > 0 && (
-                    <p className="text-label-md text-primary-fixed-dim mb-2">
-                      {talk.speakers.map((s) => s.name).join(", ")}
-                    </p>
-                  )}
-                  <h2 className="text-headline-sm text-on-surface mb-3">
-                    {talk.title}
-                  </h2>
-                  <div className="flex flex-wrap gap-2">
-                    {talk.room && <Chip>{talk.room}</Chip>}
-                    <Chip>{formatDuration(talk.durationMs)}</Chip>
-                  </div>
-                </div>
-              </LumeCard>
-            </Link>
-          ))}
-        </div>
+        <ScoredTalksGrid talks={talks} />
       </main>
     </>
   );
