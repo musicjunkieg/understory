@@ -229,6 +229,15 @@ describe("validateVoyageResponse", () => {
     expect(() =>
       validateVoyageResponse(noData as VoyageEmbedResponse, 1),
     ).toThrow(/data/i);
+
+    // Wrong model — catches silent model route-through where Voyage
+    // returns a same-dimensionality but different-embedding-space vector
+    // (e.g., voyage-3.5 instead of voyage-3.5-lite). The resulting vector
+    // would be mathematically valid but meaningless when cosine-matched
+    // against the talk embeddings from #21.
+    const wrongModel = makeResponse(1);
+    wrongModel.model = "voyage-3";
+    expect(() => validateVoyageResponse(wrongModel, 1)).toThrow(/model/i);
   });
 });
 

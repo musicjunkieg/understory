@@ -310,8 +310,7 @@ export async function buildInterestVector(
       // cursor chain.
       let oldest: string | undefined;
       for (let i = page.length - 1; i >= 0; i--) {
-        const reason = page[i].reason as { $type?: string } | undefined;
-        if (reason?.$type !== "app.bsky.feed.defs#reasonRepost") {
+        if (!AppBskyFeedDefs.isReasonRepost(page[i].reason)) {
           oldest = page[i].post?.indexedAt;
           break;
         }
