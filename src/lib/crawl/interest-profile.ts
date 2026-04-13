@@ -1,4 +1,4 @@
-import type { AppBskyFeedDefs } from "@atproto/api";
+import type { Agent, AppBskyFeedDefs } from "@atproto/api";
 
 type FeedViewPost = AppBskyFeedDefs.FeedViewPost;
 type PostView = AppBskyFeedDefs.PostView;
@@ -213,5 +213,152 @@ export function validateVoyageResponse(
         );
       }
     }
+  }
+}
+
+export interface InterestProfileResult {
+  /** Null on error or when no usable posts were found. */
+  vector: number[] | null;
+  /** Number of posts that made it into the Voyage call. 0 when vector is null. */
+  postCount: number;
+  /** Why vector is (or isn't) present. */
+  status: "ok" | "no-posts" | "error";
+}
+
+/**
+ * Build a per-user interest profile vector from their recent Bluesky posts.
+ *
+ * Flow (see spec §6.2):
+ *   1. Paginate agent.getAuthorFeed with filter: "posts_and_author_threads"
+ *      until we have MAX_POSTS filtered posts, hit the 90-day cutoff, or
+ *      exhaust MAX_PAGES pages.
+ *   2. Run every page through filterFeedItems to drop reposts, replies to
+ *      other users, and out-of-window posts.
+ *   3. If zero posts remain: return { status: "no-posts" } without any
+ *      Voyage call (cheap, common, and distinct from "error" in logs).
+ *   4. POST the filtered texts to Voyage /v1/embeddings with
+ *      input_type: "query".
+ *   5. Validate the response shape defensively.
+ *   6. Mean-pool the N vectors element-wise into one 1024-dim vector.
+ *   7. Return { status: "ok", vector, postCount }.
+ *
+ * Error handling (see spec §6.3):
+ *   - Abort propagates immediately: the top-level catch checks
+ *     signal?.aborted and re-throws, mirroring the pattern in
+ *     crawler.ts and search.ts.
+ *   - All other errors are caught, logged with a category prefix, and
+ *     returned as { status: "error", vector: null }. The function
+ *     NEVER throws to its caller except on abort.
+ */
+export async function buildInterestVector(
+  agent: Agent,
+  did: string,
+  signal?: AbortSignal,
+): Promise<InterestProfileResult> {
+  let filtered: FilteredPost[] = [];
+  const now = Date.now();
+
+  try {
+    // ── Paginated fetch ────────────────────────────────────────────
+    let cursor: string | undefined;
+    let pagesFetched = 0;
+
+    while (pagesFetched < MAX_PAGES && filtered.length < MAX_POSTS) {
+      if (signal?.aborted) throw signal.reason ?? new Error("Aborted");
+
+      const res = await agent.getAuthorFeed(
+        {
+          actor: did,
+          filter: "posts_and_author_threads",
+          limit: 100,
+          cursor,
+        },
+        { signal },
+      );
+
+      pagesFetched++;
+      const page = (res.data.feed ??
+        []) as unknown as AppBskyFeedDefs.FeedViewPost[];
+
+      // Filter this page and append to the running total.
+      filtered = filtered.concat(filterFeedItems(page, did, now));
+
+      // Stop if the oldest item on this page is already past the window —
+      // nothing earlier in the feed can possibly contribute. `indexedAt`
+      // is descending (newest first) in author feeds, so the last item
+      // on the page is the oldest.
+      const oldest = page[page.length - 1]?.post?.indexedAt;
+      if (oldest) {
+        const oldestMs = Date.parse(oldest);
+        if (Number.isFinite(oldestMs) && oldestMs < now - MAX_AGE_MS) {
+          break;
+        }
+      }
+
+      cursor = res.data.cursor;
+      if (!cursor) break; // no more pages
+    }
+
+    // Cap at MAX_POSTS if we overshot.
+    if (filtered.length > MAX_POSTS) {
+      filtered = filtered.slice(0, MAX_POSTS);
+    }
+
+    // ── Empty case ────────────────────────────────────────────────
+    if (filtered.length === 0) {
+      console.warn(`[interest-profile] no-posts: user ${did}`);
+      return { vector: null, postCount: 0, status: "no-posts" };
+    }
+
+    // ── Voyage call ───────────────────────────────────────────────
+    const apiKey = process.env.VOYAGE_API_KEY;
+    if (!apiKey) {
+      console.error("[interest-profile] error: VOYAGE_API_KEY not set");
+      return { vector: null, postCount: filtered.length, status: "error" };
+    }
+
+    if (signal?.aborted) throw signal.reason ?? new Error("Aborted");
+
+    const body: VoyageEmbedRequest = {
+      input: filtered.map((p) => p.text),
+      model: MODEL,
+      input_type: "query",
+    };
+
+    const res = await fetch(VOYAGE_API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify(body),
+      signal,
+    });
+
+    if (!res.ok) {
+      const errorBody = await res.text().catch(() => "");
+      throw new Error(
+        `Voyage API ${res.status} ${res.statusText}: ${errorBody.slice(0, 500)}`,
+      );
+    }
+
+    const response = (await res.json()) as VoyageEmbedResponse;
+    validateVoyageResponse(response, filtered.length);
+
+    // ── Mean-pool ─────────────────────────────────────────────────
+    const vector = meanPool(response.data.map((d) => d.embedding));
+
+    return { vector, postCount: filtered.length, status: "ok" };
+  } catch (err) {
+    // Abort propagates immediately — never burn retries or return "error"
+    // on a cancelled crawl.
+    if (signal?.aborted) throw err;
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error(`[interest-profile] error: ${msg}`);
+    return {
+      vector: null,
+      postCount: filtered.length,
+      status: "error",
+    };
   }
 }
