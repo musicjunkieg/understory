@@ -3,6 +3,8 @@ import type { TalkEntry } from "@/lib/types";
 import type { TalkMentions, CrawlResult } from "./types";
 import { fetchRsvps } from "./constellation";
 import { searchConferencePosts } from "./search";
+import { buildInterestVector } from "./interest-profile";
+import type { InterestProfileResult } from "./interest-profile";
 import { matchPost } from "./matcher";
 import * as fs from "fs";
 import * as path from "path";
@@ -83,7 +85,10 @@ export async function crawl(
   // Fetch follows
   const followDids = await fetchFollows(agent, did, signal);
 
-  const buildResult = (postsScanned: number): CrawlResult => {
+  const buildResult = (
+    postsScanned: number,
+    interestProfile: InterestProfileResult,
+  ): CrawlResult => {
     const talkMentions: TalkMentions = {};
     for (const talk of talks) {
       const follows = followSets.get(talk.rkey)!;
@@ -99,23 +104,38 @@ export async function crawl(
       followCount: followDids.size,
       postsScanned,
       crawledAt: Date.now(),
+      interestVector: interestProfile.vector,
+      interestProfileStatus: interestProfile.status,
     };
   };
 
   if (followDids.size === 0) {
-    return buildResult(0);
+    return buildResult(0, {
+      vector: null,
+      postCount: 0,
+      status: "no-posts",
+    });
   }
 
   throwIfAborted(signal);
 
-  // Run both strategies in parallel
-  const [rsvpMap, allPosts] = await Promise.all([
+  // Run both strategies in parallel, plus interest profile build
+  const [rsvpMap, allPosts, interestProfile] = await Promise.all([
     fetchRsvps(talks, signal).catch((err) => {
       if (signal?.aborted) throw err;
       console.error("Constellation fetch failed, skipping RSVPs:", err);
       return new Map<string, Set<string>>();
     }),
     searchConferencePosts(agent, signal),
+    buildInterestVector(agent, did, signal).catch((err): InterestProfileResult => {
+      if (signal?.aborted) throw err;
+      // buildInterestVector already converts internal failures to structured
+      // returns, so this catch is a safety net for anything that slipped
+      // through (e.g. a bug in the function itself). Never reached in normal
+      // operation.
+      console.error("Interest profile build threw unexpectedly:", err);
+      return { vector: null, postCount: 0, status: "error" };
+    }),
   ]);
 
   throwIfAborted(signal);
@@ -147,5 +167,5 @@ export async function crawl(
     }
   }
 
-  return buildResult(allPosts.length);
+  return buildResult(allPosts.length, interestProfile);
 }
