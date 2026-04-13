@@ -10,6 +10,34 @@ interface TypeaheadActor {
   avatar?: string;
 }
 
+interface TypeaheadResponse {
+  actors?: TypeaheadActor[];
+}
+
+interface OAuthLoginSuccess {
+  redirect: string;
+}
+
+interface OAuthLoginError {
+  error: string;
+}
+
+type OAuthLoginResponse = OAuthLoginSuccess | OAuthLoginError;
+
+function isTypeaheadResponse(value: unknown): value is TypeaheadResponse {
+  if (!value || typeof value !== "object") return false;
+  const v = value as { actors?: unknown };
+  if (v.actors === undefined) return true;
+  return Array.isArray(v.actors);
+}
+
+function isOAuthSuccess(value: OAuthLoginResponse): value is OAuthLoginSuccess {
+  return (
+    typeof (value as OAuthLoginSuccess).redirect === "string" &&
+    (value as OAuthLoginSuccess).redirect.length > 0
+  );
+}
+
 const TYPEAHEAD_URL =
   "https://typeahead.waow.tech/xrpc/app.bsky.actor.searchActorsTypeahead";
 const DEBOUNCE_MS = 200;
@@ -63,10 +91,11 @@ export function LoginPanel({
         const url = `${TYPEAHEAD_URL}?q=${encodeURIComponent(query.trim())}&limit=6`;
         const res = await fetch(url, { signal: controller.signal });
         if (!res.ok) return;
-        const data = await res.json();
+        const raw: unknown = await res.json();
+        if (!isTypeaheadResponse(raw)) return;
         // Only apply results if this request wasn't aborted by a newer one
         if (!controller.signal.aborted) {
-          setSuggestions(data.actors ?? []);
+          setSuggestions(raw.actors ?? []);
           setShowSuggestions(true);
         }
       } catch {
@@ -74,6 +103,22 @@ export function LoginPanel({
       }
     }, DEBOUNCE_MS);
   }, []);
+
+  /**
+   * Cancel any in-flight or queued typeahead work. Called both before
+   * starting the OAuth submit (so a stale typeahead response can't reopen
+   * the dropdown mid-submit) and on form unmount via the form's lifecycle.
+   */
+  function cancelPendingTypeahead() {
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+      debounceRef.current = null;
+    }
+    if (abortRef.current) {
+      abortRef.current.abort();
+      abortRef.current = null;
+    }
+  }
 
   function handleInputChange(value: string) {
     setHandle(value);
@@ -90,6 +135,12 @@ export function LoginPanel({
     e.preventDefault();
     if (!handle.trim()) return;
 
+    // Drop any queued or in-flight typeahead work BEFORE flipping into the
+    // loading state. Without this, a debounced request from the user's last
+    // keystroke could resolve mid-submit and re-open the suggestions
+    // dropdown over the loading button.
+    cancelPendingTypeahead();
+
     setLoading(true);
     setError(null);
     setShowSuggestions(false);
@@ -101,10 +152,12 @@ export function LoginPanel({
         body: JSON.stringify({ handle: handle.trim() }),
       });
 
-      const data = await res.json();
+      const data = (await res.json()) as OAuthLoginResponse;
 
-      if (!res.ok) {
-        setError(data.error || "Authentication failed");
+      if (!res.ok || !isOAuthSuccess(data)) {
+        const msg =
+          (data as OAuthLoginError).error || "Authentication failed";
+        setError(msg);
         setLoading(false);
         return;
       }

@@ -1,4 +1,4 @@
-import { type HTMLAttributes } from "react";
+import { type CSSProperties, type HTMLAttributes } from "react";
 import type { TalkScore } from "@/lib/scoring";
 
 interface LumeCardProps extends HTMLAttributes<HTMLDivElement> {
@@ -96,7 +96,7 @@ function LumeCard({
         ...(tileIndex !== undefined
           ? { "--tile-index": tileIndex }
           : {}),
-      } as React.CSSProperties}
+      } as CSSProperties}
       {...props}
     >
       {interestMatch && (

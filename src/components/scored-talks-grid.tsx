@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { type CSSProperties, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { useCrawlData } from "@/hooks/useCrawlData";
 import { rankTalks, type TalkScore } from "@/lib/scoring";
@@ -28,7 +28,7 @@ function CrawlLoadingState() {
           {
             "--glow": 0.9,
             "--tile-index": 0,
-          } as React.CSSProperties
+          } as CSSProperties
         }
         aria-hidden="true"
       />
@@ -44,8 +44,42 @@ function CrawlLoadingState() {
   );
 }
 
+/**
+ * Error state for when the crawl fails outright (network failure, 5xx,
+ * etc — not the 401/504 paths that useCrawlData treats as "no auth").
+ * Surfaces the failure in plain language instead of silently rendering an
+ * unscored grid.
+ */
+function CrawlErrorState({ message }: { message: string }) {
+  return (
+    <div className="flex min-h-[40vh] flex-col items-center justify-center gap-4 text-center">
+      <div>
+        <p className="text-headline-sm text-on-surface mb-1">
+          We couldn&apos;t reach your network
+        </p>
+        <p className="text-body-md text-on-surface-variant max-w-md">
+          The crawl that builds your scoring failed. Showing the talks
+          unscored — refresh to try again.
+        </p>
+        <p className="text-label-sm text-on-surface-variant/70 mt-2 font-mono">
+          {message}
+        </p>
+      </div>
+    </div>
+  );
+}
+
 export function ScoredTalksGrid({ talks }: ScoredTalksGridProps) {
-  const { mentions, followCount, loading } = useCrawlData();
+  const { mentions, followCount, loading, error } = useCrawlData();
+
+  // Surface crawl errors in the console for diagnostics. The visible UI
+  // gets a CrawlErrorState below; this is so future debugging from a user
+  // bug report has a stack trace to point at.
+  useEffect(() => {
+    if (error) {
+      console.error("[scored-talks-grid] crawl failed:", error);
+    }
+  }, [error]);
 
   const scoredTalks: { talk: TalkEntry; score: TalkScore | null }[] =
     useMemo(() => {
@@ -67,6 +101,13 @@ export function ScoredTalksGrid({ talks }: ScoredTalksGridProps) {
   // back populated (auth) or null (unauthenticated / 504).
   if (loading) {
     return <CrawlLoadingState />;
+  }
+
+  // Hard failure (not the 401/504 "no auth" path that useCrawlData
+  // converts to a clean null mentions). Show explicit error UI rather
+  // than pretending the unscored grid is the right state.
+  if (error) {
+    return <CrawlErrorState message={error} />;
   }
 
   return (

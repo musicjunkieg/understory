@@ -24,6 +24,25 @@ const variantStyles: Record<ButtonVariant, string> = {
   ].join(" "),
 };
 
+/**
+ * Static class composition for the Button visual. Exported so non-button
+ * elements (e.g. Next.js `<Link>`) can render with the same look without
+ * nesting a `<button>` inside an `<a>` (which is invalid HTML and confuses
+ * assistive tech). The `disabled:` modifiers are inert on non-interactive
+ * elements but harmless to leave in.
+ */
+function buttonClassName(variant: ButtonVariant = "primary"): string {
+  return [
+    "inline-flex items-center justify-center gap-2",
+    "rounded-lg px-5 py-2.5 text-body-md",
+    "transition-all duration-200",
+    "active:scale-[0.98]",
+    "disabled:opacity-40 disabled:cursor-not-allowed disabled:shadow-none",
+    "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-fixed",
+    variantStyles[variant],
+  ].join(" ");
+}
+
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
@@ -40,16 +59,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         disabled={disabled || loading}
-        className={[
-          "inline-flex items-center justify-center gap-2",
-          "rounded-lg px-5 py-2.5 text-body-md",
-          "transition-all duration-200",
-          "active:scale-[0.98]",
-          "disabled:opacity-40 disabled:cursor-not-allowed disabled:shadow-none",
-          "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-fixed",
-          variantStyles[variant],
-          className,
-        ].join(" ")}
+        className={[buttonClassName(variant), className].join(" ")}
         {...props}
       >
         {loading ? (
@@ -63,4 +73,4 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 );
 Button.displayName = "Button";
 
-export { Button, type ButtonProps, type ButtonVariant };
+export { Button, buttonClassName, type ButtonProps, type ButtonVariant };
