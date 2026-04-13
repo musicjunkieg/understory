@@ -115,6 +115,67 @@ describe("filterFeedItems", () => {
       "exactly at 90 days",
     ]);
   });
+
+  it("drops posts with empty, whitespace-only, missing, or non-string record.text", () => {
+    // Build bare feed items with malformed records that makeFeedItem
+    // can't naturally produce. Only the filter-relevant fields are set.
+    const now = new Date().toISOString();
+    const makeBareItem = (record: unknown): FeedViewPost => ({
+      post: {
+        $type: "app.bsky.feed.defs#postView",
+        uri: `at://${USER_DID}/app.bsky.feed.post/${Math.random()}`,
+        cid: "bafytest",
+        author: { did: USER_DID, handle: "test.bsky.social" },
+        record,
+        indexedAt: now,
+      },
+    } as unknown as FeedViewPost);
+
+    const items: FeedViewPost[] = [
+      // A real post to prove the filter is running (should survive).
+      makeFeedItem({ text: "real content" }),
+      // Record with empty-string text.
+      makeBareItem({ $type: "app.bsky.feed.post", text: "", createdAt: now }),
+      // Record with whitespace-only text.
+      makeBareItem({ $type: "app.bsky.feed.post", text: "   \n\t  ", createdAt: now }),
+      // Record with undefined text field.
+      makeBareItem({ $type: "app.bsky.feed.post", createdAt: now }),
+      // Record with non-string text (numeric).
+      makeBareItem({ $type: "app.bsky.feed.post", text: 42, createdAt: now }),
+      // Missing record object entirely.
+      makeBareItem(undefined),
+    ];
+    const result = filterFeedItems(items, USER_DID, Date.now());
+    expect(result.map((p) => p.record.text)).toEqual(["real content"]);
+  });
+
+  it("drops posts with a non-parseable indexedAt timestamp", () => {
+    const now = Date.now();
+    // Build a feed item with a garbage indexedAt. makeFeedItem's default
+    // path always stamps a valid ISO string, so we assemble the item by hand.
+    const makeItemWithBadDate = (
+      text: string,
+      indexedAt: string,
+    ): FeedViewPost => ({
+      post: {
+        $type: "app.bsky.feed.defs#postView",
+        uri: `at://${USER_DID}/app.bsky.feed.post/${Math.random()}`,
+        cid: "bafytest",
+        author: { did: USER_DID, handle: "test.bsky.social" },
+        record: { $type: "app.bsky.feed.post", text, createdAt: indexedAt },
+        indexedAt,
+      },
+    } as unknown as FeedViewPost);
+
+    const items: FeedViewPost[] = [
+      makeFeedItem({ text: "good post" }),
+      makeItemWithBadDate("garbage date", "not-a-date"),
+      makeItemWithBadDate("empty date", ""),
+      makeItemWithBadDate("nonsense", "tomorrow"),
+    ];
+    const result = filterFeedItems(items, USER_DID, now);
+    expect(result.map((p) => p.record.text)).toEqual(["good post"]);
+  });
 });
 
 describe("meanPool", () => {

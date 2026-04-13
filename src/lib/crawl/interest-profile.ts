@@ -1,7 +1,8 @@
-import type { Agent, AppBskyFeedDefs } from "@atproto/api";
+import { AppBskyFeedDefs } from "@atproto/api";
+import type { Agent } from "@atproto/api";
+import type { InterestProfileStatus } from "./types";
 
 type FeedViewPost = AppBskyFeedDefs.FeedViewPost;
-type PostView = AppBskyFeedDefs.PostView;
 
 // Window for "recent" — posts older than this are dropped.
 const MAX_AGE_DAYS = 90;
@@ -58,12 +59,10 @@ export function filterFeedItems(
   const out: FilteredPost[] = [];
 
   for (const item of items) {
-    // Drop reposts. The repost marker lives on feedItem.reason, not the post.
-    if (
-      item.reason &&
-      (item.reason as { $type?: string }).$type ===
-        "app.bsky.feed.defs#reasonRepost"
-    ) {
+    // Drop reposts. Use AT Proto's runtime type guard so we narrow via
+    // the library's own discriminated union rather than a hand-rolled
+    // string check against the $type field.
+    if (AppBskyFeedDefs.isReasonRepost(item.reason)) {
       continue;
     }
 
@@ -72,19 +71,22 @@ export function filterFeedItems(
     // ReplyRef.parent is a union of PostView | NotFoundPost | BlockedPost.
     // Only PostView carries `.author.did`; the other two variants mean
     // the parent was deleted or the author blocked us. In both of those
-    // cases parentDid will be undefined, which fails the `=== userDid`
-    // check and drops the reply — which is the correct behavior: we
-    // can't verify it's a self-reply, so treat it as a reply to someone
-    // else and exclude it from the interest profile.
+    // cases we can't verify it's a self-reply, so we drop the reply —
+    // which is the correct behavior: treat unverifiable parentage as
+    // "reply to someone else" and exclude it from the interest profile.
+    //
+    // AppBskyFeedDefs.isPostView is the runtime type guard that narrows
+    // the parent union to the PostView shape.
     if (item.reply) {
-      const parent = (item.reply as { parent?: unknown }).parent as
-        | (PostView & { author?: { did?: string } })
-        | undefined;
-      const parentDid = parent?.author?.did;
+      const parent = item.reply.parent;
+      if (!AppBskyFeedDefs.isPostView(parent)) continue;
+      const parentDid = (parent.author as { did?: string } | undefined)?.did;
       if (parentDid !== userDid) continue;
     }
 
-    // Extract text; drop if missing.
+    // Extract text; drop if missing or empty. `post.record` is typed
+    // as Record<string, unknown> in the lexicon, so we read the two
+    // fields we care about through a local type assertion.
     const record = item.post.record as
       | { text?: unknown; createdAt?: unknown }
       | undefined;
@@ -166,9 +168,11 @@ export interface VoyageEmbedResponse {
 
 /**
  * Defensive validation of a Voyage batch response before any math.
- * Same invariants as scripts/embed.ts::validateBatchResponse, scoped
- * to the runtime server code path:
+ * Invariants:
  *   - data is a non-null array with the expected length
+ *   - response.model matches the MODEL constant (prevents silently
+ *     pooling vectors from a different model even if dimensionality
+ *     happens to match — distinct embedding spaces are not comparable)
  *   - every vector has exactly DIMENSIONS elements
  *   - every element is a finite number (no NaN, no Infinity)
  *
@@ -184,6 +188,11 @@ export function validateVoyageResponse(
   if (!response || !Array.isArray(response.data)) {
     throw new Error(
       "Voyage response: missing or non-array `data` field",
+    );
+  }
+  if (response.model !== MODEL) {
+    throw new Error(
+      `Voyage response: model mismatch — expected "${MODEL}", got "${response.model ?? "missing"}"`,
     );
   }
   if (response.data.length !== expectedBatchSize) {
@@ -217,12 +226,19 @@ export function validateVoyageResponse(
 }
 
 export interface InterestProfileResult {
-  /** Null on error or when no usable posts were found. */
+  /** The mean-pooled interest vector. Null on error or when no usable
+   *  posts were found (status === "no-posts"). Guaranteed non-null
+   *  when status === "ok". */
   vector: number[] | null;
-  /** Number of posts that made it into the Voyage call. 0 when vector is null. */
+  /** Number of posts that passed filtering and were eligible for embedding.
+   *  May be non-zero even when `vector` is null — on the "error" path we
+   *  report how many posts we had gathered before the Voyage call failed,
+   *  which is useful diagnostic information for log triage. Always 0 on
+   *  the "no-posts" path. */
   postCount: number;
-  /** Why vector is (or isn't) present. */
-  status: "ok" | "no-posts" | "error";
+  /** Why vector is (or isn't) present. Shared type alias — see
+   *  `InterestProfileStatus` in `./types` for the full literal union. */
+  status: InterestProfileStatus;
 }
 
 /**
@@ -348,9 +364,13 @@ export async function buildInterestVector(
     });
 
     if (!res.ok) {
+      // Drain the body so the connection can be freed, but do NOT
+      // interpolate it into the thrown error. Voyage's error responses
+      // can (in theory) echo request fragments, and our request
+      // contains user post text. Emit only response metadata.
       const errorBody = await res.text().catch(() => "");
       throw new Error(
-        `Voyage API ${res.status} ${res.statusText}: ${errorBody.slice(0, 500)}`,
+        `Voyage API ${res.status} ${res.statusText} (body length: ${errorBody.length})`,
       );
     }
 

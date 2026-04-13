@@ -9,6 +9,15 @@ export interface TalkMentions {
   [rkey: string]: TalkMention;
 }
 
+/**
+ * Diagnostic state for the interest profile build, shared between the
+ * server-side CrawlResult, the interest-profile module's
+ * InterestProfileResult, and the client-side useCrawlData hook. Keeping
+ * the literal union in one place prevents drift if a future task ever
+ * adds a fourth state (e.g. "rate-limited").
+ */
+export type InterestProfileStatus = "ok" | "no-posts" | "error";
+
 export interface CrawlResult {
   talkMentions: TalkMentions;
   followCount: number;
@@ -22,7 +31,7 @@ export interface CrawlResult {
   /** Diagnostic state for the profile build. "ok" when a vector was
    *  produced, "no-posts" when the user had zero usable posts after
    *  filtering, "error" when Voyage or the feed fetch failed. */
-  interestProfileStatus: "ok" | "no-posts" | "error";
+  interestProfileStatus: InterestProfileStatus;
 }
 
 export interface CacheEntry {

@@ -110,16 +110,23 @@ export async function crawl(
   };
 
   if (followDids.size === 0) {
-    // A zero-follows user has no layer-1 signal worth scoring against.
-    // We skip buildInterestVector entirely (no Voyage cost, no latency),
-    // and synthesize status: "no-posts" so the client treats this
-    // uniformly with the "we tried and found zero usable posts" case —
-    // both mean "no layer-2 vector available," which is what #24 needs.
-    return buildResult(0, {
-      vector: null,
-      postCount: 0,
-      status: "no-posts",
+    // A zero-follows user has no layer-1 signal (no network attention
+    // to invert), but they can still have their own recent posts that
+    // seed a layer-2 interest vector. Skip the parallel RSVP + search
+    // work (neither has anything to match against), but still build the
+    // interest profile sequentially so #24's cosine matching has data
+    // to work with. This matters especially for brand-new Bluesky users
+    // who posted a few things but haven't followed anyone yet.
+    const interestProfile = await buildInterestVector(
+      agent,
+      did,
+      signal,
+    ).catch((err): InterestProfileResult => {
+      if (signal?.aborted) throw err;
+      console.error("Interest profile build threw unexpectedly:", err);
+      return { vector: null, postCount: 0, status: "error" };
     });
+    return buildResult(0, interestProfile);
   }
 
   throwIfAborted(signal);

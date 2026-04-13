@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import type { TalkMentions } from "@/lib/scoring";
+import type { InterestProfileStatus } from "@/lib/crawl/types";
 
 export interface CrawlData {
   mentions: TalkMentions | null;
@@ -16,7 +17,7 @@ export interface CrawlData {
   /** Diagnostic state for the profile build. Null in the initial load
    *  and non-happy-path states (401/504/network error). Only populated
    *  with the server's status on a successful /api/crawl response. */
-  interestProfileStatus: "ok" | "no-posts" | "error" | null;
+  interestProfileStatus: InterestProfileStatus | null;
 }
 
 /**
