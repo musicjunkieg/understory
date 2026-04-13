@@ -114,9 +114,10 @@ Payload size: 1024 × ~8 chars per JSON float ≈ 8 KB uncompressed, ~4 KB after
 │     ])                                                              │
 │                                                                     │
 │     buildInterestVector flow:                                       │
-│       ├─ agent.getAuthorFeed({actor: did, filter: "posts_no_replies"│
-│       │                       limit: 100}) — repeat with cursor     │
-│       │    until we have 100 posts OR hit the 90-day cutoff         │
+│       ├─ agent.getAuthorFeed({actor: did,                           │
+│       │                       filter: "posts_and_author_threads",   │
+│       │                       limit: 100}) — paginate on            │
+│       │    post-filter count, stop at 100 OR 90-day cutoff          │
 │       ├─ filter: keep originals + self-replies,                     │
 │       │          drop reposts + replies to other handles            │
 │       ├─ extract .text from each post                               │
