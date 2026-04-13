@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Nav } from "@/components/ui/nav";
-import { Button } from "@/components/ui/button";
+import { buttonClassName } from "@/components/ui/button";
 import { getAuthUser } from "@/lib/auth/user";
 
 export default async function Home() {
@@ -21,14 +21,8 @@ export default async function Home() {
             the ones they didn&apos;t.
           </p>
           <div className="flex flex-col items-center gap-4 sm:flex-row">
-            <Button variant="primary" disabled>
+            <Link href="/login" className={buttonClassName("primary")}>
               Get started
-            </Button>
-            <Link
-              href="/talks"
-              className="text-body-md text-primary-fixed-dim transition-colors hover:text-primary-fixed"
-            >
-              Browse talks →
             </Link>
           </div>
         </section>

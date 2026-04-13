@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-import { LoginForm } from "@/components/login-form";
 
 interface NavProps {
   minimal?: boolean;
@@ -37,7 +36,7 @@ function Nav({ minimal = false, user = null }: NavProps) {
         )}
 
         <div className="flex items-center gap-4">
-          {user ? (
+          {user && (
             <div className="flex items-center gap-3">
               {user.avatar && (
                 <Image
@@ -61,8 +60,6 @@ function Nav({ minimal = false, user = null }: NavProps) {
                 </button>
               </form>
             </div>
-          ) : (
-            <LoginForm />
           )}
         </div>
       </div>

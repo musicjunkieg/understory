@@ -1,0 +1,255 @@
+"use client";
+
+import { useState, useRef, useCallback } from "react";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+
+interface TypeaheadActor {
+  handle: string;
+  displayName?: string;
+  avatar?: string;
+}
+
+interface TypeaheadResponse {
+  actors?: TypeaheadActor[];
+}
+
+interface OAuthLoginSuccess {
+  redirect: string;
+}
+
+interface OAuthLoginError {
+  error: string;
+}
+
+type OAuthLoginResponse = OAuthLoginSuccess | OAuthLoginError;
+
+function isTypeaheadResponse(value: unknown): value is TypeaheadResponse {
+  if (!value || typeof value !== "object") return false;
+  const v = value as { actors?: unknown };
+  if (v.actors === undefined) return true;
+  return Array.isArray(v.actors);
+}
+
+function isOAuthSuccess(value: OAuthLoginResponse): value is OAuthLoginSuccess {
+  return (
+    typeof (value as OAuthLoginSuccess).redirect === "string" &&
+    (value as OAuthLoginSuccess).redirect.length > 0
+  );
+}
+
+const TYPEAHEAD_URL =
+  "https://typeahead.waow.tech/xrpc/app.bsky.actor.searchActorsTypeahead";
+const DEBOUNCE_MS = 200;
+const MIN_QUERY_LENGTH = 2;
+
+interface LoginPanelProps {
+  /** Visual variant — "dropdown" is the small popover used in Nav,
+   *  "featured" is the large centered form on the /login page. */
+  variant?: "dropdown" | "featured";
+  /** Optional cancel handler — only meaningful for the dropdown variant. */
+  onCancel?: () => void;
+  /** Auto-focus the input on mount. Defaults to true for both variants. */
+  autoFocus?: boolean;
+}
+
+/**
+ * The actual login form (typeahead + handle input + submit button) without
+ * any wrapping chrome. Used by both the Nav dropdown (`<LoginForm>`) and the
+ * `/login` page.
+ *
+ * Pulls out the previously-inline state and request handling so the same
+ * behavior can render in two surfaces without copy-paste drift.
+ */
+export function LoginPanel({
+  variant = "dropdown",
+  onCancel,
+  autoFocus = true,
+}: LoginPanelProps) {
+  const [handle, setHandle] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [suggestions, setSuggestions] = useState<TypeaheadActor[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const abortRef = useRef<AbortController | null>(null);
+
+  const fetchSuggestions = useCallback((query: string) => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    if (abortRef.current) abortRef.current.abort();
+
+    if (query.trim().length < MIN_QUERY_LENGTH) {
+      setSuggestions([]);
+      setShowSuggestions(false);
+      return;
+    }
+
+    debounceRef.current = setTimeout(async () => {
+      const controller = new AbortController();
+      abortRef.current = controller;
+      try {
+        const url = `${TYPEAHEAD_URL}?q=${encodeURIComponent(query.trim())}&limit=6`;
+        const res = await fetch(url, { signal: controller.signal });
+        if (!res.ok) return;
+        const raw: unknown = await res.json();
+        if (!isTypeaheadResponse(raw)) return;
+        // Only apply results if this request wasn't aborted by a newer one
+        if (!controller.signal.aborted) {
+          setSuggestions(raw.actors ?? []);
+          setShowSuggestions(true);
+        }
+      } catch {
+        // Typeahead failure (including abort) is non-fatal
+      }
+    }, DEBOUNCE_MS);
+  }, []);
+
+  /**
+   * Cancel any in-flight or queued typeahead work. Called both before
+   * starting the OAuth submit (so a stale typeahead response can't reopen
+   * the dropdown mid-submit) and on form unmount via the form's lifecycle.
+   */
+  function cancelPendingTypeahead() {
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+      debounceRef.current = null;
+    }
+    if (abortRef.current) {
+      abortRef.current.abort();
+      abortRef.current = null;
+    }
+  }
+
+  function handleInputChange(value: string) {
+    setHandle(value);
+    fetchSuggestions(value);
+  }
+
+  function selectSuggestion(actor: TypeaheadActor) {
+    setHandle(actor.handle);
+    setSuggestions([]);
+    setShowSuggestions(false);
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!handle.trim()) return;
+
+    // Drop any queued or in-flight typeahead work BEFORE flipping into the
+    // loading state. Without this, a debounced request from the user's last
+    // keystroke could resolve mid-submit and re-open the suggestions
+    // dropdown over the loading button.
+    cancelPendingTypeahead();
+
+    setLoading(true);
+    setError(null);
+    setShowSuggestions(false);
+
+    try {
+      const res = await fetch("/oauth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ handle: handle.trim() }),
+      });
+
+      const data = (await res.json()) as OAuthLoginResponse;
+
+      if (!res.ok || !isOAuthSuccess(data)) {
+        const msg =
+          (data as OAuthLoginError).error || "Authentication failed";
+        setError(msg);
+        setLoading(false);
+        return;
+      }
+
+      window.location.href = data.redirect;
+    } catch {
+      setError("Failed to connect. Please try again.");
+      setLoading(false);
+    }
+  }
+
+  const featured = variant === "featured";
+  const inputClass = featured
+    ? "w-full rounded-lg bg-surface-container-high px-4 py-3 text-body-lg text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary-fixed"
+    : "w-full rounded-lg bg-surface-container-highest px-3 py-2 text-body-md text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary-fixed";
+
+  return (
+    <form
+      onSubmit={handleSubmit}
+      className={
+        featured
+          ? "flex w-full flex-col gap-4"
+          : "flex flex-col gap-3 rounded-lg bg-surface-container-high p-4 shadow-lg min-w-72"
+      }
+    >
+      <div className="relative">
+        <input
+          type="text"
+          value={handle}
+          onChange={(e) => handleInputChange(e.target.value)}
+          onFocus={() => {
+            if (suggestions.length > 0) setShowSuggestions(true);
+          }}
+          placeholder="handle.bsky.social"
+          aria-label="Your Atmosphere handle"
+          className={inputClass}
+          autoFocus={autoFocus}
+          disabled={loading}
+          autoComplete="off"
+        />
+        {showSuggestions && suggestions.length > 0 && (
+          <ul className="absolute left-0 right-0 top-full mt-1 max-h-64 overflow-y-auto rounded-lg bg-surface-container-highest shadow-lg z-50">
+            {suggestions.map((actor) => (
+              <li key={actor.handle}>
+                <button
+                  type="button"
+                  onClick={() => selectSuggestion(actor)}
+                  className="flex w-full items-center gap-3 px-3 py-2 text-left hover:bg-surface-container-high transition-colors cursor-pointer"
+                >
+                  {actor.avatar ? (
+                    <Image
+                      src={actor.avatar}
+                      alt=""
+                      width={24}
+                      height={24}
+                      className="h-6 w-6 rounded-full flex-shrink-0"
+                      unoptimized
+                    />
+                  ) : (
+                    <div className="h-6 w-6 rounded-full bg-surface-container flex-shrink-0" />
+                  )}
+                  <div className="min-w-0 flex-1">
+                    {actor.displayName && (
+                      <div className="text-label-sm text-on-surface truncate">
+                        {actor.displayName}
+                      </div>
+                    )}
+                    <div className="text-label-sm text-on-surface-variant truncate">
+                      @{actor.handle}
+                    </div>
+                  </div>
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+      {error && <span className="text-label-sm text-error">{error}</span>}
+      <div className={featured ? "flex items-center gap-3" : "flex items-center gap-2"}>
+        <Button variant="primary" type="submit" loading={loading}>
+          Sign in
+        </Button>
+        {onCancel && (
+          <button
+            type="button"
+            onClick={onCancel}
+            className="text-label-sm text-on-surface-variant hover:text-on-surface cursor-pointer"
+          >
+            Cancel
+          </button>
+        )}
+      </div>
+    </form>
+  );
+}
