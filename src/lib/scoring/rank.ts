@@ -123,8 +123,8 @@ export function rankTalks(inputs: ScoringInputs): TalkScore[] {
     talks,
     mentions,
     followCount,
-    interestVector = null,
-    embeddings = {},
+    interestVector,
+    embeddings,
     weights = DEFAULT_WEIGHTS,
     active = DEFAULT_ACTIVE_LAYERS,
   } = inputs;

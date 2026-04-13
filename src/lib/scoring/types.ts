@@ -51,15 +51,15 @@ export interface ScoringInputs {
   followCount: number;            // from CrawlResult.followCount
   /** User interest vector from /api/crawl (#23). Null when the profile
    *  build returned "no-posts" or "error" — computeLayer2 returns
-   *  interestScore: 0 for every talk in that case. Optional with null
-   *  default so this task can land without breaking existing call sites;
-   *  tightened to required in Task 10. */
-  interestVector?: number[] | null;
+   *  interestScore: 0 for every talk in that case. Required so callers
+   *  can't accidentally drop it; pass `null` explicitly if unavailable. */
+  interestVector: number[] | null;
   /** Talk embeddings from /api/embeddings (#24). Keyed by rkey. Talks
    *  not present in this record fall back to interestScore: 0 — a
    *  data-drift hedge for rkeys added after the last npm run embed.
-   *  Optional default `{}` for the same TDD-green reason as interestVector. */
-  embeddings?: Record<string, number[]>;
+   *  Required so callers can't accidentally drop it; pass `{}` explicitly
+   *  if unavailable (e.g., in tests that only exercise layer 1). */
+  embeddings: Record<string, number[]>;
   weights?: ScoringWeights;
   active?: ActiveLayers;          // omitted = layer 1 only (today's deployment)
 }
