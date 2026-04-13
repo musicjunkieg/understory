@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Understory | Protocol Governance</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,600;1,400;1,600&amp;family=Work+Sans:wght@400;500;600&amp;family=Space+Grotesk:wght@400;500;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+        }
+        body {
+            background-color: #101411;
+            color: #e0e3de;
+            -webkit-font-smoothing: antialiased;
+        }
+        .misty-blur {
+            backdrop-filter: blur(12px);
+            background: rgba(50, 54, 50, 0.4);
+        }
+        .glow-accent {
+            box-shadow: 0 0 20px rgba(108, 252, 178, 0.15);
+        }
+        .protocol-glow {
+            text-shadow: 0 0 8px rgba(108, 252, 178, 0.4);
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "error-container": "#93000a",
+                "surface-dim": "#101411",
+                "on-error": "#690005",
+                "surface": "#101411",
+                "surface-variant": "#323632",
+                "on-background": "#e0e3de",
+                "surface-container": "#1d211d",
+                "on-surface": "#e0e3de",
+                "secondary-fixed": "#d3e8d5",
+                "error": "#ffb4ab",
+                "surface-container-high": "#272b28",
+                "primary-container": "#6cfcb2",
+                "primary-fixed": "#6cfcb2",
+                "surface-container-highest": "#323632",
+                "outline": "#869489",
+                "background": "#101411",
+                "surface-bright": "#363a37",
+                "on-primary-container": "#007347",
+                "on-primary-fixed-variant": "#005231",
+                "on-error-container": "#ffdad6",
+                "on-secondary-container": "#a9beab",
+                "primary-fixed-dim": "#4bdf97",
+                "tertiary": "#ffffff",
+                "tertiary-fixed": "#ffdf90",
+                "secondary-container": "#3b4d3f",
+                "surface-container-low": "#191d1a",
+                "surface-container-lowest": "#0b0f0c",
+                "tertiary-fixed-dim": "#e9c254",
+                "primary": "#ffffff",
+                "inverse-on-surface": "#2d312e",
+                "on-tertiary-fixed-variant": "#584400",
+                "on-primary-fixed": "#002111",
+                "on-tertiary": "#3d2e00",
+                "on-secondary-fixed": "#0e1f13",
+                "on-surface-variant": "#bbcabe",
+                "on-tertiary-fixed": "#241a00",
+                "secondary": "#b7ccb9",
+                "inverse-primary": "#006d43",
+                "on-secondary-fixed-variant": "#394b3d",
+                "secondary-fixed-dim": "#b7ccb9",
+                "on-secondary": "#233427",
+                "on-primary": "#003920",
+                "outline-variant": "#3c4a40",
+                "inverse-surface": "#e0e3de",
+                "tertiary-container": "#ffdf90",
+                "on-tertiary-container": "#7c6100",
+                "surface-tint": "#4bdf97"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+            "fontFamily": {
+                "headline": ["Newsreader"],
+                "body": ["Work Sans"],
+                "label": ["Space Grotesk"]
+            }
+          },
+        },
+      }
+    </script>
+</head>
+<body class="font-body selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar Implementation from JSON -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-8 py-4 bg-[#101411]/60 backdrop-blur-xl bg-gradient-to-b from-[#101411]/80 to-transparent">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-serif italic tracking-tight text-[#6cfcb2] drop-shadow-[0_0_8px_rgba(108,252,178,0.4)]">Understory</span>
+<nav class="hidden md:flex items-center space-x-6 font-label text-sm uppercase tracking-widest">
+<a class="text-[#bbcabe] font-medium hover:text-[#6cfcb2] transition-colors duration-700" href="#">Archive</a>
+<a class="text-[#bbcabe] font-medium hover:text-[#6cfcb2] transition-colors duration-700" href="#">Species</a>
+<a class="text-[#bbcabe] font-medium hover:text-[#6cfcb2] transition-colors duration-700" href="#">Canopy</a>
+<a class="text-[#6cfcb2] font-semibold border-b-2 border-[#6cfcb2] pb-1" href="#">Observations</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden lg:flex items-center bg-surface-container rounded-full px-4 py-1.5 border border-outline-variant/15">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm font-label text-on-surface w-48" placeholder="Search data streams..." type="text"/>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary-fixed transition-colors duration-500">notifications</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-primary-fixed/30 p-0.5">
+<img class="w-full h-full object-cover rounded-full" data-alt="close-up portrait of a field researcher wearing tactical gear with a soft green forest background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAdmXSYvlZgPo6T0nYU08euoDVP77WtrtCJHT8_MUk9Yc8bjCgbWQ-dnbMndepac-MTLJAhBSwE7EhQwXvmztWwzV1Q2GSuAv2MKroAs846YPGq-RHejO2EhsT3fZouC7MLlz2Lm5N7ShgNXoP03I51pJsFXUGVMvrfRf_I5hysaeh6gU3PFGKK3ahzRt0CiCqQftCslcEkAAwZo6soNYVrSlxd_SsCyeh5I5u4IWVudlD9ONrUCP_rs2F0BqylK3jhg5xRMuiTw"/>
+</div>
+</div>
+</div>
+</header>
+<!-- SideNavBar Implementation from JSON -->
+<aside class="hidden lg:flex fixed left-0 top-0 h-full w-72 flex-col py-24 space-y-4 bg-[#101411] shadow-[20px_0px_40px_rgba(0,0,0,0.4)] z-40 border-r border-outline-variant/5">
+<div class="px-8 mb-8">
+<h2 class="font-headline text-xl text-[#6cfcb2]">Understory Archive</h2>
+<p class="font-label text-xs uppercase tracking-tighter text-on-surface-variant">Sector 7G-Mist</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-4 text-[#bbcabe] py-3 px-6 hover:bg-[#1c241f] hover:pl-8 transition-all duration-500 ease-out" href="#">
+<span class="material-symbols-outlined">edit_note</span>
+<span class="font-headline text-lg">Field Notes</span>
+</a>
+<a class="flex items-center gap-4 bg-[#6cfcb2]/10 text-[#6cfcb2] rounded-r-full py-3 px-6 border-l-4 border-[#6cfcb2] hover:pl-8 transition-all duration-500 ease-out" href="#">
+<span class="material-symbols-outlined">biotech</span>
+<span class="font-headline text-lg">Specimens</span>
+</a>
+<a class="flex items-center gap-4 text-[#bbcabe] py-3 px-6 hover:bg-[#1c241f] hover:pl-8 transition-all duration-500 ease-out" href="#">
+<span class="material-symbols-outlined">filter_drama</span>
+<span class="font-headline text-lg">Atmosphere</span>
+</a>
+<a class="flex items-center gap-4 text-[#bbcabe] py-3 px-6 hover:bg-[#1c241f] hover:pl-8 transition-all duration-500 ease-out" href="#">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-headline text-lg">Map</span>
+</a>
+<a class="flex items-center gap-4 text-[#bbcabe] py-3 px-6 hover:bg-[#1c241f] hover:pl-8 transition-all duration-500 ease-out" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-headline text-lg">Settings</span>
+</a>
+</nav>
+<div class="px-6">
+<button class="w-full bg-primary-fixed text-on-primary font-label font-bold py-4 rounded-lg flex items-center justify-center gap-2 hover:brightness-110 transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add_circle</span>
+                Log Observation
+            </button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="lg:ml-72 pt-24 pb-12 px-8 min-h-screen relative overflow-hidden">
+<!-- Ambient Mist Background -->
+<div class="absolute top-0 right-0 w-[600px] h-[600px] bg-primary-fixed/5 rounded-full blur-[120px] pointer-events-none"></div>
+<div class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-tertiary-fixed/5 rounded-full blur-[100px] pointer-events-none"></div>
+<div class="max-w-7xl mx-auto grid grid-cols-12 gap-8 relative z-10">
+<!-- Headline Section -->
+<div class="col-span-12 mb-4">
+<div class="flex items-center gap-3 mb-2">
+<span class="px-3 py-0.5 bg-secondary-container text-on-secondary-container font-label text-[10px] uppercase tracking-widest rounded-full">Biological Protocol</span>
+<span class="text-on-surface-variant font-label text-xs">• Recorded 04.22.84</span>
+</div>
+<h1 class="font-headline text-5xl md:text-6xl text-tertiary italic tracking-tight protocol-glow leading-none">Protocol Governance</h1>
+</div>
+<!-- Video Player: Left Column -->
+<div class="col-span-12 lg:col-span-8 space-y-6">
+<!-- Player Container -->
+<div class="relative rounded-xl overflow-hidden bg-surface-container-lowest shadow-2xl aspect-video group">
+<img class="w-full h-full object-cover opacity-80 group-hover:opacity-90 transition-opacity duration-700" data-alt="cinematic shot of glowing bioluminescent moss in a dark misty forest with soft green particles floating in the air" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA98OvkolSdtAMDAF-ljIjpqlI0rjOMjvkZ-3zDvYF26Xkz9p2TA0gZZDM4oS_QoLkXKs4M8yeeriPv3xKmQ1vrAXl_Um1M147YU3efmT_Eij9E74QlNwxGNoLH4BBaKjU9SK-EI4UKFxo-16eb1H3J73WduMUgui6dJJEeEGpWiCt1sIigg4Fw2ih3hcjwipTKFdWFAIput32HCL31r_e5TB0OJqwyQPcy5rmETVJm641Cv171SCwS02KFfBHmp1WUyuASOG6psw"/>
+<!-- Overlays -->
+<div class="absolute inset-0 bg-gradient-to-t from-[#101411] via-transparent to-transparent opacity-60"></div>
+<!-- Center Play State -->
+<div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="w-20 h-20 rounded-full bg-[#6cfcb2]/20 backdrop-blur-md flex items-center justify-center text-[#6cfcb2] border border-[#6cfcb2]/40 hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+</div>
+<!-- Custom Bioluminescent Controls -->
+<div class="absolute bottom-0 left-0 w-full p-6 space-y-4 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+<!-- Progress Bar -->
+<div class="w-full h-1 bg-surface-variant/40 rounded-full overflow-hidden relative">
+<div class="absolute top-0 left-0 h-full w-1/3 bg-[#6cfcb2] shadow-[0_0_10px_rgba(108,252,178,0.8)]"></div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-6">
+<button class="material-symbols-outlined text-[#6cfcb2]">pause</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-white transition-colors">skip_next</button>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">volume_up</span>
+<div class="w-16 h-1 bg-surface-variant rounded-full">
+<div class="w-3/4 h-full bg-on-surface-variant rounded-full"></div>
+</div>
+</div>
+<span class="font-label text-xs text-on-surface-variant">14:02 / 42:10</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-[#6cfcb2] transition-colors">closed_caption</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-[#6cfcb2] transition-colors">settings</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-[#6cfcb2] transition-colors">fullscreen</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Network Attention: Progress Bar -->
+<div class="bg-surface-container-low rounded-lg p-6 misty-blur border-t border-primary-fixed/5">
+<div class="flex justify-between items-end mb-4">
+<div>
+<h3 class="font-label text-xs uppercase tracking-widest text-[#6cfcb2] mb-1">Network Attention</h3>
+<p class="font-body text-sm text-on-surface-variant">Global archive propagation status</p>
+</div>
+<span class="font-headline text-3xl italic text-[#6cfcb2]">68%</span>
+</div>
+<div class="w-full h-2 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full w-[68%] bg-gradient-to-r from-primary-fixed/20 to-primary-fixed glow-accent relative">
+<div class="absolute top-0 right-0 h-full w-4 bg-white/20 blur-sm"></div>
+</div>
+</div>
+</div>
+<!-- Social Proof & Info -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="bg-surface-container rounded-lg p-6 flex flex-col gap-4">
+<h4 class="font-label text-[10px] uppercase tracking-widest text-tertiary-fixed-dim">Research Network</h4>
+<div class="flex -space-x-3">
+<div class="w-10 h-10 rounded-full border-2 border-surface bg-surface-container-high overflow-hidden" title="@alice">
+<img class="w-full h-full object-cover" data-alt="portrait of a woman with red hair looking thoughtfully off camera" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAptoUMYo7zmnWmIGzTop_zjbhbPQzbvLdAwhUrBBODxBW5YOckEQaqrIR4IpqUi-_KrgNL9fHAWCjw3xrLuAZ8kUv8qIwc-tixvkH1Mc6Ts9fTBM0UPM_4bjYnzSn5FIACOjQk6pMwm4RcZNZW2yehk81CUhcQZr0RTesIvVVpjyG04hMccLFbRVSheETjSRhjl-IFZ9hXbXHdSwsglrjHxaVRaFCKjNZR6jJFNO7CNI_Y5LUmLFEeA6nYJIuGOPEIFP2Rq989zA"/>
+</div>
+<div class="w-10 h-10 rounded-full border-2 border-surface bg-surface-container-high overflow-hidden" title="@bob">
+<img class="w-full h-full object-cover" data-alt="portrait of a man with a beard and glasses in soft natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8MiS133Wu7nrYO42ePV03CQgqoaO-OVKebrqkWrXInuhAJ7EvhqvcLMOCq5dX3O3pZTCGda2Io9vtdJ2nmVLoptxK4OtxGrLmb5vUqiBYMvpfgdUADCJJf0jfW4NDqe4y3A2N58j3ySc_aq_lIRt0IvTSbcYU_n8yJcVEtM5Due-GcJWSFVzmuKElirlYFfc887qCKO7uONx-hu_K__teVV8rdO_tfc6OCMBXS8b-lAh36XrxWJ2IL6288RM_6dWvBMHzUlvcvQ"/>
+</div>
+<div class="w-10 h-10 rounded-full border-2 border-surface bg-surface-container-high flex items-center justify-center font-label text-xs text-on-surface-variant">
+                                +12
+                            </div>
+</div>
+<p class="font-body text-sm text-on-surface-variant">
+<span class="text-tertiary-fixed-dim font-medium">@alice</span> and <span class="text-tertiary-fixed-dim font-medium">@bob</span> noted this as critical for the Q3 consensus phase.
+                        </p>
+</div>
+<div class="bg-surface-container-high rounded-lg p-6 border border-outline-variant/10">
+<h4 class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-4">Metadata Tokens</h4>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-xs font-label">#mycology</span>
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-xs font-label">#distributed-root</span>
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-xs font-label">#ether-mist</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Transcript: Right Sidebar -->
+<aside class="col-span-12 lg:col-span-4 h-fit sticky top-24">
+<div class="bg-surface-container-low rounded-xl misty-blur border border-outline-variant/5 h-[calc(100vh-160px)] flex flex-col overflow-hidden">
+<div class="p-6 border-b border-outline-variant/10 flex justify-between items-center">
+<h3 class="font-label text-sm uppercase tracking-widest flex items-center gap-2">
+<span class="w-2 h-2 bg-[#6cfcb2] rounded-full animate-pulse"></span>
+                            Live Transcript
+                        </h3>
+<button class="material-symbols-outlined text-on-surface-variant text-xl">download</button>
+</div>
+<div class="flex-1 overflow-y-auto p-6 space-y-8 scrollbar-hide">
+<!-- Transcript Lines -->
+<div class="opacity-40 transition-opacity">
+<span class="font-label text-[10px] text-on-surface-variant block mb-1">00:12:45</span>
+<p class="font-headline text-lg italic leading-relaxed text-on-surface">The governance of the understory is not a human construct. It is an algorithmic echo of the fungal networks that preceded us by millennia.</p>
+</div>
+<div class="opacity-40 transition-opacity">
+<span class="font-label text-[10px] text-on-surface-variant block mb-1">00:13:20</span>
+<p class="font-headline text-lg italic leading-relaxed text-on-surface">When a tree falls, the protocol doesn't ask for permission. It reallocates the resources immediately based on proximity and need.</p>
+</div>
+<!-- Active Line -->
+<div class="relative">
+<div class="absolute -left-6 top-0 bottom-0 w-1 bg-[#6cfcb2] shadow-[0_0_15px_rgba(108,252,178,0.6)]"></div>
+<span class="font-label text-[10px] text-[#6cfcb2] block mb-1">00:14:02</span>
+<p class="font-headline text-2xl italic leading-tight text-[#6cfcb2] protocol-glow">This is the blueprint for our digital governance. We are moving from hierarchical consensus to ambient biological delegation.</p>
+</div>
+<div class="opacity-20 transition-opacity blur-[1px]">
+<span class="font-label text-[10px] text-on-surface-variant block mb-1">00:14:45</span>
+<p class="font-headline text-lg italic leading-relaxed text-on-surface">By encoding the mycelial logic into our smart contracts, we ensure the survival of the network even in the deepest mist.</p>
+</div>
+<div class="opacity-20 transition-opacity blur-[2px]">
+<span class="font-label text-[10px] text-on-surface-variant block mb-1">00:15:10</span>
+<p class="font-headline text-lg italic leading-relaxed text-on-surface">The next phase involves the integration of the atmospheric sensors located in the Sector 7G-Mist corridor...</p>
+</div>
+</div>
+<!-- Transcript Search -->
+<div class="p-4 bg-surface-container-highest/30 backdrop-blur-sm border-t border-outline-variant/10">
+<div class="flex items-center gap-3 px-4 py-2 bg-surface-container rounded-lg border border-outline-variant/10">
+<span class="material-symbols-outlined text-sm text-on-surface-variant">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-xs font-label w-full" placeholder="Search transcript..." type="text"/>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- Contextual FAB - Only for specific screens as per mandate -->
+<button class="fixed bottom-8 right-8 w-14 h-14 bg-primary-fixed text-on-primary rounded-full shadow-2xl flex items-center justify-center group hover:scale-110 transition-transform lg:hidden z-50">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add_circle</span>
+</button>
+</body></html>

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Understory | What your timeline missed</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Space+Grotesk:wght@300..700&amp;family=Work+Sans:wght@300..600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error-container": "#93000a",
+                    "surface-dim": "#101411",
+                    "on-error": "#690005",
+                    "surface": "#101411",
+                    "surface-variant": "#323632",
+                    "on-background": "#e0e3de",
+                    "surface-container": "#1d211d",
+                    "on-surface": "#e0e3de",
+                    "secondary-fixed": "#d3e8d5",
+                    "error": "#ffb4ab",
+                    "surface-container-high": "#272b28",
+                    "primary-container": "#6cfcb2",
+                    "primary-fixed": "#6cfcb2",
+                    "surface-container-highest": "#323632",
+                    "outline": "#869489",
+                    "background": "#101411",
+                    "surface-bright": "#363a37",
+                    "on-primary-container": "#007347",
+                    "on-primary-fixed-variant": "#005231",
+                    "on-error-container": "#ffdad6",
+                    "on-secondary-container": "#a9beab",
+                    "primary-fixed-dim": "#4bdf97",
+                    "tertiary": "#ffffff",
+                    "tertiary-fixed": "#ffdf90",
+                    "secondary-container": "#3b4d3f",
+                    "surface-container-low": "#191d1a",
+                    "surface-container-lowest": "#0b0f0c",
+                    "tertiary-fixed-dim": "#e9c254",
+                    "primary": "#ffffff",
+                    "inverse-on-surface": "#2d312e",
+                    "on-tertiary-fixed-variant": "#584400",
+                    "on-primary-fixed": "#002111",
+                    "on-tertiary": "#3d2e00",
+                    "on-secondary-fixed": "#0e1f13",
+                    "on-surface-variant": "#bbcabe",
+                    "on-tertiary-fixed": "#241a00",
+                    "secondary": "#b7ccb9",
+                    "inverse-primary": "#006d43",
+                    "on-secondary-fixed-variant": "#394b3d",
+                    "secondary-fixed-dim": "#b7ccb9",
+                    "on-secondary": "#233427",
+                    "on-primary": "#003920",
+                    "outline-variant": "#3c4a40",
+                    "inverse-surface": "#e0e3de",
+                    "tertiary-container": "#ffdf90",
+                    "on-tertiary-container": "#7c6100",
+                    "surface-tint": "#4bdf97"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Newsreader", "serif"],
+                    "body": ["Work Sans", "sans-serif"],
+                    "label": ["Space Grotesk", "monospace"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .misty-glass {
+            background: rgba(50, 54, 50, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .biolume-glow {
+            box-shadow: 0 0 20px rgba(108, 252, 178, 0.15);
+        }
+        .bg-understory {
+            background-color: #101411;
+            background-image: radial-gradient(circle at 50% -20%, rgba(75, 223, 151, 0.08) 0%, transparent 50%),
+                              radial-gradient(circle at 10% 40%, rgba(75, 223, 151, 0.05) 0%, transparent 30%),
+                              radial-gradient(circle at 90% 80%, rgba(255, 223, 144, 0.03) 0%, transparent 40%);
+        }
+        .fog-overlay {
+            background: linear-gradient(180deg, transparent 0%, rgba(16, 20, 17, 0.4) 50%, rgba(16, 20, 17, 0.9) 100%);
+        }
+    </style>
+</head>
+<body class="bg-understory text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container overflow-x-hidden min-h-screen">
+<!-- Hero / Top Section -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-8 py-4 bg-[#101411]/60 backdrop-blur-xl">
+<div class="text-2xl font-headline italic tracking-tight text-[#6cfcb2] drop-shadow-[0_0_8px_rgba(108,252,178,0.4)]">
+            Understory
+        </div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-[#bbcabe] font-medium hover:text-[#6cfcb2] transition-colors duration-700 font-label text-sm uppercase tracking-widest" href="#">Archive</a>
+<a class="text-[#bbcabe] font-medium hover:text-[#6cfcb2] transition-colors duration-700 font-label text-sm uppercase tracking-widest" href="#">Species</a>
+<a class="text-[#bbcabe] font-medium hover:text-[#6cfcb2] transition-colors duration-700 font-label text-sm uppercase tracking-widest" href="#">Canopy</a>
+<a class="text-[#bbcabe] font-medium hover:text-[#6cfcb2] transition-colors duration-700 font-label text-sm uppercase tracking-widest" href="#">Observations</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+</button>
+</div>
+</header>
+<main class="relative">
+<!-- Hero Content -->
+<section class="min-h-screen flex flex-col items-center justify-center pt-24 px-6 relative overflow-hidden">
+<!-- Decorative Blurred Blobs -->
+<div class="absolute top-1/4 -left-24 w-96 h-96 bg-primary-container/5 rounded-full blur-[120px]"></div>
+<div class="absolute bottom-1/4 -right-24 w-80 h-80 bg-tertiary-fixed/5 rounded-full blur-[100px]"></div>
+<div class="max-w-4xl w-full text-center z-10 space-y-12">
+<div class="space-y-6">
+<h1 class="text-6xl md:text-8xl font-headline font-light italic leading-tight text-on-surface">
+                        What your <span class="text-primary-fixed-dim">timeline</span> missed.
+                    </h1>
+<p class="text-xl md:text-2xl text-on-surface-variant font-headline font-light max-w-2xl mx-auto opacity-80 italic">
+                        Retreat from the noise into a living archive of thought, filtered by significance, not speed.
+                    </p>
+</div>
+<div class="flex flex-col items-center gap-8">
+<button class="group relative px-10 py-5 rounded-lg misty-glass biolume-glow transition-all duration-500 hover:scale-[1.02] active:scale-95">
+<span class="relative z-10 flex items-center gap-3 text-primary-fixed font-label tracking-widest text-lg">
+                            LOGIN WITH BLUESKY
+                            <span class="material-symbols-outlined transition-transform group-hover:translate-x-1" data-icon="arrow_right_alt">arrow_right_alt</span>
+</span>
+<div class="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r from-primary-container/10 to-transparent"></div>
+</button>
+<div class="flex items-center gap-4 text-on-surface-variant/40 font-label text-xs uppercase tracking-[0.2em]">
+<span class="h-px w-8 bg-current"></span>
+                        Decentralized Exploration
+                        <span class="h-px w-8 bg-current"></span>
+</div>
+</div>
+</div>
+<!-- Scroll Indicator -->
+<div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-on-surface-variant/60">
+<span class="font-label text-[10px] tracking-[0.3em] uppercase">Descend</span>
+<span class="material-symbols-outlined animate-bounce" data-icon="expand_more">expand_more</span>
+</div>
+</section>
+<!-- Features Bento Grid -->
+<section class="py-32 px-6 max-w-7xl mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- Large Feature: Quiet Discovery -->
+<div class="md:col-span-8 group relative overflow-hidden rounded-xl bg-surface-container-low p-12 flex flex-col justify-end min-h-[500px]">
+<div class="absolute inset-0 opacity-40 mix-blend-overlay">
+<img alt="Mist in a dense forest" class="w-full h-full object-cover grayscale brightness-50" data-alt="dramatic wide shot of misty ancient forest at night with deep green shadows and soft moonlight filtering through canopy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB29yrPF2_1HCrXlmdK5X_G9wLkojP3MnR_z3BXwtqFKaAe1HufaJAOkwRN_ZpjMfz2Vb2t7lPMSyVWWAwa-dBEG_RXMHDxvPmNH-SymJfh3hBppded0aEVav0UW50AjjtVeL1XdH1lAlObwjomOUv-RFqIkqp0XfY8xSPQ5A5bUlK-VFwkjEIB8sdxboSCkRaGXpWxjYk_pW_ko18gIZBciSv6Iam0uGqG3dHOyrePKt2cb9FFOckdorQwVxGqUulaeSim3LMeVQ"/>
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-dim via-surface-dim/40 to-transparent"></div>
+<div class="relative z-10 space-y-4 max-w-lg">
+<div class="w-12 h-12 flex items-center justify-center rounded-full bg-primary-container/10 text-primary-fixed-dim">
+<span class="material-symbols-outlined" data-icon="visibility_off">visibility_off</span>
+</div>
+<h3 class="text-4xl font-headline italic text-on-surface">Quiet Discovery</h3>
+<p class="text-on-surface-variant font-body leading-relaxed">
+                            A sanctuary from the frantic scroll. We surface deep-read threads and forgotten archives that have aged like fine moss.
+                        </p>
+</div>
+</div>
+<!-- Small Feature: Synaptic Mapping -->
+<div class="md:col-span-4 group relative overflow-hidden rounded-xl bg-surface-container-high p-8 flex flex-col gap-6">
+<div class="w-10 h-10 flex items-center justify-center rounded-full bg-tertiary-fixed/10 text-tertiary-fixed-dim">
+<span class="material-symbols-outlined" data-icon="hub">hub</span>
+</div>
+<div class="space-y-4">
+<h3 class="text-2xl font-headline italic text-on-surface">Synaptic Mapping</h3>
+<p class="text-on-surface-variant font-body text-sm leading-relaxed">
+                            Visualize the connections between disparate ideas. See how a thought on the forest floor links to the canopy of global discourse.
+                        </p>
+</div>
+<div class="mt-auto pt-8">
+<div class="h-32 w-full rounded-lg bg-surface-container-highest/50 relative overflow-hidden border border-outline-variant/10">
+<!-- Abstract visual representation of mapping -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full opacity-30">
+<svg class="w-full h-full stroke-primary-fixed-dim fill-none opacity-40" viewbox="0 0 100 100">
+<path d="M10,50 Q30,10 50,50 T90,50" stroke-width="0.5"></path>
+<circle cx="10" cy="50" fill="currentColor" r="2"></circle>
+<circle class="animate-pulse" cx="50" cy="50" fill="currentColor" r="3"></circle>
+<circle cx="90" cy="50" fill="currentColor" r="2"></circle>
+</svg>
+</div>
+</div>
+</div>
+</div>
+<!-- Full Width / Bottom Row: Anti-Algorithm -->
+<div class="md:col-span-12 group relative overflow-hidden rounded-xl bg-surface-container-lowest p-12 border border-outline-variant/5">
+<div class="flex flex-col md:flex-row md:items-center gap-12">
+<div class="md:w-1/2 space-y-6">
+<span class="font-label text-xs text-primary-fixed-dim uppercase tracking-[0.3em]">The Philosophy</span>
+<h3 class="text-5xl font-headline italic text-on-surface">Anti-Algorithm</h3>
+<p class="text-on-surface-variant font-body leading-relaxed text-lg">
+                                We don't optimize for engagement. We optimize for resonance. Your feed is a curated garden, tended by human intent and organic curiosity, not a feedback loop.
+                            </p>
+<button class="text-primary-fixed font-label tracking-widest text-sm hover:underline flex items-center gap-2">
+                                READ THE MANIFESTO
+                                <span class="material-symbols-outlined text-xs" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+<div class="md:w-1/2 grid grid-cols-2 gap-4">
+<div class="aspect-square rounded-lg bg-surface-container-high overflow-hidden">
+<img alt="Macro fungi" class="w-full h-full object-cover hover:scale-110 transition-transform duration-1000 grayscale group-hover:grayscale-0" data-alt="extreme macro photograph of tiny bioluminescent fungi growing on a dark log with soft green glowing edges" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPYI-KsZS06ak60xJ9fuEWrDca4GzCz1kPhe3wdhT2e3qY9_RpDPlmjpwjfBAlLHNKFBrEpGH7L0vrbFjQ0pKVX2Xq_7rMaChiBgUeWrIVdBAi6iWcJ-HOGoj9dj_9CXx0xeuUrNoQ2lYoiDGDWvawX2Q9QqSbxRMySHURr3VWH8s-FK91nvZpz2JzJP75FYAKRdyOMk0FCwdJxhqHNwUDwpmlU9A2jGqFd90bqV2j_XGaq88LNwg01uhXrJvjZroJ_2yzShYzcA"/>
+</div>
+<div class="aspect-square rounded-lg bg-surface-container-high overflow-hidden mt-8">
+<img alt="Ancient tree roots" class="w-full h-full object-cover hover:scale-110 transition-transform duration-1000 grayscale group-hover:grayscale-0" data-alt="gnarled ancient tree roots weaving through dark soil with soft patches of moss and misty atmosphere" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5WHQYJLiB-pYr_wEj8TqiT0Pa4ZW7fV9cH89pMk9kksf4sBqyQ70moLmzLBTUgAXT7Qe6OXKamXzTft0TGhcyFPgoOyhS-ZRY-WDoVdpUbsHWJ7Xqb4LIRtf-eKyebRm-kd_h66oR8enX98N_T7BEgktXWcQZTmiUTVASrdMNFf0jILWQjlPcCrtbpBM05u5MIh07NqhxTTEMAEvMON516vsPQIaybr_5YGOHfVkM0LUtFx9s16JcUTBLtSkvxAFQmGH8fK_ElQ"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Signature Specimen / Spec Section -->
+<section class="py-32 px-6">
+<div class="max-w-4xl mx-auto text-center space-y-16">
+<div class="inline-block px-4 py-1 rounded-full border border-primary-fixed-dim/20 text-primary-fixed-dim font-label text-[10px] tracking-[0.4em] uppercase">
+                    Field Specimen 01-A
+                </div>
+<div class="relative p-12 rounded-xl misty-glass biolume-glow border-t border-primary-fixed-dim/20 text-left">
+<div class="absolute -top-6 -right-6 w-32 h-32 opacity-20">
+<span class="material-symbols-outlined text-[80px] text-tertiary-fixed-dim" data-icon="eco">eco</span>
+</div>
+<div class="space-y-6">
+<span class="font-label text-xs text-tertiary-fixed-dim block uppercase tracking-widest">Entry Date: Cycle 42 // Sector 7G</span>
+<h2 class="text-4xl md:text-5xl font-headline italic leading-tight">"The internet is not a highway, it is an ecosystem that needs rewilding."</h2>
+<div class="flex items-center gap-4 pt-6">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-surface-container-highest">
+<img alt="Author" data-alt="close-up portrait of a thoughtful researcher in glasses with soft green lighting reflecting on their face" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2Cfvcg4VK_tR-W4yPtwLwQff_Gi2Gk1X1eGwAXytm9MD7xcJQD23sDNJVPYaXpkWCUom6kkmbKRPZ3mtayuSxRWAOHaOZqBhdwl8LET-QOI-Y-jbwsHJw9XOk1hYfjl3LThCbZR6OAAF5yt6BBoynOWExZv_BNNamWEp7QwXMIj4gJ43MTiuZFabdVn7XKlUOaIgqio_sEdbwTANskBYRN_XBHlyrLvO729kVZ9h02rpCBpsoYcBLzv0W0VQvZwcWGWqixbfpIg"/>
+</div>
+<div>
+<p class="font-label text-sm text-on-surface">Dr. Elara Vance</p>
+<p class="font-label text-xs text-on-surface-variant uppercase tracking-tighter">Senior Curator, Understory</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="py-24 px-8 bg-surface-container-lowest relative">
+<div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-12">
+<div class="space-y-6 max-w-xs">
+<div class="text-3xl font-headline italic text-primary-fixed">Understory</div>
+<p class="text-on-surface-variant font-body text-sm leading-relaxed">
+                        A digital ecology project designed to preserve the quiet, the strange, and the deeply human.
+                    </p>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-12">
+<div class="space-y-4">
+<h4 class="font-label text-xs uppercase tracking-[0.2em] text-on-surface">Navigation</h4>
+<ul class="space-y-2 text-on-surface-variant font-body text-sm">
+<li><a class="hover:text-primary transition-colors" href="#">The Archive</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Field Notes</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Flora &amp; Fauna</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Canopy Stats</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h4 class="font-label text-xs uppercase tracking-[0.2em] text-on-surface">Protocols</h4>
+<ul class="space-y-2 text-on-surface-variant font-body text-sm">
+<li><a class="hover:text-primary transition-colors" href="#">Privacy</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Open Source</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Governance</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h4 class="font-label text-xs uppercase tracking-[0.2em] text-on-surface">Connect</h4>
+<ul class="space-y-2 text-on-surface-variant font-body text-sm">
+<li><a class="hover:text-primary transition-colors" href="#">Bluesky</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Mastodon</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">RSS Feed</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="max-w-7xl mx-auto pt-24 flex flex-col md:flex-row items-center justify-between gap-6 border-t border-outline-variant/10">
+<p class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/40">© 2024 Understory Archive. Rooted in intent.</p>
+<div class="flex gap-6">
+<span class="material-symbols-outlined text-on-surface-variant/40" data-icon="fingerprint">fingerprint</span>
+<span class="material-symbols-outlined text-on-surface-variant/40" data-icon="verified">verified</span>
+</div>
+</div>
+</footer>
+</main>
+<!-- Mobile Navigation Shell -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 bg-[#101411]/90 backdrop-blur-xl border-t border-outline-variant/5 flex justify-around items-center py-4 px-6">
+<a class="flex flex-col items-center gap-1 text-[#6cfcb2]" href="#">
+<span class="material-symbols-outlined" data-icon="explore" style="font-variation-settings: 'FILL' 1;">explore</span>
+<span class="font-label text-[10px] uppercase tracking-tighter">Explore</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-[#bbcabe]" href="#">
+<span class="material-symbols-outlined" data-icon="edit_note">edit_note</span>
+<span class="font-label text-[10px] uppercase tracking-tighter">Notes</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-[#bbcabe]" href="#">
+<span class="material-symbols-outlined" data-icon="biotech">biotech</span>
+<span class="font-label text-[10px] uppercase tracking-tighter">Specimens</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-[#bbcabe]" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label text-[10px] uppercase tracking-tighter">Config</span>
+</a>
+</nav>
+</body></html>
