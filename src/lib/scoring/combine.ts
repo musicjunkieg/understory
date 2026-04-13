@@ -1,5 +1,5 @@
 import type { Layer1Result, ScoringWeights } from "./types";
-import type { InterestStubResult } from "./interestStub";
+import type { Layer2Result } from "./interest";
 import type { FriendStubResult } from "./friendStub";
 
 function clamp(n: number, min: number, max: number): number {
@@ -65,7 +65,7 @@ const DESIGN_WEIGHTS = {
  */
 export function combineLayers(
   layer1: Layer1Result,
-  layer2: InterestStubResult,
+  layer2: Layer2Result,
   layer3: FriendStubResult,
   weights: ScoringWeights,
   active: ActiveLayers = DEFAULT_ACTIVE_LAYERS,
