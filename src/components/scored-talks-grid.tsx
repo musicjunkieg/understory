@@ -13,8 +13,39 @@ interface ScoredTalksGridProps {
   talks: TalkEntry[];
 }
 
+/**
+ * Bioluminescent loading state for the talks grid. Shown while the crawl
+ * is in flight so users see deliberate loading instead of a flash of
+ * unscored cards followed by a re-sort. The visual borrows the breathing
+ * + glow vocabulary from LumeCard so it feels like part of the same world.
+ */
+function CrawlLoadingState() {
+  return (
+    <div className="flex min-h-[40vh] flex-col items-center justify-center gap-6 text-center">
+      <div
+        className="h-16 w-16 rounded-full bg-primary-fixed/10 animate-breathe"
+        style={
+          {
+            "--glow": 0.9,
+            "--tile-index": 0,
+          } as React.CSSProperties
+        }
+        aria-hidden="true"
+      />
+      <div>
+        <p className="text-headline-sm text-on-surface mb-1">
+          Reading the forest floor
+        </p>
+        <p className="text-body-md text-on-surface-variant">
+          Crawling your network for what they did and didn&apos;t mention.
+        </p>
+      </div>
+    </div>
+  );
+}
+
 export function ScoredTalksGrid({ talks }: ScoredTalksGridProps) {
-  const { mentions, followCount } = useCrawlData();
+  const { mentions, followCount, loading } = useCrawlData();
 
   const scoredTalks: { talk: TalkEntry; score: TalkScore | null }[] =
     useMemo(() => {
@@ -29,6 +60,14 @@ export function ScoredTalksGrid({ talks }: ScoredTalksGridProps) {
         score,
       }));
     }, [talks, mentions, followCount]);
+
+  // Hold the grid behind a loader until the crawl resolves so users don't
+  // see a flash of unscored cards re-sort into the scored layout. Once
+  // loading is false the grid renders, regardless of whether mentions came
+  // back populated (auth) or null (unauthenticated / 504).
+  if (loading) {
+    return <CrawlLoadingState />;
+  }
 
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

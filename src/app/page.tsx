@@ -21,14 +21,8 @@ export default async function Home() {
             the ones they didn&apos;t.
           </p>
           <div className="flex flex-col items-center gap-4 sm:flex-row">
-            <Button variant="primary" disabled>
-              Get started
-            </Button>
-            <Link
-              href="/talks"
-              className="text-body-md text-primary-fixed-dim transition-colors hover:text-primary-fixed"
-            >
-              Browse talks →
+            <Link href="/login">
+              <Button variant="primary">Get started</Button>
             </Link>
           </div>
         </section>
