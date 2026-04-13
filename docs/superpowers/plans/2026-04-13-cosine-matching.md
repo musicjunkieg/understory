@@ -529,23 +529,66 @@ Run: `npx tsc --noEmit`
 
 Expected: zero output. The compiler will verify that every `TalkScore` return populates the now-required `layer2` field and that the new `scoreTalk` signature is self-consistent.
 
-- [ ] **Step 5: Run the full test suite**
+- [ ] **Step 5: Update every direct `scoreTalk(...)` call in `rank.test.ts`**
 
-Run: `npm test`
+The existing test file calls `scoreTalk(...)` directly with positional args in **12 sites** (verified via `grep -n "scoreTalk(" src/lib/scoring/rank.test.ts`). The new signature order is:
 
-Expected: 86 tests pass (79 baseline + 7 from Task 2). The existing `rank.test.ts` tests still pass because:
-- They call `scoreTalk(talk, mentions, followCount, weights, active)` — wait, this is now a compile error because the signature changed.
+```
+scoreTalk(talk, mentions, followCount, interestVector, embeddings, weights, active)
+```
 
-**STOP.** Read `rank.test.ts` and check which signature the tests use. If they use `scoreTalk(...)` directly with positional args, Task 3 needs to either (a) update those test call sites or (b) keep `scoreTalk`'s new parameters at the end with defaults. Let me provide guidance:
+…where `interestVector` and `embeddings` are both required (non-optional) parameters. The existing calls come in three shapes, and each needs a different fix:
 
-- If `rank.test.ts` calls `scoreTalk(talk, mentions, followCount, weights, active)`, update each call site to `scoreTalk(talk, mentions, followCount, null, {}, weights, active)`. Do this in **the same commit** as the Task 3 changes.
-- If `rank.test.ts` only calls `rankTalks(inputs)`, no test updates are needed — the inputs object's new optional fields default to safe values.
+**Shape A — only the first 3 args, relying on all defaults** (most common; ~8 sites):
 
-Use grep: `grep -n "scoreTalk(" src/lib/scoring/rank.test.ts`
+```ts
+// Before:
+const score = scoreTalk(talk, null, 100);
+const score = scoreTalk(talk, mentions, 100);
+// ... etc
 
-If grep finds calls, add test updates to this task. If it only finds the import line, skip ahead.
+// After (add null + {} in slots 4+5):
+const score = scoreTalk(talk, null, 100, null, {});
+const score = scoreTalk(talk, mentions, 100, null, {});
+```
 
-- [ ] **Step 6: Run the full test suite (after any test fixture updates)**
+**Shape B — 4 args with weights in slot 4** (1 site around line 130):
+
+```ts
+// Before:
+const score = scoreTalk(talk, mentions, 100, {
+  surpriseSlider: 0.25,
+  friendsSlider: 0.75,
+});
+
+// After (insert null + {} before weights):
+const score = scoreTalk(talk, mentions, 100, null, {}, {
+  surpriseSlider: 0.25,
+  friendsSlider: 0.75,
+});
+```
+
+**Shape C — 5 args with `undefined` + active in slots 4–5** (1 site around line 140):
+
+```ts
+// Before:
+const score = scoreTalk(talk, mentions, 100, undefined, {
+  layer2: true,
+  layer3: false,
+});
+
+// After (replace undefined with null + {}, push active to slot 7):
+const score = scoreTalk(talk, mentions, 100, null, {}, undefined, {
+  layer2: true,
+  layer3: false,
+});
+```
+
+**Critical:** Run `grep -n "scoreTalk(" src/lib/scoring/rank.test.ts` before and after your edits. The count should stay the same; every site should now have at least 5 positional args.
+
+TypeScript will catch any site you miss — `number[] | null` is not assignable to `ScoringWeights`, and `undefined` is not assignable to `number[] | null`, so forgetting to update a call site is a compile error. Run `npx tsc --noEmit` after the test fixture updates to verify.
+
+- [ ] **Step 6: Run the full test suite**
 
 Run: `npm test`
 
@@ -740,7 +783,6 @@ describe("GET /api/embeddings", () => {
       const filename = String(path).split("/").pop()!;
       return JSON.stringify(SAMPLE_CONTENTS[filename]);
     });
-    vi.spyOn(fs, "existsSync").mockReturnValue(true);
   });
 
   afterEach(() => {
@@ -1067,11 +1109,12 @@ cache')."
 
 - [ ] **Step 1: Read the current `scored-talks-grid.tsx`**
 
-Use the Read tool. Identify:
-- The import block (for the new hook import)
-- The hook call at the top of `ScoredTalksGrid` (where `useCrawlData()` is called)
-- The loader gate (`if (loading) return <CrawlLoadingState />` or similar)
-- The `rankTalks` call site
+Use the Read tool on `src/components/scored-talks-grid.tsx`. Confirm the current shape exactly (the plan reviewer verified this as of the plan's commit):
+
+- The destructure is `const { mentions, followCount, loading, error } = useCrawlData();` — **it does NOT currently destructure `interestVector`**. Task 9 must add it.
+- The existing loader gate is `if (loading) { return <CrawlLoadingState />; }`.
+- The existing error gate is `if (error) { return <CrawlErrorState message={error} />; }` — **`CrawlErrorState` takes a `message` prop, NOT an `error` prop**. Match that.
+- The current `rankTalks` call is `rankTalks({ talks, mentions, followCount })` — it passes no interestVector, no embeddings, and no `active` (defaulting to `{layer2: false, layer3: false}`).
 
 - [ ] **Step 2: Add the hook import**
 
@@ -1081,21 +1124,19 @@ At the top of `src/components/scored-talks-grid.tsx`, add alongside the existing
 import { useTalkEmbeddings } from "@/hooks/useTalkEmbeddings";
 ```
 
-- [ ] **Step 3: Add the hook call**
+- [ ] **Step 3: Update the `useCrawlData` destructure AND add the `useTalkEmbeddings` call**
 
-Inside `ScoredTalksGrid`, right after the existing `useCrawlData()` destructuring, add:
+Replace the current destructure:
 
 ```ts
-const {
-  embeddings,
-  loading: embeddingsLoading,
-  error: embeddingsError,
-} = useTalkEmbeddings();
+// Before:
+const { mentions, followCount, loading, error } = useCrawlData();
 ```
 
-Rename the existing `loading`/`error` destructured variables if there's a name collision. If the existing code destructures as `const { mentions, followCount, interestVector, loading, error } = useCrawlData()`, rename to `crawlLoading` and `crawlError`:
+with a version that pulls `interestVector` out of the crawl hook and renames `loading`/`error` to avoid the incoming collision with the new embeddings hook:
 
 ```ts
+// After:
 const {
   mentions,
   followCount,
@@ -1103,11 +1144,49 @@ const {
   loading: crawlLoading,
   error: crawlError,
 } = useCrawlData();
+
+const {
+  embeddings,
+  loading: embeddingsLoading,
+  error: embeddingsError,
+} = useTalkEmbeddings();
 ```
 
-- [ ] **Step 4: Update the loader gate**
+Note: `interestVector` is already part of the `CrawlData` type from #23 (`useCrawlData.ts` surfaces it as `number[] | null`), so adding it to the destructure is purely additive — no change to `useCrawlData.ts` itself.
 
-Find the existing loader gate (probably `if (loading) return <CrawlLoadingState />` or similar). Update to:
+- [ ] **Step 4: Update the `useEffect` that logs errors**
+
+There's a `useEffect` below the destructure that logs `error` to the console. Update the variable name reference:
+
+```ts
+// Before:
+useEffect(() => {
+  if (error) {
+    console.error("[scored-talks-grid] crawl failed:", error);
+  }
+}, [error]);
+
+// After:
+useEffect(() => {
+  if (crawlError) {
+    console.error("[scored-talks-grid] crawl failed:", crawlError);
+  }
+}, [crawlError]);
+```
+
+Also add a similar effect for `embeddingsError` if you want it logged — the plan leaves this optional since it's a diagnostic nicety:
+
+```ts
+useEffect(() => {
+  if (embeddingsError) {
+    console.error("[scored-talks-grid] embeddings fetch failed:", embeddingsError);
+  }
+}, [embeddingsError]);
+```
+
+- [ ] **Step 5: Update the loader gate**
+
+The current loader gate is `if (loading) { return <CrawlLoadingState />; }`. Update to:
 
 ```ts
 if (crawlLoading || embeddingsLoading) {
@@ -1115,21 +1194,31 @@ if (crawlLoading || embeddingsLoading) {
 }
 ```
 
-If the existing code has an error gate that shows a `CrawlErrorState`, extend it to include `embeddingsError`:
+- [ ] **Step 6: Update the error gate**
+
+The current error gate is `if (error) { return <CrawlErrorState message={error} />; }`. **`CrawlErrorState` takes a `message` prop (single string) — not `error`.** Update to:
 
 ```ts
 if (crawlError || embeddingsError) {
-  return <CrawlErrorState error={crawlError ?? embeddingsError ?? "unknown"} />;
+  // Show whichever error fired first; both are independent, and the
+  // practical distinction matters less than "something failed, here's
+  // the message." The user-visible copy inside CrawlErrorState doesn't
+  // distinguish which hook failed.
+  return (
+    <CrawlErrorState message={crawlError ?? embeddingsError ?? "unknown"} />
+  );
 }
 ```
 
-Check what the existing pattern looks like and mirror it. The goal is "block the grid until both hooks succeed, show error if either fails."
+- [ ] **Step 7: Update the `rankTalks` call site**
 
-- [ ] **Step 5: Update the `rankTalks` call site**
-
-Find the existing `rankTalks(...)` call. Extend it with the two new fields and flip `active.layer2`:
+Find the existing `rankTalks(...)` call inside the `useMemo`. Extend it with the two new fields and flip `active.layer2`:
 
 ```ts
+// Before:
+const scores = rankTalks({ talks, mentions, followCount });
+
+// After:
 const scores = rankTalks({
   talks,
   mentions,
@@ -1140,21 +1229,31 @@ const scores = rankTalks({
 });
 ```
 
-The `embeddings ?? {}` fallback handles the edge case where the loader gate hasn't fired yet (defensive — should never happen because we gate on `embeddingsLoading` above, but TypeScript's control flow can't prove it).
+The `embeddings ?? {}` fallback handles the edge case where the loader gate hasn't fired yet (defensive — should never happen because we gate on `embeddingsLoading` above, but TypeScript's control flow can't prove it through the `useMemo` boundary).
 
-- [ ] **Step 6: Typecheck**
+Also update the `useMemo` dependency array to include `interestVector` and `embeddings`:
+
+```ts
+// Before:
+}, [talks, mentions, followCount]);
+
+// After:
+}, [talks, mentions, followCount, interestVector, embeddings]);
+```
+
+- [ ] **Step 8: Typecheck**
 
 Run: `npx tsc --noEmit`
 
 Expected: zero output.
 
-- [ ] **Step 7: Run the full test suite**
+- [ ] **Step 9: Run the full test suite**
 
 Run: `npm test`
 
 Expected: 87 tests pass.
 
-- [ ] **Step 8: Commit**
+- [ ] **Step 10: Commit**
 
 ```bash
 git add src/components/scored-talks-grid.tsx
