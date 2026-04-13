@@ -48,14 +48,13 @@ function LumeCard({
   const hasDetail = score && score.state !== "unknown";
 
   // Opacity fades covered talks into the background.
-  // Range: 1.0 at intensity 1 → 0.2 at intensity 0, with a quadratic curve so
-  // low-glow (heavily covered) talks fall off fast — at glow 0.3 the card is
-  // already near 0.27 opacity, at glow 0.7 it's at 0.59. Combined with the
-  // translucent bg below, this lets covered cards visually recede into the
-  // page background while missed talks stay vivid. The wider range and steeper
-  // curve are deliberate: the previous linear 0.5–1.0 range left even fully
-  // covered cards too solid to read as "faded."
-  const opacity = 0.2 + glow * glow * 0.8;
+  // Range: 1.0 at intensity 1 → 0.1 at intensity 0, with a cubic curve so the
+  // covered zone (low glow) crashes hard while missed talks stay near full
+  // opacity. Sample points: glow 0.3 → 0.12, glow 0.5 → 0.21, glow 0.7 → 0.41,
+  // glow 0.9 → 0.76, glow 1.0 → 1.0. The cubic is deliberate — the previous
+  // quadratic at floor 0.2 still left mid-coverage cards too readable to feel
+  // like they had visually receded.
+  const opacity = 0.1 + glow * glow * glow * 0.9;
 
   return (
     <div

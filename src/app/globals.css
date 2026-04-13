@@ -174,13 +174,15 @@
 }
 
 /* Continuous glow for LumeCards — scales with --glow (0–1).
-   Applied via [style*="--glow"] so it only hits elements with the prop. */
+   Applied via [style*="--glow"] so it only hits elements with the prop.
+   Alphas and spreads are bumped from the original tuning so missed talks
+   at high glow read as obviously bright rather than just slightly luminous. */
 [style*="--glow"] {
   box-shadow:
-    0 0 calc(16px * var(--glow)) rgba(255, 255, 255, calc(0.25 * var(--glow))),
-    0 0 calc(40px * var(--glow)) rgba(180, 255, 215, calc(0.35 * var(--glow))),
-    0 0 calc(80px * var(--glow)) rgba(108, 252, 178, calc(0.4 * var(--glow))),
-    0 0 calc(120px * var(--glow)) rgba(108, 252, 178, calc(0.2 * var(--glow)));
+    0 0 calc(20px * var(--glow)) rgba(255, 255, 255, calc(0.4 * var(--glow))),
+    0 0 calc(48px * var(--glow)) rgba(180, 255, 215, calc(0.55 * var(--glow))),
+    0 0 calc(96px * var(--glow)) rgba(108, 252, 178, calc(0.6 * var(--glow))),
+    0 0 calc(140px * var(--glow)) rgba(108, 252, 178, calc(0.3 * var(--glow)));
 }
 
 .ghost-border {
