@@ -145,3 +145,73 @@ export function meanPool(vectors: number[][]): number[] {
   }
   return sum;
 }
+
+/**
+ * POST body shape for Voyage's /v1/embeddings endpoint. Identical to
+ * the talk-side shape in scripts/lib/embedding-types.ts but duplicated
+ * here so src/lib/crawl/ stays independent of scripts/ (see spec §5.4).
+ */
+export interface VoyageEmbedRequest {
+  input: string[];
+  model: string;
+  input_type: "document" | "query";
+}
+
+/** Response shape from Voyage's /v1/embeddings endpoint. */
+export interface VoyageEmbedResponse {
+  data: Array<{ embedding: number[]; index: number }>;
+  model: string;
+  usage: { total_tokens: number };
+}
+
+/**
+ * Defensive validation of a Voyage batch response before any math.
+ * Same invariants as scripts/embed.ts::validateBatchResponse, scoped
+ * to the runtime server code path:
+ *   - data is a non-null array with the expected length
+ *   - every vector has exactly DIMENSIONS elements
+ *   - every element is a finite number (no NaN, no Infinity)
+ *
+ * We deliberately skip the index-range/uniqueness check the offline
+ * pipeline does. The offline pipeline writes one file per response
+ * item and needs the index to key correctly; here we mean-pool and
+ * discard indices, so a reordered response doesn't corrupt anything.
+ */
+export function validateVoyageResponse(
+  response: VoyageEmbedResponse,
+  expectedBatchSize: number,
+): void {
+  if (!response || !Array.isArray(response.data)) {
+    throw new Error(
+      "Voyage response: missing or non-array `data` field",
+    );
+  }
+  if (response.data.length !== expectedBatchSize) {
+    throw new Error(
+      `Voyage response: length mismatch — expected ${expectedBatchSize}, got ${response.data.length}`,
+    );
+  }
+  for (const item of response.data) {
+    if (item === null || typeof item !== "object") {
+      throw new Error(
+        `Voyage response: non-object item in data array (got ${
+          item === null ? "null" : typeof item
+        })`,
+      );
+    }
+    if (!Array.isArray(item.embedding) || item.embedding.length !== DIMENSIONS) {
+      throw new Error(
+        `Voyage response: wrong dimension count — expected ${DIMENSIONS}, got ${
+          item.embedding?.length ?? "missing"
+        }`,
+      );
+    }
+    for (const v of item.embedding) {
+      if (typeof v !== "number" || !Number.isFinite(v)) {
+        throw new Error(
+          `Voyage response: non-finite number in embedding`,
+        );
+      }
+    }
+  }
+}
