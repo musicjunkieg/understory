@@ -1,0 +1,112 @@
+import type { AppBskyFeedDefs } from "@atproto/api";
+
+type FeedViewPost = AppBskyFeedDefs.FeedViewPost;
+type PostView = AppBskyFeedDefs.PostView;
+
+// Window for "recent" — posts older than this are dropped.
+const MAX_AGE_DAYS = 90;
+export const MAX_AGE_MS = MAX_AGE_DAYS * 24 * 60 * 60 * 1000;
+
+// Hard cap on posts per profile build. Bounds Voyage token cost.
+export const MAX_POSTS = 100;
+
+// Hard cap on getAuthorFeed pages per build. Bounds wall-clock time
+// under the /api/crawl 30s budget even with a pathological feed.
+export const MAX_PAGES = 3;
+
+// Voyage configuration — the user side of layer-2 similarity.
+// Mirrors #21's talk-side choices so the vectors are comparable.
+export const VOYAGE_API_URL = "https://api.voyageai.com/v1/embeddings";
+export const MODEL = "voyage-3.5-lite";
+export const DIMENSIONS = 1024;
+
+/**
+ * Narrowed post shape the rest of the module needs. `record` on a
+ * real FeedViewPost is typed as `Record<string, unknown>`, so we
+ * re-cast at the filter boundary and carry the concrete shape forward.
+ */
+export interface FilteredPost {
+  uri: string;
+  text: string;
+  indexedAt: string;
+  record: { text: string; createdAt?: string };
+}
+
+/**
+ * Keep only posts that represent the user's own voice and fall inside
+ * the recency window. Rules:
+ *
+ *   - Drop reposts (feed item has `reason.$type === "...reasonRepost"`).
+ *     The author of a repost is someone else; their text isn't ours.
+ *   - Drop replies where the parent post's author is NOT the user.
+ *     These are context-dependent and often short / non-topical.
+ *   - Keep originals (no `reply` field) and self-replies (parent
+ *     author === user DID). Self-reply threads are the user
+ *     continuing their own idea.
+ *   - Drop posts where `indexedAt` is more than MAX_AGE_MS before `now`.
+ *     Boundary is inclusive (exactly 90 days old is kept).
+ *   - Drop posts with empty or missing `record.text`.
+ *
+ * Pure function — no I/O, deterministic on its three inputs.
+ */
+export function filterFeedItems(
+  items: FeedViewPost[],
+  userDid: string,
+  now: number,
+): FilteredPost[] {
+  const cutoff = now - MAX_AGE_MS;
+  const out: FilteredPost[] = [];
+
+  for (const item of items) {
+    // Drop reposts. The repost marker lives on feedItem.reason, not the post.
+    if (
+      item.reason &&
+      (item.reason as { $type?: string }).$type ===
+        "app.bsky.feed.defs#reasonRepost"
+    ) {
+      continue;
+    }
+
+    // Drop replies to other users. Self-replies pass through.
+    //
+    // ReplyRef.parent is a union of PostView | NotFoundPost | BlockedPost.
+    // Only PostView carries `.author.did`; the other two variants mean
+    // the parent was deleted or the author blocked us. In both of those
+    // cases parentDid will be undefined, which fails the `=== userDid`
+    // check and drops the reply — which is the correct behavior: we
+    // can't verify it's a self-reply, so treat it as a reply to someone
+    // else and exclude it from the interest profile.
+    if (item.reply) {
+      const parent = (item.reply as { parent?: unknown }).parent as
+        | (PostView & { author?: { did?: string } })
+        | undefined;
+      const parentDid = parent?.author?.did;
+      if (parentDid !== userDid) continue;
+    }
+
+    // Extract text; drop if missing.
+    const record = item.post.record as
+      | { text?: unknown; createdAt?: unknown }
+      | undefined;
+    const text = typeof record?.text === "string" ? record.text.trim() : "";
+    if (text.length === 0) continue;
+
+    // Recency window (inclusive at the boundary).
+    const indexedAtMs = Date.parse(item.post.indexedAt);
+    if (!Number.isFinite(indexedAtMs)) continue;
+    if (indexedAtMs < cutoff) continue;
+
+    out.push({
+      uri: item.post.uri,
+      text,
+      indexedAt: item.post.indexedAt,
+      record: {
+        text,
+        createdAt:
+          typeof record?.createdAt === "string" ? record.createdAt : undefined,
+      },
+    });
+  }
+
+  return out;
+}
