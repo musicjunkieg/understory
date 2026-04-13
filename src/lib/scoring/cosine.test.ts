@@ -30,6 +30,10 @@ describe("cosineSimilarity", () => {
     expect(cosineSimilarity([1, 2, 3], [0, 0, 0])).toBe(0);
   });
 
+  it("returns 0 for empty vectors (contract: degenerate inputs don't throw)", () => {
+    expect(cosineSimilarity([], [])).toBe(0);
+  });
+
   it("throws with the exact contracted message on length mismatch", () => {
     expect(() => cosineSimilarity([1, 2, 3], [1, 2])).toThrow(
       "cosine: length mismatch 3 vs 2",

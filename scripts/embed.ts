@@ -41,8 +41,12 @@ interface DecideWorkInput {
  * - Hash format is `sha256-<hex>`.
  *
  * Skip rules:
- * - Skip if existing.transcriptHash matches AND existing.model matches.
- * - Anything else (file missing, hash mismatch, model upgrade) → queue.
+ * - Skip if existing.transcriptHash, existing.model, AND existing.dimensions
+ *   all match the current configuration.
+ * - Anything else (file missing, hash mismatch, model upgrade, dimension
+ *   change) → queue. The dimensions check is defensive against model
+ *   variants that allow reduced output dimensions under the same model
+ *   name (voyage's `output_dimension` parameter, for example).
  */
 export function decideWork(input: DecideWorkInput): WorkDecision {
   const trimmed = input.transcriptText.trim();
@@ -60,7 +64,8 @@ export function decideWork(input: DecideWorkInput): WorkDecision {
   if (
     input.existing &&
     input.existing.transcriptHash === transcriptHash &&
-    input.existing.model === MODEL
+    input.existing.model === MODEL &&
+    input.existing.dimensions === DIMENSIONS
   ) {
     return { action: "skip" };
   }
@@ -96,6 +101,11 @@ export function validateBatchResponse(
   }
   const seenIndices = new Set<number>();
   for (const item of response.data) {
+    if (item === null || typeof item !== "object") {
+      throw new Error(
+        `Voyage response: non-object item in data array (got ${item === null ? "null" : typeof item})`,
+      );
+    }
     if (
       !Number.isInteger(item.index) ||
       item.index < 0 ||

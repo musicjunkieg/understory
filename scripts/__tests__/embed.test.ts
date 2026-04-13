@@ -129,6 +129,24 @@ describe("decideWork", () => {
     if (result.action !== "queue") return;
     expect(result.truncated).toBe(false);
   });
+
+  it("queues when existing file has wrong dimensions (dimension change)", () => {
+    const text = "hello world";
+    const result = decideWork({
+      rkey: "abc",
+      transcriptText: text,
+      existing: {
+        rkey: "abc",
+        model: MODEL,
+        dimensions: 512, // wrong — current DIMENSIONS is 1024
+        vector: new Array(512).fill(0),
+        transcriptHash: hashOf(text),
+        truncated: false,
+        generatedAt: "2026-04-13T00:00:00.000Z",
+      },
+    });
+    expect(result.action).toBe("queue");
+  });
 });
 
 describe("validateBatchResponse", () => {
@@ -183,5 +201,27 @@ describe("validateBatchResponse", () => {
     expect(() =>
       validateBatchResponse(malformed as VoyageEmbedResponse, 1),
     ).toThrow(/data/i);
+  });
+
+  it("throws when a data item is null", () => {
+    const malformed = {
+      data: [null, null],
+      model: "voyage-3.5-lite",
+      usage: { total_tokens: 0 },
+    };
+    expect(() =>
+      validateBatchResponse(malformed as unknown as VoyageEmbedResponse, 2),
+    ).toThrow(/non-object/i);
+  });
+
+  it("throws when a data item is a primitive instead of an object", () => {
+    const malformed = {
+      data: ["not-an-object"],
+      model: "voyage-3.5-lite",
+      usage: { total_tokens: 0 },
+    };
+    expect(() =>
+      validateBatchResponse(malformed as unknown as VoyageEmbedResponse, 1),
+    ).toThrow(/non-object/i);
   });
 });
