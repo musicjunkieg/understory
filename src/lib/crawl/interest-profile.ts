@@ -283,11 +283,23 @@ export async function buildInterestVector(
       // Filter this page and append to the running total.
       filtered = filtered.concat(filterFeedItems(page, did, now));
 
-      // Stop if the oldest item on this page is already past the window —
-      // nothing earlier in the feed can possibly contribute. `indexedAt`
-      // is descending (newest first) in author feeds, so the last item
-      // on the page is the oldest.
-      const oldest = page[page.length - 1]?.post?.indexedAt;
+      // Stop if the oldest NON-REPOST item on this page is already past
+      // the window — nothing earlier in the feed can possibly contribute.
+      // `indexedAt` is descending (newest first) in author feeds, so we
+      // scan from the end of the page back. We skip reposts because a
+      // repost's `post.indexedAt` is the *original* post's timestamp,
+      // which could be years old even though the repost itself is fresh.
+      // Using a repost's timestamp as the staleness heuristic would cause
+      // us to break prematurely and miss real posts further down the
+      // cursor chain.
+      let oldest: string | undefined;
+      for (let i = page.length - 1; i >= 0; i--) {
+        const reason = page[i].reason as { $type?: string } | undefined;
+        if (reason?.$type !== "app.bsky.feed.defs#reasonRepost") {
+          oldest = page[i].post?.indexedAt;
+          break;
+        }
+      }
       if (oldest) {
         const oldestMs = Date.parse(oldest);
         if (Number.isFinite(oldestMs) && oldestMs < now - MAX_AGE_MS) {
