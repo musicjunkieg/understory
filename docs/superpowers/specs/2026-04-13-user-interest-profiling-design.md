@@ -344,7 +344,9 @@ Six tests, all with mocked `fetch` and a mocked `agent` (in-file factory). No li
 ### 7.3 Test count progression
 
 - Before #23: 69 tests (from #21 final state)
-- After #23: 75 tests (69 + 6 new in `interest-profile.test.ts`)
+- After #23: 77 tests (69 + 8 new in `interest-profile.test.ts`)
+
+The §7.1 table has 6 rows, but two of them (`validateVoyageResponse` — happy path + failures; `buildInterestVector` — which splits across 3 separate flows) naturally expand into multiple `it()` blocks during implementation. Final count is 8 new tests: 2 filter + 1 mean-pool + 2 validator (happy + consolidated failures) + 3 buildInterestVector (no-posts / ok / error).
 
 ---
 

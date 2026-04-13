@@ -29,7 +29,7 @@
 | `src/lib/crawl/crawler.ts` | Call `buildInterestVector` as a third parallel branch inside the existing `Promise.all`. Wrap in `.catch` to downgrade failures. Extend the `buildResult` helper to include the two new fields. |
 | `src/hooks/useCrawlData.ts` | Extend `CrawlData` interface with two new nullable fields. Pass them through in the happy-path `setData` call. Set them to `null` in all four non-happy-path `setData` calls (initial useState, 401/504 branch, other-error branch, catch-all). |
 
-**Total scope:** 2 new files, 3 modified files, 6 new tests. Test count progresses 69 → 75.
+**Total scope:** 2 new files, 3 modified files, 8 new tests. Test count progresses 69 → 77.
 
 **No changes to:** `src/lib/scoring/*` (layer-2 stays stubbed until #24), `scripts/embed*.ts` (offline pipeline is talk-side), `data/embeddings/*`, `src/components/*` (no UI).
 
@@ -239,6 +239,14 @@ export function filterFeedItems(
     }
 
     // Drop replies to other users. Self-replies pass through.
+    //
+    // ReplyRef.parent is a union of PostView | NotFoundPost | BlockedPost.
+    // Only PostView carries `.author.did`; the other two variants mean
+    // the parent was deleted or the author blocked us. In both of those
+    // cases parentDid will be undefined, which fails the `=== userDid`
+    // check and drops the reply — which is the correct behavior: we
+    // can't verify it's a self-reply, so treat it as a reply to someone
+    // else and exclude it from the interest profile.
     if (item.reply) {
       const parent = (item.reply as { parent?: unknown }).parent as
         | (PostView & { author?: { did?: string } })
@@ -1032,11 +1040,11 @@ Task 7 fixes the type error in the same commit.
 
 - [ ] **Step 1: Read the existing file**
 
-Use the Read tool on `/Users/bryan.guffey/Code/Understory/src/lib/crawl/crawler.ts` to understand the current structure. You're looking for:
+Use the Read tool on `/Users/bryan.guffey/Code/Understory/src/lib/crawl/crawler.ts` to understand the current structure. Note these three details:
 
-- The top-of-file imports
-- The `Promise.all([fetchRsvps, searchConferencePosts])` block
-- The `buildResult` helper that constructs the final `CrawlResult`
+1. **`buildResult` is a closure**, not a top-level function. It's defined inside `crawl()` around line 86 as `const buildResult = (postsScanned: number): CrawlResult => {...}` and closes over `followDids`, `followSets`, `postLists`, `rsvpSets`, and `talks`.
+2. **`buildResult` is called in TWO places**: the early-exit on line ~106 (`return buildResult(0)`) when the user has zero follows, and the happy-path on line ~150 (`return buildResult(allPosts.length)`). Task 7 must cover both — `interestProfile` is not in scope on the early-exit path because the `Promise.all` hasn't run yet.
+3. **The `Promise.all` block** starts around line 112 with `const [rsvpMap, allPosts] = await Promise.all([...])` and contains exactly two parallel calls today: `fetchRsvps` and `searchConferencePosts`.
 
 - [ ] **Step 2: Add the import**
 
@@ -1086,36 +1094,110 @@ const [rsvpMap, allPosts, interestProfile] = await Promise.all([
 ]);
 ```
 
-- [ ] **Step 4: Extend buildResult to include the new fields**
+- [ ] **Step 4: Extend buildResult's signature and both call sites**
 
-Find the `buildResult` helper (or the inline construction of `CrawlResult`) and extend it with the two new fields, reading from `interestProfile`:
+`buildResult` is a closure that currently takes only `postsScanned: number`. It needs to accept a second parameter — the `InterestProfileResult` from `buildInterestVector` — so both call sites can populate the new `CrawlResult` fields.
+
+Change the `buildResult` definition (around line 86) from:
 
 ```ts
-return {
-  talkMentions,
-  followCount: followDids.size,
-  postsScanned,
-  crawledAt: Date.now(),
-  interestVector: interestProfile.vector,
-  interestProfileStatus: interestProfile.status,
+const buildResult = (postsScanned: number): CrawlResult => {
+  const talkMentions: TalkMentions = {};
+  for (const talk of talks) {
+    const follows = followSets.get(talk.rkey)!;
+    talkMentions[talk.rkey] = {
+      count: follows.size,
+      follows: [...follows],
+      posts: postLists.get(talk.rkey)!,
+      rsvps: [...rsvpSets.get(talk.rkey)!],
+    };
+  }
+  return {
+    talkMentions,
+    followCount: followDids.size,
+    postsScanned,
+    crawledAt: Date.now(),
+  };
 };
 ```
 
-If `buildResult` is a helper that takes arguments, thread `interestProfile` through it. Match the function's existing signature style — don't introduce new patterns.
+to:
 
-- [ ] **Step 5: Typecheck**
+```ts
+const buildResult = (
+  postsScanned: number,
+  interestProfile: InterestProfileResult,
+): CrawlResult => {
+  const talkMentions: TalkMentions = {};
+  for (const talk of talks) {
+    const follows = followSets.get(talk.rkey)!;
+    talkMentions[talk.rkey] = {
+      count: follows.size,
+      follows: [...follows],
+      posts: postLists.get(talk.rkey)!,
+      rsvps: [...rsvpSets.get(talk.rkey)!],
+    };
+  }
+  return {
+    talkMentions,
+    followCount: followDids.size,
+    postsScanned,
+    crawledAt: Date.now(),
+    interestVector: interestProfile.vector,
+    interestProfileStatus: interestProfile.status,
+  };
+};
+```
+
+- [ ] **Step 5: Update the early-exit call site**
+
+The early-exit on line ~106 currently reads:
+
+```ts
+if (followDids.size === 0) {
+  return buildResult(0);
+}
+```
+
+Change it to pass a synthetic `no-posts` status — this path runs before the profile build has happened, and the user has zero follows anyway, so returning a null vector with `"no-posts"` is the honest answer:
+
+```ts
+if (followDids.size === 0) {
+  return buildResult(0, {
+    vector: null,
+    postCount: 0,
+    status: "no-posts",
+  });
+}
+```
+
+- [ ] **Step 6: Update the happy-path call site**
+
+The happy-path on line ~150 currently reads:
+
+```ts
+return buildResult(allPosts.length);
+```
+
+Change it to pass the `interestProfile` from the `Promise.all` destructuring in Step 3:
+
+```ts
+return buildResult(allPosts.length, interestProfile);
+```
+
+- [ ] **Step 7: Typecheck**
 
 Run: `npx tsc --noEmit`
 
-Expected: zero output. The type error from Task 6 is now resolved because `crawler.ts` populates the new fields.
+Expected: zero output. The type error from Task 6 is now resolved because both `buildResult` call sites populate the two new fields via the `interestProfile` argument.
 
-- [ ] **Step 6: Run the full test suite**
+- [ ] **Step 8: Run the full test suite**
 
 Run: `npm test`
 
 Expected: 77 tests pass. The existing crawler tests don't assert anything about the new fields, so no regressions are expected.
 
-- [ ] **Step 7: Commit Tasks 6 + 7 together**
+- [ ] **Step 9: Commit Tasks 6 + 7 together**
 
 ```bash
 git add src/lib/crawl/types.ts src/lib/crawl/crawler.ts
