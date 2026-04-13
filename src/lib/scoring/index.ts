@@ -19,3 +19,6 @@ export { DEFAULT_ACTIVE_LAYERS, combineLayers } from "./combine";
 
 export { computeLayer1 } from "./networkAttention";
 export { scoreTalk, rankTalks } from "./rank";
+
+export type { Layer2Result } from "./interest";
+export { computeLayer2 } from "./interest";
