@@ -169,14 +169,16 @@ Runtime consumption — NOT in this spec (see #24):
 
 ### 5.2 Modified files
 
-**`src/lib/crawl/types.ts`** — extend `CrawlResult` with two new fields:
+**`src/lib/crawl/types.ts`** — **add two new fields to the existing `CrawlResult` interface**. This is an edit, not a replacement — the rest of the file (the `TalkMention` / `TalkMentions` / `CacheEntry` interfaces) must stay unchanged. Post-edit `CrawlResult` looks like this:
 
 ```ts
 export interface CrawlResult {
+  // Existing fields (unchanged):
   talkMentions: TalkMentions;
   followCount: number;
   postsScanned: number;
   crawledAt: number;
+  // New fields (this spec):
   /** User interest profile vector (1024-dim voyage-3.5-lite query embedding,
    *  mean-pooled across recent original posts). Null when the profile build
    *  failed or the user has no usable posts. See interestProfileStatus for
@@ -189,11 +191,32 @@ export interface CrawlResult {
 }
 ```
 
-Both fields are **required, not optional** — every `/api/crawl` response carries an explicit status so the client always knows why the profile is (or isn't) there.
+Both new fields are **required, not optional** — every `/api/crawl` response carries an explicit status so the client always knows why the profile is (or isn't) there.
 
 **`src/lib/crawl/crawler.ts`** — inside the existing `Promise.all([fetchRsvps, searchConferencePosts])` block, add `buildInterestVector(agent, did, signal)` as a third parallel call. Wrap the `buildInterestVector` call in `.catch` that downgrades to `{vector: null, postCount: 0, status: "error"}` — best-effort, never aborts the rest of the crawl. The Layer 1 result shape is unchanged; Layer 2 is pure addition.
 
-**`src/hooks/useCrawlData.ts`** — extend the `CrawlData` interface with the two new fields and pass them through from the `/api/crawl` response. No behavior change — the scoring engine consumers that will use them (inside #24) simply have access to them when they need them.
+**`src/hooks/useCrawlData.ts`** — the hook's own `CrawlData` interface is **not** a structural copy of `CrawlResult` (it reshapes `talkMentions` into `mentions` and adds `loading` / `error` fields that don't exist on the server side). Two concrete edits here:
+
+1. **Add two new fields to the `CrawlData` interface**, nullable both so they can be safely initialized to `null` in the loading and error code paths:
+
+   ```ts
+   export interface CrawlData {
+     // Existing fields (unchanged):
+     mentions: TalkMentions | null;
+     followCount: number;
+     loading: boolean;
+     error: string | null;
+     // New fields (this spec):
+     interestVector: number[] | null;
+     interestProfileStatus: "ok" | "no-posts" | "error" | null;
+   }
+   ```
+
+   `interestProfileStatus` is nullable (not required `"ok" | "no-posts" | "error"` like on `CrawlResult`) so the initial useState default, the 401 path, the 504 path, and the fetch-error path can all set it to `null` without inventing a synthetic status. It is only non-null on the happy path when the server response actually populated it.
+
+2. **Unpack both fields from the JSON response** in the happy path (currently around line 58–66), and set them to `null` in all four other `setData` calls (initial `useState`, 401/504 "no data" branch, other-error branch, catch-all `try/catch`). No behavior change for existing consumers of `mentions` or `followCount` — the new fields are purely additive.
+
+The scoring engine consumers that will use the new fields (inside #24) simply have access to them when they need them. Until #24 ships, the two new fields flow through the hook unused.
 
 ### 5.3 Not touched in this spec
 
@@ -238,10 +261,16 @@ export async function buildInterestVector(
 
 ### 6.2 Flow
 
-1. **Fetch posts.** Call `agent.getAuthorFeed({actor: did, filter: "posts_no_replies", limit: 100}, {signal})`. The `posts_no_replies` filter is an AT Protocol feature flag that excludes replies to other users at the server level. Paginate with the returned cursor only if the first page is short of 100 posts *and* all 100 posts fit inside the 90-day window. Stop early when either:
-   - We've accumulated 100 posts, OR
-   - The oldest post we've seen is older than 90 days, OR
-   - The feed runs out of cursors (user has <100 posts total).
+1. **Fetch posts.** Call `agent.getAuthorFeed({actor: did, filter: "posts_and_author_threads", limit: 100}, {signal})`. The `posts_and_author_threads` filter is an AT Protocol feature flag (see `app.bsky.feed.getAuthorFeed` lexicon `knownValues` — verified present in `@atproto/api`) that retains originals and self-reply threads while excluding replies to other users and pure reposts at the server level. It is the correct filter for preserving the user's own voice in threads — `posts_no_replies` is wrong because it would exclude self-replies too.
+
+   **Pagination** is driven by the **post-filter** count, not the raw feed-item count. After each page, apply Step 2's filter to the current accumulation and check the **filtered** total. Stop fetching when any of the following holds:
+   - We have **accumulated at least `MAX_POSTS` filtered posts**, OR
+   - The **oldest item** in the current page is older than 90 days (nothing earlier in the feed can possibly contribute), OR
+   - The feed response has no `cursor` (user has no more posts).
+
+   This matters because `posts_and_author_threads` at the server level still returns plenty of items that our client-side filter may need to drop (e.g., edge cases around the author-reply detection), so a naive "did we get 100 raw items?" check could under-fetch. A user with mixed posting behavior might need to paginate past page 1 to reach 100 usable posts even though page 1 returned 100 raw items.
+
+   **Hard cap** on pagination: at most 3 pages (300 raw items) regardless of filter outcome, so a pathological feed can't blow the 30s crawl budget. If we hit 3 pages without reaching `MAX_POSTS`, proceed with whatever we have.
 
 2. **Filter.** For each feed item, retain it only if it is an **original post** or a **self-reply** (where the reply root or parent is by the same DID). Drop reposts (`$type === "app.bsky.feed.defs#reasonRepost"`) and drop replies to other users. Apply the **90-day cutoff** at this step: drop any post with `createdAt` older than `now - 90d`. This is belt-and-braces — the AT Protocol filter handles most of it, but our own guard catches edge cases and proves the invariant via unit tests.
 
@@ -267,12 +296,13 @@ export async function buildInterestVector(
 
 ### 6.3 Error handling
 
-Each of the steps above can throw. The error handling contract:
+Each of the steps above can throw. The error handling contract matches the pattern established in `src/lib/crawl/crawler.ts` (around line 113) and `src/lib/crawl/search.ts` (around line 116), where the repo gates abort propagation on `signal?.aborted` rather than `instanceof DOMException` or error-name matching:
 
-- **Abort**: if `signal.aborted` is true, propagate the abort error immediately at each step boundary. The crawl's 30s timeout is enforced by the caller via `AbortSignal.timeout`.
-- **Everything else**: caught by the top-level `try/catch` inside `crawler.ts`'s `Promise.all` handler. Log `[interest-profile] error: ${err.message}` and return `{vector: null, postCount: 0, status: "error"}`. The main crawl continues with Layer 1 unaffected.
+- **Abort propagation**: at each step that awaits something cancellable (agent feed calls, Voyage fetch, sleeps), wrap the await in `try { ... } catch (err) { if (signal?.aborted) throw err; /* fall through to structured-error return */ }`. This mirrors the existing repo pattern exactly and avoids the portability issues of error-type matching.
+- **Everything else**: catch inside the top-level function body, log with a category (`[interest-profile] error: ${err.message}` for genuine failures, `[interest-profile] no-posts: user ${did}` for the empty-feed case), and return `{vector: null, postCount: 0, status: "error"}` (or `"no-posts"`). The main crawl continues with Layer 1 unaffected.
+- **Caller contract**: `buildInterestVector` **never throws to its caller except on abort**. `crawler.ts` still wraps the call in `.catch` as an additional safety net, but under normal (non-abort) operation the catch should never fire because `buildInterestVector` already converts internal failures to structured returns.
 
-The function **never throws to its caller** except on abort. All other failures become a structured `status: "error"` result.
+All other failures become a structured `status: "error"` result. The crawl's 30s timeout is enforced upstream by `AbortSignal.timeout` in the existing `/api/crawl` route handler.
 
 ### 6.4 Configuration constants
 
