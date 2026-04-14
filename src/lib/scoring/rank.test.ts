@@ -43,35 +43,35 @@ describe("scoreTalk — state derivation", () => {
   const talk = makeTalk("a");
 
   it("returns unknown when mentions is null", () => {
-    const score = scoreTalk(talk, null, 100);
+    const score = scoreTalk(talk, null, 100, null, {});
     expect(score.state).toBe("unknown");
     expect(score.intensity).toBe(0);
   });
 
   it("returns unknown when followCount is 0", () => {
-    const score = scoreTalk(talk, { a: makeMention(5) }, 0);
+    const score = scoreTalk(talk, { a: makeMention(5) }, 0, null, {});
     expect(score.state).toBe("unknown");
   });
 
   it("returns unknown when the talk has no mention entry (out of crawl scope)", () => {
-    const score = scoreTalk(talk, {}, 100);
+    const score = scoreTalk(talk, {}, 100, null, {});
     expect(score.state).toBe("unknown");
   });
 
   it("returns missed when uniqueFollows is 0 but talk is in scope", () => {
-    const score = scoreTalk(talk, { a: makeMention(0) }, 100);
+    const score = scoreTalk(talk, { a: makeMention(0) }, 100, null, {});
     expect(score.state).toBe("missed");
     expect(score.intensity).toBeCloseTo(1.0, 6);
   });
 
   it("returns engaged when at least one follow engaged", () => {
-    const score = scoreTalk(talk, { a: makeMention(3) }, 100);
+    const score = scoreTalk(talk, { a: makeMention(3) }, 100, null, {});
     expect(score.state).toBe("engaged");
     expect(score.intensity).toBeCloseTo(0.97, 6);
   });
 
   it("returns unknown when followCount is negative", () => {
-    const score = scoreTalk(talk, { a: makeMention(5) }, -3);
+    const score = scoreTalk(talk, { a: makeMention(5) }, -3, null, {});
     expect(score.state).toBe("unknown");
     // totalFollows is sanitized to 0, not the bogus -3, so JSON serialization
     // and downstream consumers see a stable shape.
@@ -79,7 +79,7 @@ describe("scoreTalk — state derivation", () => {
   });
 
   it("returns unknown when followCount is NaN", () => {
-    const score = scoreTalk(talk, { a: makeMention(5) }, Number.NaN);
+    const score = scoreTalk(talk, { a: makeMention(5) }, Number.NaN, null, {});
     expect(score.state).toBe("unknown");
     expect(score.layer1.totalFollows).toBe(0);
   });
@@ -89,6 +89,8 @@ describe("scoreTalk — state derivation", () => {
       talk,
       { a: makeMention(5) },
       Number.POSITIVE_INFINITY,
+      null,
+      {},
     );
     expect(score.state).toBe("unknown");
     expect(score.layer1.totalFollows).toBe(0);
@@ -99,6 +101,8 @@ describe("scoreTalk — state derivation", () => {
       talk,
       { a: makeMention(5) },
       Number.NEGATIVE_INFINITY,
+      null,
+      {},
     );
     expect(score.state).toBe("unknown");
     expect(score.layer1.totalFollows).toBe(0);
@@ -122,12 +126,12 @@ describe("scoreTalk — defaults", () => {
   const mentions: TalkMentions = { a: makeMention(0) };
 
   it("uses both DEFAULT_WEIGHTS and DEFAULT_ACTIVE_LAYERS when both omitted", () => {
-    const score = scoreTalk(talk, mentions, 100);
+    const score = scoreTalk(talk, mentions, 100, null, {});
     expect(score.intensity).toBeCloseTo(1.0, 6);
   });
 
   it("uses DEFAULT_ACTIVE_LAYERS when active omitted but explicit weights supplied", () => {
-    const score = scoreTalk(talk, mentions, 100, {
+    const score = scoreTalk(talk, mentions, 100, null, {}, {
       surpriseSlider: 0.25,
       friendsSlider: 0.75,
     });
@@ -137,7 +141,7 @@ describe("scoreTalk — defaults", () => {
   });
 
   it("uses DEFAULT_WEIGHTS when weights omitted but explicit active supplied", () => {
-    const score = scoreTalk(talk, mentions, 100, undefined, {
+    const score = scoreTalk(talk, mentions, 100, null, {}, undefined, {
       layer2: true,
       layer3: false,
     });
@@ -165,6 +169,8 @@ describe("rankTalks — sort order", () => {
       talks: [A, B, C, D, E],
       mentions,
       followCount: 100,
+      interestVector: null,
+      embeddings: {},
     });
 
     expect(result.map((s) => s.rkey)).toEqual(["bbb", "aaa", "ccc", "ddd", "eee"]);
@@ -181,6 +187,8 @@ describe("rankTalks — sort order", () => {
       talks: [Z, A], // intentionally not in rkey order
       mentions,
       followCount: 100,
+      interestVector: null,
+      embeddings: {},
     });
 
     // Both missed with intensity 1.0; tiebreak puts "aaa" before "zzz"
@@ -195,6 +203,8 @@ describe("rankTalks — sort order", () => {
       talks: [A],
       mentions,
       followCount: 100,
+      interestVector: null,
+      embeddings: {},
       active,
     });
     // L1 only contributes; L2 stub returns 0; rescale: 0.5/0.8 = 0.625
@@ -216,6 +226,8 @@ describe("rankTalks — engaged-follow normalization", () => {
       talks: [makeTalk("aaa"), makeTalk("bbb"), makeTalk("ccc")],
       mentions,
       followCount: 200,
+      interestVector: null,
+      embeddings: {},
     });
 
     const byRkey = Object.fromEntries(result.map((s) => [s.rkey, s]));
@@ -239,6 +251,8 @@ describe("rankTalks — engaged-follow normalization", () => {
       talks: [makeTalk("aaa"), makeTalk("bbb")],
       mentions,
       followCount: 100,
+      interestVector: null,
+      embeddings: {},
     });
 
     // No engaged follows → no normalization → original totalFollows preserved
@@ -253,6 +267,8 @@ describe("rankTalks — empty / degenerate inputs", () => {
       talks: [],
       mentions: {},
       followCount: 100,
+      interestVector: null,
+      embeddings: {},
     });
     expect(result).toEqual([]);
   });
@@ -262,6 +278,8 @@ describe("rankTalks — empty / degenerate inputs", () => {
       talks: [makeTalk("ccc"), makeTalk("aaa"), makeTalk("bbb")],
       mentions: null,
       followCount: 100,
+      interestVector: null,
+      embeddings: {},
     });
     expect(result.map((s) => s.state)).toEqual(["unknown", "unknown", "unknown"]);
     expect(result.map((s) => s.rkey)).toEqual(["aaa", "bbb", "ccc"]);
@@ -276,7 +294,59 @@ describe("rankTalks — empty / degenerate inputs", () => {
         ccc: makeMention(0),
       },
       followCount: 0,
+      interestVector: null,
+      embeddings: {},
     });
     expect(result.map((s) => s.state)).toEqual(["unknown", "unknown", "unknown"]);
+  });
+});
+
+describe("rankTalks — layer 2 integration", () => {
+  const RKEY_A = "3mi54oonum62b";
+  const RKEY_B = "3mi56m3hnrq2z";
+
+  it("blends layer 2 into the final intensity when active.layer2 is true", () => {
+    const talks = [makeTalk(RKEY_A), makeTalk(RKEY_B)];
+
+    // Both talks have identical layer-1 data: 5 follows mentioned each.
+    const mentions: TalkMentions = {
+      [RKEY_A]: {
+        count: 5,
+        follows: ["did:plc:a", "did:plc:b", "did:plc:c", "did:plc:d", "did:plc:e"],
+        posts: [],
+        rsvps: [],
+      },
+      [RKEY_B]: {
+        count: 5,
+        follows: ["did:plc:a", "did:plc:b", "did:plc:c", "did:plc:d", "did:plc:e"],
+        posts: [],
+        rsvps: [],
+      },
+    };
+
+    // Layer 2 differentiator: RKEY_A is a perfect match for the user's
+    // interest vector, RKEY_B is the opposite.
+    const result = rankTalks({
+      talks,
+      mentions,
+      followCount: 10,
+      interestVector: [1, 0, 0],
+      embeddings: {
+        [RKEY_A]: [1, 0, 0], // perfect match → interestScore 1.0
+        [RKEY_B]: [-1, 0, 0], // opposite → interestScore 0.0
+      },
+      active: { layer2: true, layer3: false },
+    });
+
+    // RKEY_A should rank first because layer 2 lifts it above RKEY_B
+    // even though their layer-1 scores are identical.
+    expect(result[0].rkey).toBe(RKEY_A);
+    expect(result[1].rkey).toBe(RKEY_B);
+
+    // Sanity: layer 2 results are stashed on TalkScore.
+    const scoreA = result.find((s) => s.rkey === RKEY_A)!;
+    const scoreB = result.find((s) => s.rkey === RKEY_B)!;
+    expect(scoreA.layer2.interestScore).toBeCloseTo(1.0, 10);
+    expect(scoreB.layer2.interestScore).toBeCloseTo(0.0, 10);
   });
 });

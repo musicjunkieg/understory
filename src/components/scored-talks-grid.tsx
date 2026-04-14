@@ -3,6 +3,7 @@
 import { type CSSProperties, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { useCrawlData } from "@/hooks/useCrawlData";
+import { useTalkEmbeddings } from "@/hooks/useTalkEmbeddings";
 import { rankTalks, type TalkScore } from "@/lib/scoring";
 import { LumeCard } from "@/components/ui/lume-card";
 import { Chip } from "@/components/ui/chip";
@@ -70,16 +71,34 @@ function CrawlErrorState({ message }: { message: string }) {
 }
 
 export function ScoredTalksGrid({ talks }: ScoredTalksGridProps) {
-  const { mentions, followCount, loading, error } = useCrawlData();
+  const {
+    mentions,
+    followCount,
+    interestVector,
+    loading: crawlLoading,
+    error: crawlError,
+  } = useCrawlData();
+
+  const {
+    embeddings,
+    loading: embeddingsLoading,
+    error: embeddingsError,
+  } = useTalkEmbeddings();
 
   // Surface crawl errors in the console for diagnostics. The visible UI
   // gets a CrawlErrorState below; this is so future debugging from a user
   // bug report has a stack trace to point at.
   useEffect(() => {
-    if (error) {
-      console.error("[scored-talks-grid] crawl failed:", error);
+    if (crawlError) {
+      console.error("[scored-talks-grid] crawl failed:", crawlError);
     }
-  }, [error]);
+  }, [crawlError]);
+
+  useEffect(() => {
+    if (embeddingsError) {
+      console.error("[scored-talks-grid] embeddings fetch failed:", embeddingsError);
+    }
+  }, [embeddingsError]);
 
   const scoredTalks: { talk: TalkEntry; score: TalkScore | null }[] =
     useMemo(() => {
@@ -87,27 +106,46 @@ export function ScoredTalksGrid({ talks }: ScoredTalksGridProps) {
         // Not authenticated or crawl not loaded — unsorted, no scores
         return talks.map((talk) => ({ talk, score: null }));
       }
-      const scores = rankTalks({ talks, mentions, followCount });
+      const scores = rankTalks({
+        talks,
+        mentions,
+        followCount,
+        interestVector,
+        embeddings: embeddings ?? {},
+        active: { layer2: true, layer3: false },
+      });
       const talksByRkey = new Map(talks.map((t) => [t.rkey, t]));
       return scores.map((score) => ({
         talk: talksByRkey.get(score.rkey)!,
         score,
       }));
-    }, [talks, mentions, followCount]);
+    }, [talks, mentions, followCount, interestVector, embeddings]);
 
-  // Hold the grid behind a loader until the crawl resolves so users don't
-  // see a flash of unscored cards re-sort into the scored layout. Once
-  // loading is false the grid renders, regardless of whether mentions came
-  // back populated (auth) or null (unauthenticated / 504).
-  if (loading) {
+  // Unauth visitors resolve the crawl quickly (401 → mentions: null) and
+  // the memo body short-circuits on !mentions without touching embeddings.
+  // Only block on embeddingsLoading when we actually need the data (i.e.,
+  // the crawl succeeded and we're about to run the full layer-1 + layer-2
+  // scoring pass). This preserves the "no flash of unscored then re-sort"
+  // guarantee on the auth path while letting the unauth path render
+  // immediately.
+  if (crawlLoading) {
+    return <CrawlLoadingState />;
+  }
+  if (mentions && embeddingsLoading) {
     return <CrawlLoadingState />;
   }
 
   // Hard failure (not the 401/504 "no auth" path that useCrawlData
   // converts to a clean null mentions). Show explicit error UI rather
   // than pretending the unscored grid is the right state.
-  if (error) {
-    return <CrawlErrorState message={error} />;
+  if (crawlError || embeddingsError) {
+    // Show whichever error fired first; both are independent, and the
+    // practical distinction matters less than "something failed, here's
+    // the message." The user-visible copy inside CrawlErrorState doesn't
+    // distinguish which hook failed.
+    return (
+      <CrawlErrorState message={crawlError ?? embeddingsError ?? "unknown"} />
+    );
   }
 
   return (
