@@ -349,4 +349,92 @@ describe("rankTalks — layer 2 integration", () => {
     expect(scoreA.layer2.interestScore).toBeCloseTo(1.0, 10);
     expect(scoreB.layer2.interestScore).toBeCloseTo(0.0, 10);
   });
+
+  it("rescales layer 2 relative to the observed distribution", () => {
+    // Real voyage-3.5-lite cosines on in-domain content cluster tightly
+    // (e.g. [0.2, 0.6]), which shift-and-scale maps to interestScore in
+    // [0.6, 0.8]. Without relative normalization that compresses the
+    // layer-2 contribution to 0.375 * 0.2 = 0.075 of the intensity range
+    // — barely visible against the cubic opacity curve. This test fakes
+    // that clustering and asserts the full w2 weight (0.375) is
+    // recovered via min-max rescale over the scored talks.
+    const RKEY_HI = "3mi54aaaaaaa";
+    const RKEY_MID = "3mi54bbbbbbb";
+    const RKEY_LO = "3mi54ccccccc";
+
+    const talks = [makeTalk(RKEY_HI), makeTalk(RKEY_MID), makeTalk(RKEY_LO)];
+    const follows = ["did:plc:a", "did:plc:b", "did:plc:c"];
+    const mention: TalkMention = {
+      count: 3,
+      follows,
+      posts: [],
+      rsvps: [],
+    };
+    const mentions: TalkMentions = {
+      [RKEY_HI]: mention,
+      [RKEY_MID]: mention,
+      [RKEY_LO]: mention,
+    };
+
+    // Construct embeddings whose shift-and-scale cosines land on 0.8,
+    // 0.7, 0.6 — tightly clustered, all positive. This mimics the
+    // production regime where real embeddings rarely produce negative
+    // cosines.
+    const interestVector = [1, 0];
+    const embeddings: Record<string, number[]> = {
+      // cosine 0.6 → interestScore 0.8
+      [RKEY_HI]: [0.6, Math.sqrt(1 - 0.36)],
+      // cosine 0.4 → interestScore 0.7
+      [RKEY_MID]: [0.4, Math.sqrt(1 - 0.16)],
+      // cosine 0.2 → interestScore 0.6
+      [RKEY_LO]: [0.2, Math.sqrt(1 - 0.04)],
+    };
+
+    const result = rankTalks({
+      talks,
+      mentions,
+      followCount: 10,
+      interestVector,
+      embeddings,
+      active: { layer2: true, layer3: false },
+    });
+
+    // All three talks share identical layer-1 data, so the entire
+    // intensity spread comes from layer 2. With relative normalization,
+    // the HI talk's normalized layer2 is 1.0 and the LO talk's is 0.0.
+    // The effective contribution per unit is w2 * (1 - surpriseSlider)
+    // = 0.375 * (1 - 0.5) = 0.1875 under DEFAULT_WEIGHTS, so the
+    // HI-to-LO intensity delta should be 0.1875. Without relative
+    // normalization this would be 0.1875 * 0.2 = 0.0375 — barely a
+    // visible spread through the cubic opacity curve.
+    const hi = result.find((s) => s.rkey === RKEY_HI)!;
+    const lo = result.find((s) => s.rkey === RKEY_LO)!;
+    expect(hi.intensity - lo.intensity).toBeCloseTo(0.1875, 10);
+  });
+
+  it("handles a degenerate layer-2 distribution without NaN", () => {
+    // When every talk has the same layer2 value (e.g. interestVector is
+    // null and every interestScore is 0), min == max and the rescale
+    // denominator is zero. Verify rank.ts doesn't divide by zero.
+    const talks = [makeTalk(RKEY_A), makeTalk(RKEY_B)];
+    const follows = ["did:plc:a", "did:plc:b", "did:plc:c"];
+    const mention: TalkMention = { count: 3, follows, posts: [], rsvps: [] };
+    const mentions: TalkMentions = {
+      [RKEY_A]: mention,
+      [RKEY_B]: mention,
+    };
+
+    const result = rankTalks({
+      talks,
+      mentions,
+      followCount: 10,
+      interestVector: null,
+      embeddings: {},
+      active: { layer2: true, layer3: false },
+    });
+
+    for (const s of result) {
+      expect(Number.isFinite(s.intensity)).toBe(true);
+    }
+  });
 });
