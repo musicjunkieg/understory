@@ -28,6 +28,7 @@ function unknownScore(rkey: string, followCount: number): TalkScore {
     intensity: 0,
     state: "unknown",
     normalizedCoverage: null,
+    displayScore: null,
     layer1: {
       uniqueFollows: 0,
       totalFollows: safeTotalFollows,
@@ -84,18 +85,19 @@ export function scoreTalk(
     layer1,
     layer2,
     normalizedCoverage: null,
+    displayScore: null,
   };
 }
 
-const STATE_ORDER: Record<TalkScoreState, number> = {
-  missed: 0,
-  engaged: 1,
-  unknown: 2,
-};
-
 function compareTalkScores(a: TalkScore, b: TalkScore): number {
-  const stateDelta = STATE_ORDER[a.state] - STATE_ORDER[b.state];
-  if (stateDelta !== 0) return stateDelta;
+  // Unknown-state talks (no crawl data / absent mention) sort to the
+  // bottom — their reach is undefined, not low, so they can't honestly
+  // participate in the intensity ordering. Everything else sorts
+  // strictly by intensity desc so the grid's glow sequence matches
+  // both the sort position and the displayScore badge.
+  const aUnknown = a.state === "unknown" ? 1 : 0;
+  const bUnknown = b.state === "unknown" ? 1 : 0;
+  if (aUnknown !== bUnknown) return aUnknown - bUnknown;
   const intensityDelta = b.intensity - a.intensity;
   if (intensityDelta !== 0) return intensityDelta;
   return a.rkey.localeCompare(b.rkey);
@@ -208,6 +210,41 @@ export function rankTalks(inputs: ScoringInputs): TalkScore[] {
         weights,
         active,
       );
+    }
+
+    // Compute displayScore: grid-relative rescale of the final intensity
+    // to an integer 0–100. The raw intensity sits in a user-specific
+    // compressed range (e.g. ~[0.49, 0.81] on staging today), and that
+    // range isn't something we want to expose as a displayed number —
+    // it's a quantity in someone's head, not a calibrated scale.
+    // Rescaling to [0, 100] per-grid means the top card always reads
+    // 100, the bottom reads 0, and the badge is strictly monotonic
+    // with both the grid's sort position and the glow intensity — so
+    // the number finally matches what the user's eyes see.
+    //
+    // Coverage % ("Covered by X% of active follows") still lives in
+    // the hover detail strip, so the network-attention number isn't
+    // lost — it just isn't the headline anymore.
+    let intensityMin = Infinity;
+    let intensityMax = -Infinity;
+    for (const score of scores) {
+      if (score.state === "unknown") continue;
+      if (score.intensity < intensityMin) intensityMin = score.intensity;
+      if (score.intensity > intensityMax) intensityMax = score.intensity;
+    }
+    const intensityRange = intensityMax - intensityMin;
+    for (const score of scores) {
+      if (score.state === "unknown") continue;
+      // Zero-range case (single scored talk, or every talk identical):
+      // there's no meaningful spread to rescale, so show 50 as the
+      // neutral midpoint rather than dividing by zero or showing 0.
+      // This keeps a single-talk grid from rendering a sad "0" badge.
+      score.displayScore =
+        intensityRange > 0
+          ? Math.round(
+              ((score.intensity - intensityMin) / intensityRange) * 100,
+            )
+          : 50;
     }
   }
 

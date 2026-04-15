@@ -28,6 +28,15 @@ export interface TalkScore {
    *  discussed this talk (0–1). Set by rankTalks; null before normalization
    *  or for unknown-state talks. Use for detail strip display. */
   normalizedCoverage: number | null;
+  /** Understory display score: integer 0–100, monotonically matched to
+   *  `intensity` via min/max rescale across the scored (non-unknown)
+   *  talks in the same rankTalks pass. Top card = 100, bottom = 0,
+   *  zero-range fallback = 50 so a single-talk grid still renders.
+   *  Null for unknown-state talks and before normalization. Displayed
+   *  as the corner badge; unlike `normalizedCoverage` it reflects the
+   *  full multi-layer intensity, so its ordering always matches the
+   *  grid's visual glow sequence. */
+  displayScore: number | null;
   layer2: Layer2Result;
   layer3?: { friendBoost: number; recommenders: string[] };
 }
