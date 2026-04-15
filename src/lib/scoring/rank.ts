@@ -147,10 +147,31 @@ export function rankTalks(inputs: ScoringInputs): TalkScore[] {
   // Raw layer1 values are preserved for the UI detail strip; only
   // intensity (used for glow + sort) is recomputed via combineLayers.
   //
+  // Layer 2 gets the same relative-normalization treatment: real
+  // voyage-3.5-lite cosines on in-domain content cluster tightly (e.g.
+  // [0.2, 0.6]), which shift-and-scale maps to interestScore in
+  // [0.6, 0.8]. Passing those raw values to combineLayers produces a
+  // uniform ~0.7 floor that flattens the cubic opacity curve across
+  // the grid. Rescaling min→0, max→1 over the scored talks recovers
+  // the full w2 weight for the visual spread while preserving the
+  // relative "which talks match this user's interests" ordering. The
+  // raw per-talk score.layer2.interestScore stays untouched for any
+  // future UI detail strip.
+  //
   // The stashed score.layer2 is reused here to avoid computing the same
   // cosine twice per talk (once above, once in this normalization pass).
   const engaged = engagedFollowCount(mentions);
   if (engaged > 0) {
+    let layer2Min = Infinity;
+    let layer2Max = -Infinity;
+    for (const score of scores) {
+      if (score.state === "unknown") continue;
+      const v = score.layer2.interestScore;
+      if (v < layer2Min) layer2Min = v;
+      if (v > layer2Max) layer2Max = v;
+    }
+    const layer2Range = layer2Max - layer2Min;
+
     for (const score of scores) {
       if (score.state === "unknown") continue;
       const normalizedReach = Math.min(
@@ -164,9 +185,19 @@ export function rankTalks(inputs: ScoringInputs): TalkScore[] {
         totalFollows: engaged,
       };
       score.normalizedCoverage = normalizedReach;
+      // Zero-range case (every talk has identical layer2 — e.g. when
+      // interestVector is null and every interestScore is 0): pass 0
+      // rather than dividing by zero. combineLayers will still honour
+      // the active-layer weight rescale, so layer 1 gets 100% of the
+      // signal, matching pre-chainlink-#24 behaviour.
+      const normalizedLayer2Score =
+        layer2Range > 0
+          ? (score.layer2.interestScore - layer2Min) / layer2Range
+          : 0;
+      const normalizedLayer2 = { interestScore: normalizedLayer2Score };
       score.intensity = combineLayers(
         normalizedLayer1,
-        score.layer2,
+        normalizedLayer2,
         // TODO(chainlink #59): when chainlink #18 lands the real
         // friendStub, swap this cast for a stashed score.layer3 on
         // TalkScore, mirroring the layer2 stash pattern above. The
