@@ -18,6 +18,13 @@ export const CLIENT_METADATA_PATH = "/oauth/client-metadata.json";
  * - `rpc:app.bsky.actor.getProfile?aud=*` — resolve the user's display name + avatar
  * - `rpc:app.bsky.graph.getFollows?aud=*` — read the user's follows
  * - `rpc:app.bsky.feed.searchPosts?aud=*` — search for conference posts
+ * - `rpc:app.bsky.feed.getAuthorFeed?aud=*` — fetch the user's own recent
+ *   posts to build the layer-2 interest profile vector (see
+ *   src/lib/crawl/interest-profile.ts). Missing this scope silently fails
+ *   the profile build with `interestProfileStatus: "error"`, which
+ *   degrades layer 2 to a uniform 0 and caps max intensity at the
+ *   layer-1 ceiling of 0.625 — a visually flat grid despite real
+ *   coverage variance.
  *
  * Understory never writes records, so no write scopes are requested.
  * The `?aud=*` suffix allows the call to be proxied to any AppView service.
@@ -27,6 +34,7 @@ export const OAUTH_SCOPE = [
   "rpc:app.bsky.actor.getProfile?aud=*",
   "rpc:app.bsky.graph.getFollows?aud=*",
   "rpc:app.bsky.feed.searchPosts?aud=*",
+  "rpc:app.bsky.feed.getAuthorFeed?aud=*",
 ].join(" ");
 
 // SDK-required literal union types for tuple-validated fields.
