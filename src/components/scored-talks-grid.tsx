@@ -158,7 +158,17 @@ export function ScoredTalksGrid({ talks }: ScoredTalksGridProps) {
         >
           <LumeCard
             className="h-full"
-            glowIntensity={score?.intensity ?? 0}
+            // Drive the glow from displayScore (grid-relative 0–100)
+            // rather than raw intensity. Raw intensity sits in a
+            // compressed subrange (~[0.49, 0.81] on staging) because
+            // the three layers never all max out on the same talk;
+            // feeding that directly into the cubic opacity curve
+            // (`0.1 + glow³ × 0.9`) wastes over half the visual range.
+            // displayScore already min/max-rescales across the scored
+            // talks, so reusing it as glow gives the top card opacity
+            // 1.0 and the bottom 0.1 — full crash, full peak — while
+            // keeping sort order and badge math unchanged.
+            glowIntensity={score?.displayScore != null ? score.displayScore / 100 : 0}
             tileIndex={index}
             score={score}
           >
