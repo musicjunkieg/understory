@@ -158,7 +158,15 @@ describe("rankTalks — sort order", () => {
   const D = makeTalk("ddd");
   const E = makeTalk("eee");
 
-  it("sorts missed first, then engaged (intensity desc), then unknown", () => {
+  it("sorts strictly by intensity desc, unknown state always last", () => {
+    // Historical note: before chainlink #63, rankTalks sorted missed
+    // before engaged as a hard tier, which created a visual inversion
+    // at the state boundary once layer 2 was live (a 0%-coverage talk
+    // with weak interest match could have lower intensity than a
+    // 1%-coverage talk with strong interest match, yet still sort
+    // above it). The fix: state only gates "unknown" to the bottom
+    // (its reach is undefined, not low); everything else sorts by
+    // intensity so the glow sequence matches the grid position.
     const mentions: TalkMentions = {
       aaa: makeMention(1),   // engaged, normalized intensity 0.98 (1/50 engaged)
       bbb: makeMention(0),   // missed,  intensity 1.0
@@ -501,6 +509,132 @@ describe("rankTalks — layer 2 integration", () => {
 
     for (const s of result) {
       expect(Number.isFinite(s.intensity)).toBe(true);
+    }
+  });
+});
+
+describe("rankTalks — displayScore (Understory badge)", () => {
+  it("scales intensity to [0, 100] with top card at 100 and bottom at 0", () => {
+    // Three distinct layer-1 coverage levels produce three distinct
+    // intensities under layer-1-only scoring. The rescale should put
+    // the most-undiscovered talk at 100, the most-covered at 0, and
+    // the middle somewhere between — matching what users see in the
+    // glow sequence.
+    const talks = [makeTalk("aaa"), makeTalk("bbb"), makeTalk("ccc")];
+    const mentions: TalkMentions = {
+      aaa: makeMention(0),   // missed   → attentionInverse 1.0 → intensity 1.0
+      bbb: makeMention(5),   // engaged  → attentionInverse 0.5 → intensity 0.5
+      ccc: makeMention(10),  // engaged  → attentionInverse 0.0 → intensity 0.0
+    };
+
+    const result = rankTalks({
+      talks,
+      mentions,
+      followCount: 50,
+      interestVector: null,
+      embeddings: {},
+    });
+
+    expect(result.map((s) => s.rkey)).toEqual(["aaa", "bbb", "ccc"]);
+    expect(result[0].displayScore).toBe(100);
+    expect(result[2].displayScore).toBe(0);
+    // Middle is rescaled per-grid, not half-of-raw: the linear
+    // transform preserves position so the 0.5-intensity midpoint
+    // lands on 50.
+    expect(result[1].displayScore).toBe(50);
+  });
+
+  it("produces monotonically-decreasing displayScore matching the sort", () => {
+    // Build a spread of intensities, verify displayScore never
+    // increases across sort positions. Regression guard for any
+    // future refactor that breaks the intensity→displayScore
+    // mapping's monotonicity (e.g. rounding bugs, off-by-one
+    // indexing, accidental non-linear transforms).
+    const rkeys = ["aaa", "bbb", "ccc", "ddd", "eee", "fff", "ggg"];
+    const talks = rkeys.map((r) => makeTalk(r));
+    const mentions: TalkMentions = {
+      aaa: makeMention(0),
+      bbb: makeMention(1),
+      ccc: makeMention(2),
+      ddd: makeMention(3),
+      eee: makeMention(4),
+      fff: makeMention(5),
+      ggg: makeMention(7),
+    };
+    const result = rankTalks({
+      talks,
+      mentions,
+      followCount: 50,
+      interestVector: null,
+      embeddings: {},
+    });
+    const scores = result
+      .filter((s) => s.state !== "unknown")
+      .map((s) => s.displayScore!);
+    for (let i = 1; i < scores.length; i++) {
+      expect(scores[i]).toBeLessThanOrEqual(scores[i - 1]);
+    }
+  });
+
+  it("falls back to 50 when all scored talks share the same intensity", () => {
+    // Single scored talk: min == max == that one value. Zero range
+    // has no meaningful spread, so we display 50 (neutral midpoint)
+    // rather than dividing by zero or defaulting to 0.
+    const talks = [makeTalk("aaa"), makeTalk("bbb")];
+    const mentions: TalkMentions = { aaa: makeMention(3) };
+    const result = rankTalks({
+      talks,
+      mentions,
+      followCount: 50,
+      interestVector: null,
+      embeddings: {},
+    });
+    const aaa = result.find((s) => s.rkey === "aaa")!;
+    const bbb = result.find((s) => s.rkey === "bbb")!;
+    expect(aaa.state).toBe("engaged");
+    expect(aaa.displayScore).toBe(50);
+    // Unknown-state talk gets null displayScore regardless.
+    expect(bbb.state).toBe("unknown");
+    expect(bbb.displayScore).toBeNull();
+  });
+
+  it("returns null displayScore for unknown-state talks", () => {
+    // Unknown talks never participate in the rescale and never show
+    // a badge. The LumeCard component relies on this null to hide
+    // the corner badge for out-of-scope / pre-crawl talks.
+    const talks = [makeTalk("aaa"), makeTalk("bbb"), makeTalk("ccc")];
+    const mentions: TalkMentions = {
+      aaa: makeMention(0),
+      bbb: makeMention(5),
+      // ccc absent → unknown
+    };
+    const result = rankTalks({
+      talks,
+      mentions,
+      followCount: 50,
+      interestVector: null,
+      embeddings: {},
+    });
+    const ccc = result.find((s) => s.rkey === "ccc")!;
+    expect(ccc.state).toBe("unknown");
+    expect(ccc.displayScore).toBeNull();
+    expect(ccc.intensity).toBe(0);
+  });
+
+  it("leaves displayScore null when the crawl has not completed", () => {
+    // `mentions === null` → no scoring pass runs at all, every
+    // TalkScore comes back as unknown with null displayScore.
+    const talks = [makeTalk("aaa"), makeTalk("bbb")];
+    const result = rankTalks({
+      talks,
+      mentions: null,
+      followCount: 50,
+      interestVector: null,
+      embeddings: {},
+    });
+    for (const s of result) {
+      expect(s.state).toBe("unknown");
+      expect(s.displayScore).toBeNull();
     }
   });
 });

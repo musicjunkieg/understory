@@ -107,9 +107,12 @@ function LumeCard({
       )}
       {children}
 
-      {score && score.state !== "unknown" && score.normalizedCoverage != null && (
-        <span className="absolute bottom-3 right-4 text-label-lg tabular-nums text-on-surface-variant/60">
-          {Math.round(score.normalizedCoverage * 100)}%
+      {score && score.state !== "unknown" && score.displayScore != null && (
+        <span
+          className="absolute bottom-3 right-4 text-label-lg tabular-nums text-on-surface-variant/60"
+          aria-label={`Understory score ${score.displayScore} of 100`}
+        >
+          {score.displayScore}
         </span>
       )}
 
