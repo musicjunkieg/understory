@@ -412,6 +412,72 @@ describe("rankTalks — layer 2 integration", () => {
     expect(hi.intensity - lo.intensity).toBeCloseTo(0.1875, 10);
   });
 
+  it("excludes unknown-state talks from the layer-2 min/max rescale", () => {
+    // Regression guard: unknownScore() always stashes
+    // layer2.interestScore = 0, so if a future refactor drops the
+    // `state === "unknown"` guard from the min/max loop, the unknown
+    // talk's 0 would drag layer2Min to 0 and compress the normalized
+    // spread across known talks. This test reproduces that mix: two
+    // clustered known talks at interestScore 0.8 and 0.6, plus one
+    // unknown talk (absent from mentions so scoreTalk returns
+    // unknownScore). The HI→LO intensity delta should still equal the
+    // full 0.1875 recovered by relative normalization — unaffected by
+    // the unknown's stashed 0.
+    const RKEY_HI = "3mi54ddddddd";
+    const RKEY_LO = "3mi54eeeeeee";
+    const RKEY_UNK = "3mi54fffffff";
+
+    const talks = [makeTalk(RKEY_HI), makeTalk(RKEY_LO), makeTalk(RKEY_UNK)];
+    const follows = ["did:plc:a", "did:plc:b", "did:plc:c"];
+    const mention: TalkMention = {
+      count: 3,
+      follows,
+      posts: [],
+      rsvps: [],
+    };
+    // RKEY_UNK deliberately absent → scoreTalk returns unknownScore()
+    const mentions: TalkMentions = {
+      [RKEY_HI]: mention,
+      [RKEY_LO]: mention,
+    };
+
+    const interestVector = [1, 0];
+    const embeddings: Record<string, number[]> = {
+      // cosine 0.6 → interestScore 0.8
+      [RKEY_HI]: [0.6, Math.sqrt(1 - 0.36)],
+      // cosine 0.2 → interestScore 0.6
+      [RKEY_LO]: [0.2, Math.sqrt(1 - 0.04)],
+      // RKEY_UNK has an embedding but no mention — should never reach
+      // the layer-2 loop because scoreTalk bails out into unknownScore()
+      // before computeLayer2 runs.
+      [RKEY_UNK]: [1, 0],
+    };
+
+    const result = rankTalks({
+      talks,
+      mentions,
+      followCount: 10,
+      interestVector,
+      embeddings,
+      active: { layer2: true, layer3: false },
+    });
+
+    const hi = result.find((s) => s.rkey === RKEY_HI)!;
+    const lo = result.find((s) => s.rkey === RKEY_LO)!;
+    const unk = result.find((s) => s.rkey === RKEY_UNK)!;
+
+    // Unknown-state invariants.
+    expect(unk.state).toBe("unknown");
+    expect(unk.intensity).toBe(0);
+    expect(unk.layer2.interestScore).toBe(0);
+
+    // The key assertion: full 0.1875 delta survives despite the
+    // unknown talk's stashed 0. If the min/max loop ever leaks
+    // unknowns, layer2Min drops to 0 and this delta collapses to
+    // roughly 0.0469 — this test catches that regression.
+    expect(hi.intensity - lo.intensity).toBeCloseTo(0.1875, 10);
+  });
+
   it("handles a degenerate layer-2 distribution without NaN", () => {
     // When every talk has the same layer2 value (e.g. interestVector is
     // null and every interestScore is 0), min == max and the rescale
